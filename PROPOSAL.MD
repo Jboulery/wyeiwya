@@ -1,7 +1,7 @@
 # What You Eat Is Who You Are
 
 
-The idea is simple : compare various countries' food, based on several criteria : energy, fat, sugars, ...
+The idea is simple : comparing various countries' food, based on several criteria : energy, fat, sugars, ...
 
 To do so, we propose a ranking, according to one (or more) quantity(ies) chosen bu the user
 
@@ -11,9 +11,9 @@ To do so, we propose a ranking, according to one (or more) quantity(ies) chosen 
 __Sheet 1__
 
 The following sheet shows the (only) layout we intend to build. It will be divided into 3 areas :
-- The main area (top left) will be used to display the countries ranking
-- The left area will be used to compare 2 countries (Scatterplot, Spider chart)
-- The bottom left area will be a world map, and might be useful to locate the 2 countries the user is currently comparing
+- The main area (top left) will be used to display the countries ranking.
+- The right area will be used to compare 2 countries (Scatterplot, Spider chart).
+- The bottom left area will be a world map, and might be useful to locate the 2 countries the user is currently comparing.
 
 ![Sheet2](/img/sheet1.png)
 __Sheet 2__
