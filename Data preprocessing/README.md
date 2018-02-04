@@ -6,17 +6,88 @@ The Data is provided by Open Food Facts, the free food products database :
 
 "Open Food Facts is a free, open, collaborative database of food products from around the world, with ingredients, allergens, nutrition facts and all the tidbits of information we can find on product labels. "
 
-Originally, the data is organised in a single table with 163 columns. The script __cleaner.py__ allows us to separate the columns of interest from the rest in order to reduce the size of the data file (1.24Go). 
+Originally, the data is organised in a single table with 163 columns. The script __cleaner.py__ allows us to separate the columns of interest from the rest in order to reduce the size of the data file (originally 1.24Go). 
 
 To do so, we create another csv file chosing only the columns based on the following criterias : 
 
-- A column musn't be empty or lacking too much data
-- A column should have data that's well formed for treatment (raw text doesn't fit our study for example)
-- A column should contain a field that is of interest to our study
+- A column musn't be empty or lacking too much data : we computed the percentage of data presence within every column of interest and only kept the column that add at least 20% completion. 
+- A column should have data that's well formed for treatment (raw text doesn't fit our study for example whereas data per 100g of food is very convenient)
+- A column should contain a field that is of interest to our study (some nutrition factors may be irrelevant, and the list of ingredients adds too much weight to the data file for no gain)
 
 The original data is extracted from this <a href="https://world.openfoodfacts.org/data"> website </a>.
 
-After cleaning and selection of the columns, the file created is only 60Mo (compression rate is about 21).
+After cleaning and selection of the columns, the file created is only 48.2Mo. We selected the following columns : 
 
+<table>
+<tr>
+<td> Column name </td> <td> Description </td> <td> Example </td> <td> Relevant information </td> <td> Filling percentage </td> 
+</tr>
+<tr>
+<td> code </td> <td> Code of the product </td> <td> 0000000001663 </td> <td> code can serve as an id </td> <td> 100% </td>
+</tr>
+<tr>
+<td> product_name </td>
+</tr>
+<tr>
+<td> categories_tag </td>
+</tr>
+<tr>
+<td> countries_tag </td>
+</tr>
+<tr>
+<td> additives_n </td>
+</tr>
+<tr>
+<td> nutrition_grade_fr </td>
+</tr>
+<tr>
+<td> energy_100g </td>
+</tr>
+<tr>
+<td> fat_100g </td>
+</tr>
+<tr>
+<td> saturated_fat_100g </td>
+</tr>
+<tr>
+<td> cholesterol_100g </td>
+</tr>
+<tr>
+<td> carbohydrates_100g </td>
+</tr>
+<tr>
+<td> sugars_100g </td>
+</tr>
+<tr>
+<td> fiber_100g </td>
+</tr>
+<tr>
+<td> proteins_100g </td>
+</tr>
+<tr>
+<td> salt_100g </td>
+</tr>
+<tr>
+<td> sodium_100g </td>
+</tr>
+<tr>
+<td> vitamin_a_100g </td>
+</tr>
+<tr>
+<td> vitamin_c_100g  </td>
+</tr>
+<tr>
+<td> potassium_100g </td>
+</tr>
+<tr>
+<td> calcium_100g </td>
+</tr>
+<tr>
+<td> iron_100g </td>
+</tr>
+<tr>
+<td> nutrition_score_uk_100g </td>
+</tr>
+</table>
 
 
