@@ -7,6 +7,7 @@
 </head>
 <body>
 	<h3>Hello World !</h3>
+	<div id="scatterplot"></div>
 	<script type="text/javascript">
 			
 		// Inspirated by : 
@@ -19,13 +20,17 @@
 
 		// Create svg canvas
 
-		var svg = d3.select("body")
+		var svg = d3.select("#scatterplot")
 		.append("svg")
 		.attr("width",width+margin.left+margin.right)
 		.attr("height",height+margin.bottom+margin.top)
 
 		var g = svg.append("g")
 		.attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+		
+		// Data parameters :
+		x_coord = "sugars_100g";
+		y_coord = "fat_100g";
 		
 		//**************************//
 		//		Data processing		//
@@ -81,9 +86,75 @@
 						.key(function(d) {return d.countries_tags})
 						.entries(data);
 
-					console.log(ByCountry);
+					//console.log(ByCountry);
 					
+					//**************************//
+					//			Data plot		//
+					//**************************//
+			
+					// Extremums
+					var Xmin = d3.min(data, function(d) {
+												return +d[x_coord];});
+					var Xmax = d3.max(data, function(d) {
+												return +d[x_coord];});
+					var Ymin = d3.min(data, function(d) {
+												return +d[y_coord];});
+					var Ymax = d3.max(data, function(d) {
+												return +d[y_coord];});
 					
+
+					// Create scales
+					var x = d3.scaleLinear()
+						.domain([0,Xmax])
+						.range([0,width]);
+					var y = d3.scaleLinear()
+						.domain([0,Ymax])
+						.range([height,0]);
+					
+					// Create axis
+					var xAxis = d3.axisBottom()
+						.scale(x);
+					
+					var yAxis = d3.axisLeft()
+						.scale(y);
+						
+					var gX = svg.append("g")
+						.attr("class","axis")
+						.attr("transform", "translate(" + margin.left + "," + (height+margin.top) + ")")
+						.call(xAxis);
+						
+					var gY = svg.append("g")
+						.attr("class", "axis")
+						.attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+						.call(yAxis);
+					
+								
+					//**********************//
+					//		Data plots		//
+					//**********************//
+				
+					// Create and display dots
+					var dots = g.selectAll(".country")	
+						.data(ByCountry)
+						.enter()
+						.append("g")	// added new group
+						.attr("class","country")
+						
+						// Change color
+						//.attr("d", function(d){return colorScale(d.key);})
+						.selectAll("path")
+						.data(function(d){return d.values;})
+						.enter()
+						.append("path")
+						.attr("class", "symbol")
+						
+						// Change symbol
+						.attr("d", d3.symbol().type(d3.symbolCircle).size(20)())
+						.attr('fill',"rgb(31,119,180)")
+						
+						// (x,y) coordinates
+						.attr("transform",function(d) {return "translate(" + x(+d[x_coord]) +","+ y(+d[y_coord]) +")" ;})
+	
 			// End of Data processing
 			}});
 	</script>
