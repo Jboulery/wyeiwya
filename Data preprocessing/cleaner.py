@@ -5,10 +5,9 @@ import csv
 # Change the paths if needed
 with open('D:/ECL/S9/MOS 5.5 Dataviz/en.openfoodfacts.org.products.csv','r',encoding="utf-8") as tsvin, open('food_data.csv', 'w',encoding='utf-8') as csvout:
     tsvin = csv.reader(tsvin, delimiter='\t')
-    csvout = csv.writer(csvout,delimiter=',')
+    csvout = csv.writer(csvout,delimiter=',',lineterminator='\n')
     # i is to debug the iterations and see the progression of the cleaning (approx 350000 rows)
     i=0
-    j = 0
     for row in tsvin:
         if len(row)==163:
             # select all the desired elements
@@ -44,3 +43,4 @@ with open('D:/ECL/S9/MOS 5.5 Dataviz/en.openfoodfacts.org.products.csv','r',enco
             i+=1
             # add the row to the csv output file 
             csvout.writerow(data)
+        
