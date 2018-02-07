@@ -36,6 +36,8 @@ Overall, the project seems doable, even if the preprocessing phase might be time
 
 ## Additional comments
 
+- It isn't clear if all your charts are displayed at the same time, on a same view. Perhaps it would be useful to create a general template to see where your charts will be placed on a screen and how they will interact. Do some charts hide when an other one is clicked for example ? Do they all have the same size ? 
+
 - Be careful when you create the second level of your pie chart : if there are spelling mistakes in the subcategory, you might get too many pie arcs.
 
 - There’s a spelling mistake in "Readme.MD - Visualisations proposées - Base" : "moye" instead of "moyen"
