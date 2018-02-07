@@ -1,46 +1,75 @@
-import csv 
+import csv
+import sys
+
+# Handle large ints
+csv.field_size_limit(sys.maxsize)
 
 # Opens the file downloaded directly from this link : https://world.openfoodfacts.org/data (csv file)
 # Output is a file in the same folder named 'food_data.csv' with utf-8 encoding and selected data
 # Change the paths if needed
-with open('D:/ECL/S9/MOS 5.5 Dataviz/en.openfoodfacts.org.products.csv','r',encoding="utf-8") as tsvin, open('food_data.csv', 'w',encoding='utf-8') as csvout:
-    tsvin = csv.reader(tsvin, delimiter='\t')
-    csvout = csv.writer(csvout,delimiter=',',lineterminator='\n')
-    # i is to debug the iterations and see the progression of the cleaning (approx 350000 rows)
-    i=0
-    for row in tsvin:
-        if len(row)==163:
-            # select all the desired elements
-            code = row[0]  #100% filled
-            product_name=row[7] #97.22% filled
-            categories_tag = row[15] #28.11% filled
-            countries_tag=row[32] #99.95% filled
-            additives_n=row[42] #86.57% filled
-            nutrition_grade_fr=row[53] #77.75% filled
-            energy_100g=row[63] #88.30% filled
-            fat_100g=row[65] #85.13% filled
-            saturated_fat_100g=row[66] #80.12% filled
-            cholesterol_100g=row[100] #40.42% filled 
-            carbohydrates_100g=row[101] #85.07% filled
-            sugars_100g=row[102] #84.37% filled
-            fiber_100g=row[111] #62.83% filled
-            proteins_100g =row[112] #88% filled
-            salt_100g=row[116] #87.35% filled
-            sodium_100g=row[117] #87.35% filled 
-            vitamin_a_100g =row[119] #38.59% filled 
-            vitamin_c_100g=row[124] #39.48% filled 
-            calcium_100g=row[138] #39.52% filled
-            iron_100g=row[140] #39.39% filled
-            nutrition_score_uk_100g=row[159] #77.75%
-            # Testing the presence of data in some columns
+with open('products.csv','r',encoding="utf-8") as tsvin:
+    with open('food_data.csv', 'w',encoding='utf-8') as csvout:
+        tsvin = csv.reader(tsvin, delimiter='\t')
+        csvout = csv.writer(csvout,delimiter=',',lineterminator='\n')
 
-            # Add them to an array that will be written into the csv output file 
-            data = [code,product_name,categories_tag,countries_tag,additives_n,nutrition_grade_fr,energy_100g,fat_100g,saturated_fat_100g]
-            data += [cholesterol_100g,carbohydrates_100g,sugars_100g,fiber_100g,proteins_100g,salt_100g,sodium_100g]
-            data += [vitamin_a_100g,vitamin_c_100g,calcium_100g,iron_100g,nutrition_score_uk_100g]
-            # show the number of the current iteration 
-            print(i)
-            i+=1
-            # add the row to the csv output file 
-            csvout.writerow(data)
+        print('Les fichiers ont été correctement ouverts')
+        count = 0
+
+        # CSV Analysis
+        for row in tsvin:
+            count += 1
+            if len(row) == 163:
+            # Select all the desired elements
+                data = [row[i] for i in [0, 7, 15, 32, 42, 53, 159, 63, 65, 66, 100, 101, 102, 111, 112, 116, 117, 119, 124, 138, 140]]
+
+                # Relation table
+                # Row_nb : Attribute - % filled
+                ##########################
+                ### General Attributes
+                # 0   : Code - 100%
+                # 7   : Product Name - 97.22%
+                # 15  : Categories Tag - 28.11%
+                # 32  : Countries Tag - 99.95%
+                # 42  : Additives N - 86.57%
+                # 53  : Nutrition Grade FR - 77.75%
+                # 159 : Nutrition Score UK - 77.75
+
+                ## Per 100g Attributes
+                # Unit kJ ?
+                # 63  : Energy / 100g - 88.30%
+                # Unit g ?
+                # 65  : Fat / 100g - 85.13%
+                ### 66  : Saturated Fat / 100g - 80.12% (Part of Fat)
+                # 100 : Cholesterol / 100g - 40.42%
+                # 101 : Carbohydrates / 100g - 85.07%
+                ### 102 : Sugars / 100g - 84.37% (Part of Carbohydrates)
+                # 111 : Fiber / 100g - 62.83%
+                # 112 : Proteins / 100g - 88%
+                # 116 : Salt / 100g - 87.35%
+                ### 117 : Sodium / 100g - 87.35% (Part of Salt)
+                # 119 : Vitamin A / 100g - 38.59%
+                # 124 : Vitamin D / 100g - 39.48%
+                # 138 : Calcium / 100g - 39.52%
+                # 140 : Iron / 100g - 39.39%
+
+                # Show progression
+                if count % 10000 == 0:
+                    print(count, ' lignes traitées')
+
+                attributes_100g_sum = 0
+                for attr in data[8:]:
+                    if data.index(attr) in [9, 12, 16]:
+                        continue
+                    try:
+                        attr = float(attr)
+                        attributes_100g_sum += attr
+                    except:
+                        continue
+
+                if attributes_100g_sum > 100:
+                    continue
+
+                # Add the row to the csv output file if not empty            
+                if data[7:] != ['']*len(data[7:]):
+                    csvout.writerow(data)
         
