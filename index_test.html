@@ -18,6 +18,7 @@
 		.bars rect {
 			fill:steelblue;
 			fill-opacity:.9;
+			border : white 1px solid;
 		}
 		.title {
 			font-weight: bold;
@@ -26,12 +27,29 @@
 			fill:white;
 			font-size: 12px;
 		}
+		
+		div.tooltip {
+			color: #222;
+			background-color: #fff;
+			padding: .5em;
+			text-shadow: #f5f5f5 0 1px 0;
+			border-radius: 2px;
+			opacity: 0.9;
+			position: absolute;
+		}
 </style>
 </head>
 <body>
-	<h3>Hello World !</h3>
 	<div id="scatterplot"></div>
-	<div id="ranking"></div>
+	<div id="ranking"><form>
+	  <label><input type="radio" name="mode" value="0" checked>Fat</label>
+	  <label><input type="radio" name="mode" value="1">Saturated fat</label>
+	  <label><input type="radio" name="mode" value="2">Cholesterol</label>
+	  <label><input type="radio" name="mode" value="3">Carbohydrates</label>
+	  <label><input type="radio" name="mode" value="4">Fibers</label>
+	  <label><input type="radio" name="mode" value="5">Sugars</label>
+	</form>
+</div>
 	<script type="text/javascript">
 			
 		// Inspirated by : 
@@ -131,7 +149,8 @@
 						country.means 	= [meanFat, meanSatFat, meanChol, meanCarb, meanFib, meanSug];
 					});
 					
-					//console.log(ByCountry);
+					console.log(ByCountry);
+					var nb_countries = ByCountry.length;
 					
 					//**************************//
 					//			Data plot		//
@@ -208,26 +227,12 @@
 					// References :
 					// - http://bl.ocks.org/leondutoit/6436923
 					
-					// Countries sort
-					 var max=ByCountry
-						.sort(function(a,b){return b.means[0]-a.means[0];})
-						.map(function(d){return d.key;})
-					;
-
-					ByCountry.sort(function(a,b){return max.indexOf(a.key)-max.indexOf(b.key);});
-					
-					// Scale defintion
-					
-					
-					var xMax = d3.max(ByCountry, function(d) { return d.means[0]; } );
 					
 					var xScale = d3.scaleLinear()
-								.range([0, width])
-								.domain([Xmin, xMax]);
+								.range([0, width-150]);
 					
 					var yScale = d3.scaleBand()
-								.rangeRound([0, height])
-								.domain(ByCountry.map(function(d) {return d.key; }));
+								.rangeRound([0, height]);
 					
 					var numTicks = 5;
 					
@@ -236,6 +241,27 @@
 						.attr("width",width+margin.left+margin.right)
 						.attr("height",height+margin.bottom+margin.top)
 					
+					var tooltip = d3.select("#ranking").append('div')
+									.attr('class', 'hidden tooltip');
+					
+
+					var criteria = 0
+					
+					 var max=ByCountry
+						.sort(function(a,b){return b.means[criteria]-a.means[criteria];})
+						.map(function(d){return d.key;});
+
+					ByCountry.sort(function(a,b){return max.indexOf(a.key)-max.indexOf(b.key);});
+					
+					// Scale update
+
+					var xMax = d3.max(ByCountry, function(d) { return d.means[criteria]; } );
+					
+					xScale.domain([Xmin, xMax]);
+					yScale.domain(ByCountry.map(function(d) {return d.key; }));
+					
+					// svg creation
+					
 					var xAxis = d3.axisBottom()
 						.scale(xScale)
 						.tickSize((-height))
@@ -243,12 +269,12 @@
 	
 					var gX = svg2.append("g")
 						.attr("class","axis")
-						.attr("transform", "translate(100,0)")
+						.attr("transform", "translate(150,10)")
 						.call(xAxis);
 					
 					var barSvg = svg2
 						.append("g")
-						.attr("transform", "translate(100,0)")
+						.attr("transform", "translate(150,20)")
 						.attr("class", "bar-svg");
 					
 					var groups = barSvg.append("g").attr("class", "labels")
@@ -258,7 +284,7 @@
 						.append("g");
 					
 					// Country name
-					groups.append("text")
+					var countryNames = groups.append("text")
 						.attr("x", "0")
 						.attr("y", function(d) { return yScale(d.key); })
 						.text(function(d) { return d.key; })
@@ -270,16 +296,16 @@
 					var bars = groups
 						.attr("class", "bars")
 						.append("rect")
-						.attr("width", function(d) {return xScale(d.means[0]); })
-						.attr("height", height/215)
+						.attr("width", function(d) {return xScale(d.means[criteria]); })
+						.attr("height", height/nb_countries)
 						.attr("x", xScale(Xmin))
 						.attr("y", function(d) { return yScale(d.key); })
 						.attr("id", function(d,i) { return "bar"+i; });
 
-					groups.append("text")
-						.attr("x", function(d) { return xScale(d.means[0]); })
+					var numText = groups.append("text")
+						.attr("x", function(d) { return xScale(d.means[criteria]); })
 						.attr("y", function(d) { return yScale(d.key); })
-						.text(function(d) { return d.means[0]; })
+						.text(function(d) { return d.means[criteria].toPrecision(3); })
 						.attr("text-anchor", "end")
 						.attr("dy", "1.2em")
 						.attr("dx", "-.32em")
@@ -290,12 +316,23 @@
 							var currentGroup = d3.select(this.parentNode);
 							currentGroup.select("rect").style("fill", "brown");
 							currentGroup.select("text").style("font-weight", "bold");
+							
+							var mouse = d3.mouse(svg2.node()).map(function(d) {
+								return parseInt(d);
+							});
+							tooltip.classed('hidden', false)
+								.attr('style', 'left:' + (mouse[0] + 15) +
+										'px; top:' + (mouse[1] - 35) + 'px')
+								.html("Propriétés du produit :");
 						})
+						
 						.on("mouseout", function() {
 							var currentGroup = d3.select(this.parentNode);
 							currentGroup.select("rect").style("fill", "steelblue");
 							currentGroup.select("text").style("font-weight", "normal");
-						});	
+							
+							tooltip.classed('hidden', true);
+						});
 					
 					var grid = xScale.ticks(numTicks);
 					
@@ -303,12 +340,79 @@
 						.selectAll("line")
 						.data(grid, function(d) { return d; })
 						.enter().append("line")
-							.attr("y1", 0)
-							.attr("y2", height+margin.bottom)
-							.attr("x1", function(d) { return xScale(d); })
-							.attr("x2", function(d) { return xScale(d); })
-							.attr("stroke", "white");
+						.attr("y1", 0)
+						.attr("y2", height+margin.bottom)
+						.attr("x1", function(d) { return xScale(d); })
+						.attr("x2", function(d) { return xScale(d); })
+						.attr("stroke", "white");
+					
+						
+					//**********************************//
+					//		Ranking update function		//
+					//**********************************//			
+					
+					function rankingUpdate(criteria){
+						console.log("Update with "+criteria)
+					
+						var max=ByCountry
+							.sort(function(a,b){return b.means[criteria]-a.means[criteria];})
+							.map(function(d){return d.key;});
 
+						ByCountry.sort(function(a,b){return max.indexOf(a.key)-max.indexOf(b.key);});
+					
+						// Scale update
+
+						var xMax = d3.max(ByCountry, function(d) { return d.means[criteria]; } );
+					
+						xScale.domain([Xmin, xMax]);
+						yScale.domain(ByCountry.map(function(d) {return d.key; }));
+						
+						// Update axis
+						xAxis.scale(xScale)
+						
+						gX.transition()
+						.duration(2000)
+						.call(xAxis)
+						
+						// Update bars
+						numText
+						.transition()
+						.duration(2000)
+						.attr("x", function(d) { return xScale(d.means[criteria]); })
+						.text(function(d) { return d.means[criteria].toPrecision(3); })
+						.transition()
+						.duration(2000)
+						.attr("y", function(d) { return yScale(d.key); })
+						
+						bars
+						.transition()
+						.duration(2000)
+						.attr("width", function(d) {return xScale(d.means[criteria]); })
+						.attr("x", xScale(Xmin))
+						.transition()
+						.duration(2000)
+						.attr("y", function(d) { return yScale(d.key); })
+						
+						countryNames
+						.transition()
+						.duration(2000)
+						.transition()
+						.duration(2000)
+						.attr("y", function(d) { return yScale(d.key); });
+						
+						}
+				
+							
+				d3.selectAll("input")
+					.on("change", changed);
+					
+				function changed() {
+					try{rankingUpdate(+this.value,svg2)
+						}
+
+					catch(error){
+						rankingUpdate(0,svg2)}
+						}
 			// End of Data processing
 			}});
 		
