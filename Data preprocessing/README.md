@@ -13,6 +13,7 @@ To do so, we create another csv file chosing only the columns based on the follo
 - A column musn't be empty or lacking too much data : we computed the percentage of data presence within every column of interest and only kept the column that add at least 20% completion. 
 - A column should have data that's well formed for treatment (raw text doesn't fit our study for example whereas data per 100g of food is very convenient)
 - A column should contain a field that is of interest to our study (some nutrition factors may be irrelevant, and the list of ingredients adds too much weight to the data file for no gain)
+- A product should have at least 50% of the columns filled to be eligible for the dataset 
 
 The original data is extracted from this <a href="https://world.openfoodfacts.org/data"> website </a>.
 
@@ -25,27 +26,6 @@ After cleaning and selection of the columns, the file created is only 48.2Mo. We
 		<td> Example </td> 
 		<td> Relevant information </td> 
 		<td> Filling percentage </td> 
-	</tr>
-	<tr>
-		<td> code </td>
-		<td> Code of the product </td> 
-		<td> 0000000001663 </td> 
-		<td> code can serve as an id </td> 
-		<td> 100% </td>
-	</tr>
-	<tr>
-		<td> product_name </td>
-		<td> Name of the product </td> 
-		<td> Compote de poire </td> 
-		<td> text encoded in UTF-8 </td> 
-		<td> 97.22% </td>
-	</tr>
-	<tr>
-		<td> categories_tag </td>
-		<td> Category of the product as a tag </td> 
-		<td> en:plant-based-foods </td> 
-		<td> Tag normalizes the category </td> 
-		<td> 28.11% </td>
 	</tr>
 	<tr>
 		<td> countries_tag </td>
@@ -92,7 +72,7 @@ After cleaning and selection of the columns, the file created is only 48.2Mo. We
 	<tr>
 		<td> cholesterol_100g </td>
 		<td> Cholesterol value for 100g </td> 
-		<td> 2243 </td> 
+		<td> 0.02 </td> 
 		<td> Value in grams </td> 
 		<td> 40.42% </td>
 	</tr>
