@@ -376,7 +376,7 @@ GroupedCountry += [["azerbaidjan","azerbaijan"]]
 
 # MAURITIUS
 TrueCountry += ["Mauritius"]
-GroupedCountry += [["mauritius"]]
+GroupedCountry += [["mauritius","mauricio"]]
 
 # KENYA
 TrueCountry += ["Kenya"]
@@ -497,6 +497,18 @@ GroupedCountry += [["vietnam"]]
 # Cook Islands
 TrueCountry += ["Cook Islands"]
 GroupedCountry += [["cook-islands"]]
+
+# BAHRAIN
+TrueCountry += ["Bahrain"]
+GroupedCountry += [["bahrain"]]
+
+# MALAYSIA
+TrueCountry += ["Malaysia"]
+GroupedCountry += [["malaysia"]]
+
+# HUNGRIA
+TrueCountry += ["Hungria"]
+GroupedCountry += [["hungria"]]
 
 
 class CountryProcessing():
