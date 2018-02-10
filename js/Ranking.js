@@ -1,126 +1,126 @@
 // Inspirated by : 
-	// http://bl.ocks.org/mbostock/3943967
-	// https://bl.ocks.org/mbostock/1256572
+// http://bl.ocks.org/mbostock/3943967
+// https://bl.ocks.org/mbostock/1256572
 
+// Graphical parameters
 var margin = {top: 20, right: 20, bottom: 30, left: 10};
 var width = 960 - margin.left - margin.right;
 var height = 4000 - margin.top - margin.bottom;
 
-
-//**************************//
-//		Data processing		//
-//**************************//		
-
 d3.csv("data/food_data.csv", function(error,data) {
-		// Test
-		if (error){console.log(error)}
-		
-		else{
-			// Save data
-			dataset = data;
-			
-			//******************************//
-			//			Format data			//
-			//******************************//
-			
-			data = data.filter(function(d) {
-				// delete any absurd line
-				ValuesPer100g = [+d.fat_100g,
-								+d['saturated-fat_100g'],
-								+d.cholesterol_100g,
-								+d.carbohydrates_100g,
-								+d.sugars_100g,
-								+d.fiber_100g,
-								+d.proteins_100g,
-								+d.salt_100g,
-								+d.sodium_100g,
-								+d['vitamin-a_100g'],
-								+d['vitamin-c_100g'],
-								+d.calcium_100g,
-								+d.iron_100g];
-			
-				return (d.code != "" && d.countries_tags != "") && (d3.max(ValuesPer100g) <= 100) && (d3.min(ValuesPer100g) >= 0);
-			})
-			
-			// Duplicate products with two "coutry_tag"
-			data.forEach(function(d){
-
-				if (d.countries_tags.split(",").length>1){
-					var tab = d.countries_tags.split(",") ;
-					d.countries_tags = tab[0];
-					for (var i=0;i<tab.length-1;i++){
-						var element = d;
-						element.countries_tags = tab[i+1];
-						data.push(element);
-						}
-				}
-			});
-
-			// Nest data
-			var ByCountry = d3.nest()
-				.key(function(d) {return d.countries_tags})
-				.entries(data);
-			
-			// Add max / min / mean
-			ByCountry.forEach(function(country){
-				// Maximums calculation
-				var maxFat 		= d3.max(country.values, function(d) { return +d.fat_100g; });
-				var maxSatFat 	= d3.max(country.values, function(d) { return +d['saturated-fat_100g']; });
-				var maxChol 	= d3.max(country.values, function(d) { return +d.cholesterol_100g; });
-				var maxCarb 	= d3.max(country.values, function(d) { return +d.carbohydrates_100g; });
-				var maxFib 		= d3.max(country.values, function(d) { return +d.fiber_100g; });
-				var maxSug 		= d3.max(country.values, function(d) { return +d.sugars_100g; });
-				country.max 	= [maxFat, maxSatFat, maxChol, maxCarb, maxFib, maxSug];
-				
-				// Means calculation
-				var meanFat 	= d3.mean(country.values, function(d) { return +d.fat_100g; });
-				var meanSatFat 	= d3.mean(country.values, function(d) { return +d['saturated-fat_100g']; });
-				var meanChol 	= d3.mean(country.values, function(d) { return +d.cholesterol_100g; });
-				var meanCarb 	= d3.mean(country.values, function(d) { return +d.carbohydrates_100g; });
-				var meanFib 	= d3.mean(country.values, function(d) { return +d.fiber_100g; });
-				var meanSug 	= d3.mean(country.values, function(d) { return +d.sugars_100g; });
-				country.means 	= [meanFat, meanSatFat, meanChol, meanCarb, meanFib, meanSug];
-			});
-			
-			console.log(ByCountry);
-
-			//******************************//
-			//		Countries ranking		//
-			//******************************//
-			
-			// References :
-			// - http://bl.ocks.org/leondutoit/6436923
-
-
-			var svg2 = d3.select("#ranking")
-				.append("svg")
-				.attr("width",width+margin.left+margin.right)
-				.attr("height",height+margin.bottom+margin.top)
-			
-			// Create ranking
-			
-			var xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip;
-			[xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip] = rankingInit(ByCountry,0, svg2,width,height);
-			
-										
-			d3.selectAll("input")
-				.on("change", changed);
-			
-			//**********************************//
-			//		Input listener function		//
-			//**********************************//	
-			
-			function changed() {
-				try{rankingUpdate(ByCountry,+this.value,xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip)
-					}
-
-				catch(error){
-					console.log(error)
-					rankingUpdate(ByCountry,0,xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip)}
-					}
-	// End of Data processing
-	}});
+	// Test
+	if (error){console.log(error)}
 	
+	else{
+		// Save data
+		var dataset = data;
+		
+		//******************************//
+		//			Format data			//
+		//******************************//
+		
+		data = data.filter(function(d) {
+			// delete any absurd line
+			ValuesPer100g = [+d.fat_100g,
+							+d['saturated-fat_100g'],
+							+d.cholesterol_100g,
+							+d.carbohydrates_100g,
+							+d.sugars_100g,
+							+d.fiber_100g,
+							+d.proteins_100g,
+							+d.salt_100g,
+							+d.sodium_100g,
+							+d['vitamin-a_100g'],
+							+d['vitamin-c_100g'],
+							+d.calcium_100g,
+							+d.iron_100g];
+		
+			return (d.code != "" && d.countries_tags != "") && (d3.max(ValuesPer100g) <= 100) && (d3.min(ValuesPer100g) >= 0);
+		})
+		
+		// Duplicate products with two "coutry_tag"
+		data.forEach(function(d){
+
+			if (d.countries_tags.split(",").length>1){
+				var tab = d.countries_tags.split(",") ;
+				d.countries_tags = tab[0];
+				for (var i=0;i<tab.length-1;i++){
+					var element = d;
+					element.countries_tags = tab[i+1];
+					data.push(element);
+					}
+			}
+		});
+
+		// Nest data
+		var ByCountry = d3.nest()
+			.key(function(d) {return d.countries_tags})
+			.entries(data);
+		
+		// Add max / min / mean
+		ByCountry.forEach(function(country){
+			// Maximums calculation
+			var maxFat 		= d3.max(country.values, function(d) { return +d.fat_100g; });
+			var maxSatFat 	= d3.max(country.values, function(d) { return +d['saturated-fat_100g']; });
+			var maxChol 	= d3.max(country.values, function(d) { return +d.cholesterol_100g; });
+			var maxCarb 	= d3.max(country.values, function(d) { return +d.carbohydrates_100g; });
+			var maxFib 		= d3.max(country.values, function(d) { return +d.fiber_100g; });
+			var maxSug 		= d3.max(country.values, function(d) { return +d.sugars_100g; });
+			country.max 	= [maxFat, maxSatFat, maxChol, maxCarb, maxFib, maxSug];
+			
+			// Means calculation
+			var meanFat 	= d3.mean(country.values, function(d) { return +d.fat_100g; });
+			var meanSatFat 	= d3.mean(country.values, function(d) { return +d['saturated-fat_100g']; });
+			var meanChol 	= d3.mean(country.values, function(d) { return +d.cholesterol_100g; });
+			var meanCarb 	= d3.mean(country.values, function(d) { return +d.carbohydrates_100g; });
+			var meanFib 	= d3.mean(country.values, function(d) { return +d.fiber_100g; });
+			var meanSug 	= d3.mean(country.values, function(d) { return +d.sugars_100g; });
+			country.means 	= [meanFat, meanSatFat, meanChol, meanCarb, meanFib, meanSug];
+		});
+		
+		console.log(ByCountry);
+		
+		var margin = {top: 20, right: 20, bottom: 30, left: 10};
+		var width = 960 - margin.left - margin.right;
+		var height = 4000 - margin.top - margin.bottom;
+
+		//******************************//
+		//		Countries ranking		//
+		//******************************//
+
+		// References :
+		// - http://bl.ocks.org/leondutoit/6436923
+
+
+		var svg2 = d3.select("#ranking")
+			.append("svg")
+			.attr("width",width+margin.left+margin.right)
+			.attr("height",height+margin.bottom+margin.top)
+
+		// Create ranking
+		var xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip;
+		[xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip] = rankingInit(ByCountry,0, svg2,width,height);
+
+									
+		d3.selectAll("input")
+			.on("change", changed);
+
+		//**********************************//
+		//		Input listener function		//
+		//**********************************//	
+
+		function changed() {
+			try{rankingUpdate(ByCountry,+this.value,xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip)
+				}
+
+			catch(error){
+				console.log(error)
+				rankingUpdate(ByCountry,0,xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip)}
+				}
+						
+// End of Data processing
+}});
+
 //**************************************//
 //		Ranking creation function		//
 //**************************************//
@@ -212,7 +212,7 @@ function rankingInit(ByCountry, criteria, context,width,height){
 	
 	// Rectangles effects (highlight + tootip)
 	bars
-		.on("mouseover", function() {
+		.on("mouseover", function(d) {
 			var currentGroup = d3.select(this.parentNode);
 			currentGroup.select("rect").style("fill", "brown");
 			currentGroup.select("text").style("font-weight", "bold");
@@ -223,7 +223,10 @@ function rankingInit(ByCountry, criteria, context,width,height){
 			tooltip.classed('hidden', false)
 				.attr('style', 'left:' + (mouse[0] + 15) +
 						'px; top:' + (mouse[1] - 35) + 'px')
-				.html("Propriétés du produit :");
+				.html("<em>"+d.key+":</em>"
+				+"<p>- Mean fat rate : "+d.means[0].toPrecision(3)+"</p>"
+				+"<p>- Mean cholesterol : "+d.means[2].toPrecision(3)+"</p>"
+				+"<p>- Mean sugars rate : "+d.means[5].toPrecision(3)+"</p>");
 		})
 		
 		.on("mouseout", function() {
