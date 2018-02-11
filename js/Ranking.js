@@ -3,9 +3,12 @@
 // https://bl.ocks.org/mbostock/1256572
 
 // Graphical parameters
-var margin = {top: 20, right: 20, bottom: 30, left: 10};
+var margin = {top: 20, right: 20, bottom: 30, left: 20};
 var width = 960 - margin.left - margin.right;
 var height = 4000 - margin.top - margin.bottom;
+var bar_padding = 38;
+var text_padding = 120;
+var boxStrokeWidth = 2;
 
 d3.csv("data/food_data.csv", function(error,data) {
 	// Test
@@ -80,10 +83,6 @@ d3.csv("data/food_data.csv", function(error,data) {
 		
 		console.log(ByCountry);
 		
-		var margin = {top: 20, right: 20, bottom: 30, left: 10};
-		var width = 960 - margin.left - margin.right;
-		var height = 4000 - margin.top - margin.bottom;
-
 		//******************************//
 		//		Countries ranking		//
 		//******************************//
@@ -95,13 +94,12 @@ d3.csv("data/food_data.csv", function(error,data) {
 		var svg2 = d3.select("#ranking")
 			.append("svg")
 			.attr("width",width+margin.left+margin.right)
-			.attr("height",height+margin.bottom+margin.top)
-
+			.attr("height",height+margin.bottom+margin.top);
+			
 		// Create ranking
 		var xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip;
 		[xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip] = rankingInit(ByCountry,0, svg2,width,height);
-
-									
+		
 		d3.selectAll("input")
 			.on("change", changed);
 
@@ -117,8 +115,43 @@ d3.csv("data/food_data.csv", function(error,data) {
 				console.log(error)
 				rankingUpdate(ByCountry,0,xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip)}
 				}
-						
+		
 // End of Data processing
+// Scale visu
+svg2.append("rect")
+	.attr("width", margin.left)
+	.attr("height", 2)
+	.attr("x", 0)
+	.attr("y", 2)
+	.attr("fill", "red");
+	
+svg2.append("rect")
+	.attr("width", text_padding)
+	.attr("height", 2)
+	.attr("x", margin.left)
+	.attr("y", 2)
+	.attr("fill", "blue");
+	
+svg2.append("rect")
+	.attr("width", bar_padding)
+	.attr("height", 2)
+	.attr("x", text_padding+margin.left)
+	.attr("y", 2)
+	.attr("fill", "red");
+	
+svg2.append("rect")
+	.attr("width", xScale(49)-xScale(0))
+	.attr("height", 2)
+	.attr("x", xScale(0))
+	.attr("y", 2)
+	.attr("fill", "blue");
+	
+svg2.append("rect")
+	.attr("width", margin.right)
+	.attr("height", 2)
+	.attr("x", xScale(49))
+	.attr("y", 2)
+	.attr("fill", "red");
 }});
 
 //**************************************//
@@ -142,7 +175,7 @@ function rankingInit(ByCountry, criteria, context,width,height){
 	
 	// Scale creation
 	var xScale = d3.scaleLinear()
-				.range([0, width-150]);
+				.range([margin.left+text_padding+bar_padding, width-margin.right]);
 	
 	var yScale = d3.scaleBand()
 				.rangeRound([0, height]);
@@ -158,18 +191,18 @@ function rankingInit(ByCountry, criteria, context,width,height){
 	
 	var xAxis = d3.axisBottom()
 		.scale(xScale)
-		.tickSize((-height))
+		//.tickSize((-height))
 		.ticks(numTicks);
 
 	var gX = context.append("g")
 		.attr("class","axis")
-		.attr("id","xAxis")
-		.attr("transform", "translate(150,10)")
+		.attr("transform", "translate(0,10)")
 		.call(xAxis);
 	
+	// Create place for drawing
 	var barSvg = context
 		.append("g")
-		.attr("transform", "translate(150,20)")
+		.attr("transform", "translate(0,0)")
 		.attr("class", "bar-svg");
 	
 	var groups = barSvg.append("g").attr("class", "labels")
@@ -178,26 +211,29 @@ function rankingInit(ByCountry, criteria, context,width,height){
 		.enter()
 		.append("g");
 	
-	// Country name
+	// Countries names
 	var countryNames = groups.append("text")
-		.attr("x", "0")
+		.attr("x", margin.left+text_padding)
 		.attr("y", function(d) { return yScale(d.key); })
 		.text(function(d) { return d.key; })
 		.attr("text-anchor", "end")
-		.attr("dy", ".9em")
+		.attr("dy", "1.4em")
 		.attr("dx", "-.50em")
 		.attr("id", function(d,i) { return "label"+i; });
 
+	// Rectangles
 	var bars = groups
 		.attr("class", "bars")
 		.append("rect")
-		.attr("width", function(d) {return xScale(d.means[criteria]); })
+		.attr("width", function(d) {return xScale(d.means[criteria])-xScale(0); })
 		.attr("height", height/nb_countries)
 		.attr("x", xScale(0))
 		.attr("y", function(d) { return yScale(d.key); })
 		.attr("id", function(d,i) { return "bar"+i; });
-
-	var numText = groups.append("text")
+		
+	// Values at the bars end
+	var numText = groups
+		.append("text")
 		.attr("x", function(d) { return xScale(d.means[criteria]); })
 		.attr("y", function(d) { return yScale(d.key); })
 		.text(function(d) { return d.means[criteria].toPrecision(3); })
@@ -205,6 +241,39 @@ function rankingInit(ByCountry, criteria, context,width,height){
 		.attr("dy", "1.2em")
 		.attr("dx", "-.32em")
 		.attr("id", "precise-value");
+	
+	// Add checkBoxes
+	ByCountry.forEach(function(country_i){
+		// Parameters
+		var box_size = 0.6*height/nb_countries;
+		var padding = 0.2*height/nb_countries;
+		var box_y_pos = padding+yScale(country_i.key);
+		var box_x_pos = margin.left+text_padding+padding;
+		
+		// Checkboxes
+		 var checkBox = new d3CheckBox();
+
+		// Text displayed when checked
+		var txt = context.append("text").attr("x", box_x_pos+0.1*box_size).attr("y", box_y_pos+2*padding);
+	
+		// Update function
+		var	update = function () {
+			var checked = checkBox.checked();
+			txt.text(checked);
+		};
+		// Setting up each check box
+		var box_i = checkBox
+			.size(box_size)
+			.x(box_x_pos)
+			.y(box_y_pos)
+			.markStrokeWidth(boxStrokeWidth)
+			.boxStrokeWidth(1)
+			.checked(false)
+			.clickEvent(update);
+		
+		// Display checkbox
+		context.call(checkBox);
+	});// End of forEach
 	
 	// Tooltip creation
 	var tooltip = d3.select("#ranking").append('div')
@@ -237,6 +306,7 @@ function rankingInit(ByCountry, criteria, context,width,height){
 			tooltip.classed('hidden', true);
 		});
 	
+	// Create grid
 	var grid = xScale.ticks(numTicks);
 	
 	var grid_on = barSvg.append("g").attr("class", "grid")
@@ -248,7 +318,8 @@ function rankingInit(ByCountry, criteria, context,width,height){
 		.attr("x1", function(d) { return xScale(d); })
 		.attr("x2", function(d) { return xScale(d); })
 		.attr("stroke", "white");
-		
+	
+	// End of function RankingInit
 	return([xScale,yScale,gX, xAxis,numText,bars,countryNames,grid_on,tooltip])
 }
 		
@@ -299,7 +370,7 @@ function rankingUpdate(ByCountry, criteria,xScale,yScale,gX,xAxis,numText,bars,c
 	bars
 	.transition()
 	.duration(2000)
-	.attr("width", function(d) {return xScale(d.means[criteria]); })
+	.attr("width", function(d) {return xScale(d.means[criteria])-xScale(0); })
 	.attr("x", xScale(0))
 	.transition()
 	.duration(2000)
@@ -313,5 +384,3 @@ function rankingUpdate(ByCountry, criteria,xScale,yScale,gX,xAxis,numText,bars,c
 	.attr("y", function(d) { return yScale(d.key); });
 	
 	}
-
-	
