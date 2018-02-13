@@ -80,7 +80,7 @@
 			
 		// Create ranking
 		var xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip;
-		[xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip] = rankingInit(ByCountry,0, svg2,width,height);
+		[xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip,boxesList] = rankingInit(ByCountry,0, svg2,width,height);
 		
 		d3.selectAll("input")
 			.on("change", changed);
@@ -90,12 +90,12 @@
 		//**********************************//	
 
 		function changed() {
-			try{rankingUpdate(ByCountry,+this.value,xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip)
+			try{rankingUpdate(ByCountry,+this.value,xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip,boxesList)
 				}
 
 			catch(error){
 				console.log(error)
-				rankingUpdate(ByCountry,0,xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip)}
+				rankingUpdate(ByCountry,0,xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip,boxesList)}
 				}
 		
 // End of Data processing
