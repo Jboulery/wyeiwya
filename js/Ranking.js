@@ -30,6 +30,7 @@ function rankingInit(ByCountry, criteria, context,width,height){
 	ByCountry.sort(function(a,b){return max.indexOf(a.key)-max.indexOf(b.key);});
 	
 	var nb_countries = ByCountry.length;
+	var bar_h = height/nb_countries;
 	
 	// Scale creation
 	var xScale = d3.scaleLinear()
@@ -72,10 +73,9 @@ function rankingInit(ByCountry, criteria, context,width,height){
 	// Countries names
 	var countryNames = groups.append("text")
 		.attr("x", margin.left+text_padding)
-		.attr("y", function(d) { return yScale(d.key); })
+		.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+5; })
 		.text(function(d) { return d.key; })
 		.attr("text-anchor", "end")
-		.attr("dy", "1.4em")
 		.attr("dx", "-.50em")
 		.attr("id", function(d,i) { return "label"+i; });
 
@@ -84,7 +84,7 @@ function rankingInit(ByCountry, criteria, context,width,height){
 		.attr("class", "bars")
 		.append("rect")
 		.attr("width", function(d) {return xScale(d.means[criteria])-xScale(0); })
-		.attr("height", height/nb_countries)
+		.attr("height", bar_h)
 		.attr("x", xScale(0))
 		.attr("y", function(d) { return yScale(d.key); })
 		.attr("id", function(d,i) { return "bar"+i; });
@@ -93,11 +93,10 @@ function rankingInit(ByCountry, criteria, context,width,height){
 	var numText = groups
 		.append("text")
 		.attr("x", function(d) { return xScale(d.means[criteria]); })
-		.attr("y", function(d) { return yScale(d.key); })
+		.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+4; })
 		.text(function(d) { return d.means[criteria].toPrecision(3); })
 		.attr("text-anchor", "end")
-		.attr("dy", "1.2em")
-		.attr("dx", "-.32em")
+		.attr("dx", "-.5em")
 		.attr("id", "precise-value");
 	
 	// Add checkBoxes
@@ -112,12 +111,13 @@ function rankingInit(ByCountry, criteria, context,width,height){
 		 var checkBox = new d3CheckBox();
 
 		// Text displayed when checked
-		var txt = context.append("text").attr("x", box_x_pos+0.1*box_size).attr("y", box_y_pos+2*padding);
+		var txt = context.append("text").attr("x", box_x_pos+1.1*box_size).attr("y", box_y_pos+2*padding);
 	
 		// Update function
 		var	update = function () {
 			var checked = checkBox.checked();
-			txt.text(checked);
+			if(checked){txt.text(country_i.key);}
+			else{txt.text("");}
 		};
 		// Setting up each check box
 		var box_i = checkBox
@@ -151,6 +151,7 @@ function rankingInit(ByCountry, criteria, context,width,height){
 				.attr('style', 'left:' + (mouse[0] + 15) +
 						'px; top:' + (mouse[1] - 35) + 'px')
 				.html("<em>"+d.key+":</em>"
+				+"<p>- Products nb : "+d.values.length+"</p>"
 				+"<p>- Mean fat rate : "+d.means[0].toPrecision(3)+"</p>"
 				+"<p>- Mean cholesterol : "+d.means[2].toPrecision(3)+"</p>"
 				+"<p>- Mean sugars rate : "+d.means[5].toPrecision(3)+"</p>");
@@ -176,6 +177,43 @@ function rankingInit(ByCountry, criteria, context,width,height){
 		.attr("x1", function(d) { return xScale(d); })
 		.attr("x2", function(d) { return xScale(d); })
 		.attr("stroke", "white");
+	//----------------------------------------------------//
+	//----------------------------------------------------//
+	// Scale visu
+	context.append("rect")
+		.attr("width", margin.left)
+		.attr("height", 2)
+		.attr("x", 0)
+		.attr("y", 2)
+		.attr("fill", "red");
+		
+	context.append("rect")
+		.attr("width", text_padding)
+		.attr("height", 2)
+		.attr("x", margin.left)
+		.attr("y", 2)
+		.attr("fill", "blue");
+		
+	context.append("rect")
+		.attr("width", bar_padding)
+		.attr("height", 2)
+		.attr("x", text_padding+margin.left)
+		.attr("y", 2)
+		.attr("fill", "red");
+		
+	context.append("rect")
+		.attr("width", xScale(49)-xScale(0))
+		.attr("height", 2)
+		.attr("x", xScale(0))
+		.attr("y", 2)
+		.attr("fill", "blue");
+		
+	context.append("rect")
+		.attr("width", margin.right)
+		.attr("height", 2)
+		.attr("x", xScale(49))
+		.attr("y", 2)
+		.attr("fill", "red");
 	
 	// End of function RankingInit
 	return([xScale,yScale,gX, xAxis,numText,bars,countryNames,grid_on,tooltip])

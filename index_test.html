@@ -99,41 +99,6 @@
 				}
 		
 // End of Data processing
-// Scale visu
-svg2.append("rect")
-	.attr("width", margin.left)
-	.attr("height", 2)
-	.attr("x", 0)
-	.attr("y", 2)
-	.attr("fill", "red");
-	
-svg2.append("rect")
-	.attr("width", text_padding)
-	.attr("height", 2)
-	.attr("x", margin.left)
-	.attr("y", 2)
-	.attr("fill", "blue");
-	
-svg2.append("rect")
-	.attr("width", bar_padding)
-	.attr("height", 2)
-	.attr("x", text_padding+margin.left)
-	.attr("y", 2)
-	.attr("fill", "red");
-	
-svg2.append("rect")
-	.attr("width", xScale(49)-xScale(0))
-	.attr("height", 2)
-	.attr("x", xScale(0))
-	.attr("y", 2)
-	.attr("fill", "blue");
-	
-svg2.append("rect")
-	.attr("width", margin.right)
-	.attr("height", 2)
-	.attr("x", xScale(49))
-	.attr("y", 2)
-	.attr("fill", "red");
 }});
 
 	</script>

@@ -13,6 +13,9 @@
     <script src="js/bootstrap.min.js"></script>
 	<script src="d3/d3.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-slider/10.0.0/bootstrap-slider.min.js"></script>
+	<script src="js/dataProcessing.js"></script>
+	<script src="js/d3CheckBox.js"></script>
+	<script src="js/Ranking.js"></script>
 	<title>Projet DataVis WYEIWYA</title>
 </head>
 <body>
@@ -49,8 +52,8 @@
     	<div class="row" style="height: 100%">
     		<div class="col-sm-9" style="height: 100%">
       			<div class="row" id="ranking-table-wrapper">
-      				<div class="container-fluid">
-      					<table class="table table-striped">
+      				<div class="container-fluid" id="RankingDiv">
+      					<!-- <table class="table table-striped">
 						  <thead>
 						    <tr>
 						      <th>#</th>
@@ -79,7 +82,7 @@
 						      <td>@twitter</td>
 						    </tr>
 						  </tbody>
-						</table>
+						</table> -->
       				</div>
       			</div>
       			<div class="row" id="world-map-wrapper">
@@ -114,84 +117,7 @@
     </script>
 
 	<script type="text/javascript">
-			
-		// Inspirated by : 
-		// http://bl.ocks.org/mbostock/3943967
-		// https://bl.ocks.org/mbostock/1256572
 
-		// var margin = {top: 20, right: 20, bottom: 30, left: 40};
-		// var width = 960 - margin.left - margin.right;
-		// var height = 500 - margin.top - margin.bottom;
-
-		// // Create svg canvas
-
-		// var svg = d3.select("body")
-		// .append("svg")
-		// .attr("width",width+margin.left+margin.right)
-		// .attr("height",height+margin.bottom+margin.top)
-
-		// var g = svg.append("g")
-		// .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-		
-		// //**************************//
-		// //		Data processing		//
-		// //**************************//		
-		
-		// d3.csv("data/food_data.csv", function(error,data) {
-		// 		// Test
-		// 		if (error){console.log(error)}
-				
-		// 		else{
-		// 			// Save data
-		// 			dataset = data;
-					
-		// 			//******************************//
-		// 			//			Format data			//
-		// 			//******************************//
-					
-		// 			data = data.filter(function(d) {
-		// 				// delete any absurd line
-		// 				ValuesPer100g = [+d.fat_100g,
-		// 								+d['saturated-fat_100g'],
-		// 								+d.cholesterol_100g,
-		// 								+d.carbohydrates_100g,
-		// 								+d.sugars_100g,
-		// 								+d.fiber_100g,
-		// 								+d.proteins_100g,
-		// 								+d.salt_100g,
-		// 								+d.sodium_100g,
-		// 								+d['vitamin-a_100g'],
-		// 								+d['vitamin-c_100g'],
-		// 								+d.calcium_100g,
-		// 								+d.iron_100g];
-					
-		// 				return (d.code != "" && d.countries_tags != "") && (d3.max(ValuesPer100g) <= 100) && (d3.min(ValuesPer100g) >= 0);
-		// 			})
-					
-		// 			// Duplicate products with two "coutry_tag"
-		// 			data.forEach(function(d){
-
-		// 				if (d.countries_tags.split(",").length>1){
-		// 					var tab = d.countries_tags.split(",") ;
-		// 					d.countries_tags = tab[0];
-		// 					for (var i=0;i<tab.length-1;i++){
-		// 						var element = d;
-		// 						element.countries_tags = tab[i+1];
-		// 						data.push(element);
-		// 						}
-		// 				}
-		// 			});
-
-		// 			// Nest data
-		// 			var ByCountry = d3.nest()
-		// 				.key(function(d) {return d.countries_tags})
-		// 				.entries(data);
-
-		// 			console.log(ByCountry);
-					
-					
-		// 	// End of Data processing
-			}});
 	</script>
 </body>
 </html>
