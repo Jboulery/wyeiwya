@@ -2,25 +2,29 @@
 // http://bl.ocks.org/mbostock/3943967
 // https://bl.ocks.org/mbostock/1256572
 
-// Graphical parameters
-var margin = {top: 20, right: 20, bottom: 30, left: 20};
-var width = 960 - margin.left - margin.right;
-var height = 4000 - margin.top - margin.bottom;
-var bar_padding = 38;
-var text_padding = 120;
-var boxStrokeWidth = 2;
-
-
 
 //**************************************//
 //		Ranking creation function		//
 //**************************************//
 
-function rankingInit(ByCountry, criteria, context,width,height){
+function rankingInit(ByCountry, criteria, context,width,height,margin){
 	// Create the initial ranking, based on "criteria"
 	// 0 : fat_100g
 	// 1 : saturated-fat_100g
 	// etc...
+	//
+	// Variables definition
+	var text_padding, bar_padding;
+	var rec1 = context.append("rect");
+	var rec2 = context.append("rect")	
+	var rec3 = context.append("rect")	
+	var rec4 = context.append("rect")	
+	var rec5 = context.append("rect")
+	
+	// Graphical parameters
+	var boxStrokeWidth 	= 2;	
+	var numTicks = 5;	// Nb of ticks on xaxis
+	console.log(width)
 	
 	// Sort countries according to "criteria"
 	 var max=ByCountry
@@ -33,30 +37,21 @@ function rankingInit(ByCountry, criteria, context,width,height){
 	var bar_h = height/nb_countries;
 	
 	// Scale creation
-	var xScale = d3.scaleLinear()
-				.range([margin.left+text_padding+bar_padding, width-margin.right]);
-	
-	var yScale = d3.scaleBand()
-				.rangeRound([0, height]);
-	
-	// Scale update
 	var xMax = d3.max(ByCountry, function(d) { return d.means[criteria]; } );
-	
-	xScale.domain([0, xMax]);
-	yScale.domain(ByCountry.map(function(d) {return d.key; }));
-	
+	var xScale = d3.scaleLinear()
+				.domain([0, xMax]);	
+		
+	var yScale = d3.scaleBand()
+				.domain(ByCountry.map(function(d) {return d.key; }));
+				
 	// Axis creation
-	var numTicks = 5;
-	
 	var xAxis = d3.axisBottom()
-		.scale(xScale)
-		//.tickSize((-height))
 		.ticks(numTicks);
-
+	
+	// Initialize axis drawing
 	var gX = context.append("g")
 		.attr("class","axis")
 		.attr("transform", "translate(0,10)")
-		.call(xAxis);
 	
 	// Create place for drawing
 	var barSvg = context
@@ -69,35 +64,37 @@ function rankingInit(ByCountry, criteria, context,width,height){
 		.data(ByCountry)
 		.enter()
 		.append("g");
-	
-	// Countries names
+			
+	// Countries names definition
 	var countryNames = groups.append("text")
-		.attr("x", margin.left+text_padding)
-		.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+5; })
 		.text(function(d) { return d.key; })
 		.attr("text-anchor", "end")
-		.attr("dx", "-.50em")
 		.attr("id", function(d,i) { return "label"+i; });
 
-	// Rectangles
+	// Rectangles definition
 	var bars = groups
 		.attr("class", "bars")
 		.append("rect")
-		.attr("width", function(d) {return xScale(d.means[criteria])-xScale(0); })
-		.attr("height", bar_h)
-		.attr("x", xScale(0))
-		.attr("y", function(d) { return yScale(d.key); })
 		.attr("id", function(d,i) { return "bar"+i; });
 		
 	// Values at the bars end
 	var numText = groups
 		.append("text")
-		.attr("x", function(d) { return xScale(d.means[criteria]); })
-		.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+4; })
 		.text(function(d) { return d.means[criteria].toPrecision(3); })
 		.attr("text-anchor", "end")
-		.attr("dx", "-.5em")
 		.attr("id", "precise-value");
+		
+	// Create grid
+	var grid = xScale.ticks(numTicks);
+	
+	var grid_on = barSvg.append("g").attr("class", "grid")
+		.selectAll("line")
+		.data(grid, function(d) { return d; })
+		.enter().append("line")
+		.attr("stroke", "white");
+		
+	// Render everything
+	render()
 	
 	// Add checkboxes
 	var box_size = 0.6*height/nb_countries;
@@ -173,148 +170,195 @@ function rankingInit(ByCountry, criteria, context,width,height){
 			tooltip.classed('hidden', true);
 		});
 	
-	// Create grid
-	var grid = xScale.ticks(numTicks);
+	//******************************//
+	//		Rendering function		//
+	//******************************//
 	
-	var grid_on = barSvg.append("g").attr("class", "grid")
-		.selectAll("line")
-		.data(grid, function(d) { return d; })
-		.enter().append("line")
+	function render() {
+		//get dimensions based on window size
+		updateDimensions(window.innerWidth);
+		
+		//update x and y scales to new dimensions
+		xScale.range([margin.left+text_padding+bar_padding,width+margin.left]);
+		yScale.rangeRound([0, height]);
+		
+		//update the axis
+		xAxis.scale(xScale);
+		gX.call(xAxis);
+		
+		//update svg elements to new dimensions
+		context
+		  .attr('width', "100%")
+		  .attr('height', 2000);
+		
+		//Update country names
+		countryNames
+			.attr("x", margin.left+text_padding)
+			.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+5; })
+			.attr("dx", "-.50em");
+			
+		// Update rectangles
+		bars
+			.attr("width", function(d) {return xScale(d.means[criteria])-xScale(0); })
+			.attr("height", bar_h)
+			.attr("x", xScale(0))
+			.attr("y", function(d) { return yScale(d.key); })
+			
+		// Update numbers position
+		numText
+			.attr("x", function(d) { return xScale(d.means[criteria]); })
+			.attr("dx", "-.5em")
+			.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+4; })
+		
+		// Update grid
+		grid_on
 		.attr("y1", 0)
 		.attr("y2", height+margin.bottom)
 		.attr("x1", function(d) { return xScale(d); })
 		.attr("x2", function(d) { return xScale(d); })
-		.attr("stroke", "white");
-	//----------------------------------------------------//
-	//----------------------------------------------------//
-	// Scale visu
-	context.append("rect")
-		.attr("width", margin.left)
-		.attr("height", 2)
-		.attr("x", 0)
-		.attr("y", 2)
-		.attr("fill", "red");
 		
-	context.append("rect")
-		.attr("width", text_padding)
-		.attr("height", 2)
-		.attr("x", margin.left)
-		.attr("y", 2)
-		.attr("fill", "blue");
+		// Update scale visu
+		scaleVisualization()
+	  }
+
+	function updateDimensions(winWidth) {
+		// width and margins
+		margin.right = 0.05*winWidth;
+		margin.left = 0.05*winWidth;
+		width = winWidth - margin.left - margin.right;
+		// Graphical parameters
+		bar_padding 	= 0.05*width;
+		text_padding 	= 0.15*width;
+	  }
+	
+	//**********************************//
+	//		Ranking update function		//
+	//**********************************//			
+	
+	function rankingUpdate(criteria){
+		console.log("Update with "+criteria)
+
+		// Geometrical parameters
+		var nb_countries = ByCountry.length;
+		var bar_h = height/nb_countries;
+		var box_size = 0.6*height/nb_countries;
+		var padding = 0.2*height/nb_countries;
+
+		var max=ByCountry
+			.sort(function(a,b){return b.means[criteria]-a.means[criteria];})
+			.map(function(d){return d.key;});
+
+		ByCountry.sort(function(a,b){return max.indexOf(a.key)-max.indexOf(b.key);});
+
+		// Scale update
+
+		var xMax = d3.max(ByCountry, function(d) { return d.means[criteria]; } );
+
+		xScale.domain([0, xMax]);
+		yScale.domain(ByCountry.map(function(d) {return d.key; }));
 		
-	context.append("rect")
-		.attr("width", bar_padding)
-		.attr("height", 2)
-		.attr("x", text_padding+margin.left)
-		.attr("y", 2)
-		.attr("fill", "red");
+		// Update axis
+		xAxis.scale(xScale)
 		
-	context.append("rect")
-		.attr("width", xScale(49)-xScale(0))
-		.attr("height", 2)
-		.attr("x", xScale(0))
-		.attr("y", 2)
-		.attr("fill", "blue");
+		gX.transition()
+		.duration(2000)
+		.call(xAxis)
 		
-	context.append("rect")
-		.attr("width", margin.right)
-		.attr("height", 2)
-		.attr("x", xScale(49))
-		.attr("y", 2)
-		.attr("fill", "red");
-	
-	// End of function RankingInit
-	return([xScale,yScale,gX, xAxis,numText,bars,countryNames,grid_on,tooltip,boxesList])
-}
+		// Update grid
+		grid_on
+			.transition()
+			.duration(2000)
+			.attr("x1", function(d) { return xScale(d); })
+			.attr("x2", function(d) { return xScale(d); })
 		
-//**********************************//
-//		Ranking update function		//
-//**********************************//			
-	
-function rankingUpdate(ByCountry, criteria,xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip,boxesList){
-	console.log("Update with "+criteria)
-	
-	// Geometrical parameters
-	var nb_countries = ByCountry.length;
-	var bar_h = height/nb_countries;
-	var box_size = 0.6*height/nb_countries;
-	var padding = 0.2*height/nb_countries;
-
-	var max=ByCountry
-		.sort(function(a,b){return b.means[criteria]-a.means[criteria];})
-		.map(function(d){return d.key;});
-
-	ByCountry.sort(function(a,b){return max.indexOf(a.key)-max.indexOf(b.key);});
-
-	// Scale update
-
-	var xMax = d3.max(ByCountry, function(d) { return d.means[criteria]; } );
-
-	xScale.domain([0, xMax]);
-	yScale.domain(ByCountry.map(function(d) {return d.key; }));
-	
-	// Update axis
-	xAxis.scale(xScale)
-	
-	gX.transition()
-	.duration(2000)
-	.call(xAxis)
-	
-	// Update grid
-	grid_on
+		// Update bars
+		numText
 		.transition()
 		.duration(2000)
-		.attr("x1", function(d) { return xScale(d); })
-		.attr("x2", function(d) { return xScale(d); })
-	
-	// Update bars
-	numText
-	.transition()
-	.duration(2000)
-	.attr("x", function(d) { return xScale(d.means[criteria]); })
-	.text(function(d) { return d.means[criteria].toPrecision(3); })
-	.transition()
-	.duration(2000)
-	.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+4; })
-	
-	bars
-	.transition()
-	.duration(2000)
-	.attr("width", function(d) {return xScale(d.means[criteria])-xScale(0); })
-	.attr("x", xScale(0))
-	.transition()
-	.duration(2000)
-	.attr("y", function(d) { return yScale(d.key); })
-	
-	countryNames
-	.transition()
-	.duration(2000)
-	.transition()
-	.duration(2000)
-	.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+5; });
-	
-	boxesList.forEach(function(d){
-		// Get parameters
-		box_i = d[0];
-		country_i = d[1];
-		gBox_i = d[2];
+		.attr("x", function(d) { return xScale(d.means[criteria]); })
+		.text(function(d) { return d.means[criteria].toPrecision(3); })
+		.transition()
+		.duration(2000)
+		.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+4; })
 		
-		// New Update fct
-/*		var txt = context.append("text").attr("x", box_x_pos+1.1*box_size).attr("y", box_y_pos+2*padding);
-		var	update = function (){
-			var checked = checkBox.checked();
-			if(checked){txt.text(country_i);}
-			else{txt.text("");}
-		}*/
-		// Update checkbox
-		var box_y_pos = padding+yScale(country_i);
-		var box_x_pos = margin.left+text_padding+padding;
-		box_i.y(box_y_pos)
-		//.clickEvent(update);
+		bars
+		.transition()
+		.duration(2000)
+		.attr("width", function(d) {return xScale(d.means[criteria])-xScale(0); })
+		.attr("x", xScale(0))
+		.transition()
+		.duration(2000)
+		.attr("y", function(d) { return yScale(d.key); })
 		
-		gBox_i//.transition()
-		//.duration(2000)
-		.call(box_i)
-	})
-	
+		countryNames
+		.transition()
+		.duration(2000)
+		.transition()
+		.duration(2000)
+		.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+5; });
+		
+		boxesList.forEach(function(d){
+			// Get parameters
+			box_i = d[0];
+			country_i = d[1];
+			gBox_i = d[2];
+			
+			// New Update fct
+	/*		var txt = context.append("text").attr("x", box_x_pos+1.1*box_size).attr("y", box_y_pos+2*padding);
+			var	update = function (){
+				var checked = checkBox.checked();
+				if(checked){txt.text(country_i);}
+				else{txt.text("");}
+			}*/
+			// Update checkbox
+			var box_y_pos = padding+yScale(country_i);
+			var box_x_pos = margin.left+text_padding+padding;
+			box_i.y(box_y_pos)
+			//.clickEvent(update);
+			
+			gBox_i//.transition()
+			//.duration(2000)
+			.call(box_i)
+		})
+
 	}
+
+	function scaleVisualization(){
+		rec1
+			.attr("width", margin.left)
+			.attr("height", 2)
+			.attr("x", 0)
+			.attr("y", 2)
+			.attr("fill", "red");
+			
+		rec2
+			.attr("width", text_padding)
+			.attr("height", 2)
+			.attr("x", margin.left)
+			.attr("y", 2)
+			.attr("fill", "blue");
+		
+		rec3
+			.attr("width", bar_padding)
+			.attr("height", 2)
+			.attr("x", text_padding+margin.left)
+			.attr("y", 2)
+			.attr("fill", "red");
+		
+		rec4
+			.attr("width", xScale(49)-xScale(0))
+			.attr("height", 2)
+			.attr("x", xScale(0))
+			.attr("y", 2)
+			.attr("fill", "blue");
+		
+		rec5
+			.attr("width", margin.right)
+			.attr("height", 2)
+			.attr("x", xScale(49))
+			.attr("y", 2)
+			.attr("fill", "red");
+	}
+	
+	return {render : render,rankingUpdate}
+}

@@ -54,6 +54,8 @@
 	</form>
 </div>
 	<script type="text/javascript">
+	var rankingChart;
+	
 		d3.csv("data/food_data.csv", function(error,data) {
 	// Test
 	if (error){console.log(error)}
@@ -71,36 +73,41 @@
 
 		// References :
 		// - http://bl.ocks.org/leondutoit/6436923
-
+		var window_w = window.innerWidth;
+		var margin = {top: 5, right: 0.05*window_w, bottom: 30, left: 0.05*window_w};
+		var width = window_w - margin.left - margin.right;	// Percentage
+		var height = 4000 - margin.top - margin.bottom;			// Percentage
 
 		var svg2 = d3.select("#ranking")
 			.append("svg")
-			.attr("width",width+margin.left+margin.right)
-			.attr("height",height+margin.bottom+margin.top);
+			.attr("width","100%")
+			.attr("height",2000);
 			
 		// Create ranking
-		var xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip;
-		[xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip,boxesList] = rankingInit(ByCountry,0, svg2,width,height);
+		rankingChart = rankingInit(ByCountry,0, svg2,width,height,margin);
 		
 		d3.selectAll("input")
 			.on("change", changed);
-
+		
+		// resize the chart on resizing window
+		window.addEventListener('resize', rankingChart.render);
+		
 		//**********************************//
 		//		Input listener function		//
 		//**********************************//	
 
 		function changed() {
-			try{rankingUpdate(ByCountry,+this.value,xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip,boxesList)
+			try{
+				rankingChart.rankingUpdate(+this.value);
 				}
 
 			catch(error){
 				console.log(error)
-				rankingUpdate(ByCountry,0,xScale,yScale,gX,xAxis,numText,bars,countryNames,grid_on,tooltip,boxesList)}
+				rankingChart.rankingUpdate(0)}
 				}
 		
 // End of Data processing
 }});
-
 	</script>
 </body>
 </html>
