@@ -76,15 +76,15 @@
 		var window_w = window.innerWidth;
 		var margin = {top: 5, right: 0.05*window_w, bottom: 30, left: 0.05*window_w};
 		var width = window_w - margin.left - margin.right;	// Percentage
-		var height = 4000 - margin.top - margin.bottom;			// Percentage
+		var height = 2000 - margin.top - margin.bottom;			// Percentage
 
 		var svg2 = d3.select("#ranking")
 			.append("svg")
 			.attr("width","100%")
-			.attr("height",2000);
+			.attr("height",1500);
 			
 		// Create ranking
-		rankingChart = rankingInit(ByCountry,0, svg2,width,height,margin);
+		rankingChart = rankingInit(ByCountry,0, svg2,width,height,margin,1500);
 		
 		d3.selectAll("input")
 			.on("change", changed);

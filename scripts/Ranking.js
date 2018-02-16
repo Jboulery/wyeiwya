@@ -7,7 +7,7 @@
 //		Ranking creation function		//
 //**************************************//
 
-function rankingInit(ByCountry, criteria, context,width,height,margin){
+function rankingInit(ByCountry, criteria, context,width,height,margin,hmax){
 	// Create the initial ranking, based on "criteria"
 	// 0 : fat_100g
 	// 1 : saturated-fat_100g
@@ -16,15 +16,14 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 	// Variables definition
 	var text_padding, bar_padding;
 	var rec1 = context.append("rect");
-	var rec2 = context.append("rect")	
-	var rec3 = context.append("rect")	
-	var rec4 = context.append("rect")	
-	var rec5 = context.append("rect")
+	var rec2 = context.append("rect");	
+	var rec3 = context.append("rect");	
+	var rec4 = context.append("rect");	
+	var rec5 = context.append("rect");
 	
 	// Graphical parameters
 	var boxStrokeWidth 	= 2;	
 	var numTicks = 5;	// Nb of ticks on xaxis
-	console.log(width)
 	
 	// Sort countries according to "criteria"
 	 var max=ByCountry
@@ -43,7 +42,7 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 		
 	var yScale = d3.scaleBand()
 				.domain(ByCountry.map(function(d) {return d.key; }));
-				
+	
 	// Axis creation
 	var xAxis = d3.axisBottom()
 		.ticks(numTicks);
@@ -75,7 +74,7 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 	var bars = groups
 		.attr("class", "bars")
 		.append("rect")
-		.attr("id", function(d,i) { return "bar"+i; });
+		.attr("id", function(d,i) { return d.key; });
 		
 	// Values at the bars end
 	var numText = groups
@@ -100,7 +99,7 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 	var box_size = 0.6*height/nb_countries;
 	var padding = 0.2*height/nb_countries;
 	var boxesList = [];
-	
+/*	
 	// Add checkBoxes
 	ByCountry.forEach(function(country_i){
 		// Parameters
@@ -137,7 +136,7 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 		// Save box
 		boxesList.push([box_i,country_i.key,gBox_i]);
 	});// End of forEach
-	
+*/	
 	// Tooltip creation
 	var tooltip = d3.select("#ranking").append('div')
 					.attr('class', 'hidden tooltip');
@@ -164,7 +163,7 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 		
 		.on("mouseout", function() {
 			var currentGroup = d3.select(this.parentNode);
-			currentGroup.select("rect").style("fill", "steelblue");
+			currentGroup.select("rect").style("fill",function(d){return colorScale(d)})
 			currentGroup.select("text").style("font-weight", "normal");
 			
 			tooltip.classed('hidden', true);
@@ -172,7 +171,11 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 	
 		.on("click", function() {
 			var currentGroup = d3.select(this.parentNode);
-			currentGroup.select("rect").style("fill", "green");
+			var toFind = currentGroup.select("rect").attr("id");
+			ByCountry.forEach(function(d){
+				if(d.key == toFind){d.selected = !d.selected}
+				});	
+			//	.style("fill",function(d){return colorScale(d)});
 			currentGroup.select("text").style("font-weight", "normal");
 			
 			tooltip.classed('hidden', true);
@@ -197,7 +200,7 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 		//update svg elements to new dimensions
 		context
 		  .attr('width', "100%")
-		  .attr('height', 2000);
+		  .attr('height', hmax);
 		
 		//Update country names
 		countryNames
@@ -235,7 +238,7 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 		margin.left = 0.05*winWidth;
 		width = winWidth - margin.left - margin.right;
 		// Graphical parameters
-		bar_padding 	= 0.05*width;
+		bar_padding 	= 0.02*width;
 		text_padding 	= 0.15*width;
 	  }
 	
@@ -369,4 +372,10 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 	}
 	
 	return {render : render,rankingUpdate}
+}
+
+function colorScale(country){
+	// Return a color depending on the country status (selected or not)
+	if (country.selected == false){return "steelblue"}
+	else{return "green"}
 }
