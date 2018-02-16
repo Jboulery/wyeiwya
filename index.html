@@ -16,6 +16,8 @@
 	<script src="scripts/dataProcessing.js"></script>
 	<script src="scripts/d3CheckBox.js"></script>
 	<script src="scripts/Ranking.js"></script>
+	<script src="scripts/geomap.js"></script>
+	<script src="http://d3js.org/topojson.v1.min.js"></script>
 	<title>Projet DataVis WYEIWYA</title>
 </head>
 <body>
@@ -61,42 +63,10 @@
     		<div class="col-sm-9" style="height: 100%">
       			<div class="row" id="ranking-table-wrapper">
       				<div class="container-fluid" id="RankingDiv" style="overflow : scroll">
-      					<!-- <table class="table table-striped">
-						  <thead>
-						    <tr>
-						      <th>#</th>
-						      <th>First Name</th>
-						      <th>Last Name</th>
-						      <th>Username</th>
-						    </tr>
-						  </thead>
-						  <tbody>
-						    <tr>
-						      <th scope="row">1</th>
-						      <td>Mark</td>
-						      <td>Otto</td>
-						      <td>@mdo</td>
-						    </tr>
-						    <tr>
-						      <th scope="row">2</th>
-						      <td>Jacob</td>
-						      <td>Thornton</td>
-						      <td>@fat</td>
-						    </tr>
-						    <tr>
-						      <th scope="row">3</th>
-						      <td>Larry</td>
-						      <td>the Bird</td>
-						      <td>@twitter</td>
-						    </tr>
-						  </tbody>
-						</table> -->
       				</div>
       			</div>
       			<div class="row" id="world-map-wrapper">
-      				<div class="container-fluid">
-      					World Map
-      				</div>
+      				<div class="container-fluid" id="world-map"></div>
       			</div>
         	</div>
         	<div class="col-sm-3" id="right-side-bar">
@@ -126,7 +96,7 @@
 
 	<script type="text/javascript">
 		var rankingChart;
-	
+		var map;
 			d3.csv("data/food_data.csv", function(error,data) {
 		// Test
 		if (error){console.log(error)}
@@ -135,8 +105,6 @@
 			// Save data
 			var dataset = data;
 			ByCountry = dataProcessing(data)
-			
-			console.log(ByCountry);
 			
 			//******************************//
 			//		Countries ranking		//
@@ -149,32 +117,37 @@
 			var width = window_w - margin.left - margin.right;	// Percentage
 			var height = 1500 - margin.top - margin.bottom;			// Percentage
 
-			var svg2 = d3.select("#RankingDiv")
+			var svgRanking = d3.select("#RankingDiv")
 				.append("svg")
 				.attr("width","100%")
-				.attr("height",1500);
+				.attr("height",1200);
+
+			var svgMap = d3.select("#world-map")
 				
-			// Create ranking
-			rankingChart = rankingInit(ByCountry,0, svg2,width,height,margin,1500);
-			
+			// Initialize Ranking and Geomap
+			rankingChart = rankingInit(ByCountry,0, svgRanking,width,height,margin,1700);
+			map = GeoInit(ByCountry, 0, svgMap,width);
+
 			d3.selectAll("input")
 				.on("change", changed);
 			
 			// resize the chart on resizing window
 			window.addEventListener('resize', rankingChart.render);
 			
-			//**********************************//
+			//**********************************/
 			//		Input listener function		//
 			//**********************************//	
 
 			function changed() {
 				try{
 					rankingChart.rankingUpdate(+this.value);
+					map.GeoUpdate(+this.value);
 					}
 
 				catch(error){
-					console.log(error)
-					rankingChart.rankingUpdate(0)}
+					console.log(error);
+					rankingChart.rankingUpdate(0);
+					map.GeoUpdate(0)}
 					}
 			
 	// End of Data processing
