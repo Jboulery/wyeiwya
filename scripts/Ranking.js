@@ -168,6 +168,14 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 			currentGroup.select("text").style("font-weight", "normal");
 			
 			tooltip.classed('hidden', true);
+		})
+	
+		.on("click", function() {
+			var currentGroup = d3.select(this.parentNode);
+			currentGroup.select("rect").style("fill", "green");
+			currentGroup.select("text").style("font-weight", "normal");
+			
+			tooltip.classed('hidden', true);
 		});
 	
 	//******************************//
@@ -296,7 +304,7 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 		.transition()
 		.duration(2000)
 		.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+5; });
-		
+	/*	
 		boxesList.forEach(function(d){
 			// Get parameters
 			box_i = d[0];
@@ -304,12 +312,12 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 			gBox_i = d[2];
 			
 			// New Update fct
-	/*		var txt = context.append("text").attr("x", box_x_pos+1.1*box_size).attr("y", box_y_pos+2*padding);
+			var txt = context.append("text").attr("x", box_x_pos+1.1*box_size).attr("y", box_y_pos+2*padding);
 			var	update = function (){
 				var checked = checkBox.checked();
 				if(checked){txt.text(country_i);}
 				else{txt.text("");}
-			}*/
+			}
 			// Update checkbox
 			var box_y_pos = padding+yScale(country_i);
 			var box_x_pos = margin.left+text_padding+padding;
@@ -320,7 +328,7 @@ function rankingInit(ByCountry, criteria, context,width,height,margin){
 			//.duration(2000)
 			.call(box_i)
 		})
-
+*/
 	}
 
 	function scaleVisualization(){
