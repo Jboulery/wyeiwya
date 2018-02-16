@@ -39,10 +39,11 @@ function GeoInit(ByCountry, CritInit, field,width){
 	    // Define color scale for countries based on criteria
 	    var colorMin = d3.min(ByCountry, function(d) { return d.means[criteria]; } );
 	    var colorMax = d3.max(ByCountry, function(d) { return d.means[criteria]; } );
+	    var pas = (colorMax-colorMin)/9
 
-	    var color = d3.scaleLinear()
-	    .domain([colorMin, colorMax])
-	    .range([d3.rgb(0,0,25),d3.rgb(0,0,240)])
+	    var color = d3.scaleThreshold()
+	    .domain([colorMin,colorMin+pas*1.5,colorMin+pas*2,colorMin+pas*3,colorMin+pas*4,colorMin+pas*4.5,colorMin+pas*5,colorMin+pas*5.5,colorMin+pas*9])
+	    .range(['#fff7fb','#ece7f2','#d0d1e6','#a6bddb','#74a9cf','#3690c0','#0570b0','#045a8d','#023858'])
 
 	    //Get json data and draw it
 	    d3.json("data/world.json", function(error, world) {
@@ -61,7 +62,7 @@ function GeoInit(ByCountry, CritInit, field,width){
 	          .attr("name", function(d) {return d.properties.name;})
 	          .attr("id", function(d) { return d.id;})
 	          .style("fill",function(geomap){
-	          	var coloring;
+	          	var coloring = '#fff7fb';
 	          	ByCountry.forEach(function(country){
 	          		if (country.key == geomap.properties.name){
 	          			coloring = color(country.means[criteria]);
@@ -104,7 +105,7 @@ function GeoInit(ByCountry, CritInit, field,width){
 	        .map( function(d) { return parseInt(d); } );
 	      tooltip.classed("hidden", false)
 	        .attr("style", "left:"+(mouse[0]+100)+"px;top:"+(mouse[1]+300)+"px")
-	        .html("<em>" + name + "</em> </br> Value :" + value + "</br> Rank : " + rank);
+	        .html("<em>" + name + "</em> </br> Value : " + value + "</br> Rank : " + rank);
 	    }
 
 
@@ -116,8 +117,9 @@ function GeoInit(ByCountry, CritInit, field,width){
 		   	// Redefine color scale for countries based on criteria
 		    var colorMin = d3.min(ByCountry, function(d) { return d.means[criteria]; } );
 		    var colorMax = d3.max(ByCountry, function(d) { return d.means[criteria]; } );
+	    	var pas = (colorMax-colorMin)/9
 
-		    color.domain([colorMin, colorMax]);
+	    	color.domain([colorMin,colorMin+pas*1.5,colorMin+pas*2,colorMin+pas*3,colorMin+pas*4,colorMin+pas*4.5,colorMin+pas*5,colorMin+pas*5.5,colorMin+pas*9])
 
 		   	ranks = ByCountry
 			.sort(function(a,b){return b.means[criteria]-a.means[criteria];})
@@ -134,7 +136,7 @@ function GeoInit(ByCountry, CritInit, field,width){
 			  .transition()
 			  .duration(4000)
 		      .style("fill",function(geomap){
-		      	var coloring;
+		      	var coloring='#fff7fb';
 		      	ByCountry.forEach(function(country){
 			      	if (country.key == geomap.properties.name){
 			      			coloring = color(country.means[criteria]);

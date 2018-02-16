@@ -3,6 +3,8 @@ function dataProcessing(data){
 		//******************************//
 		//			Format data			//
 		//******************************//
+
+		var MinProducts = 3;
 		
 		data = data.filter(function(d) {
 			// Conversion to numbers
@@ -38,7 +40,7 @@ function dataProcessing(data){
 							+d.calcium_100g,
 							+d.iron_100g];
 		
-			return (d.code != "" && d.countries_tags != "") && (d3.max(ValuesPer100g) <= 100) && (d3.min(ValuesPer100g) >= 0);
+			return (d.countries_tags != "") && (d3.max(ValuesPer100g) <= 100) && (d3.min(ValuesPer100g) >= 0);
 		})
 		
 		// Duplicate products with two "coutry_tag"
@@ -60,6 +62,10 @@ function dataProcessing(data){
 			.key(function(d) {return d.countries_tags})
 			.entries(data);
 		
+		ByCountry = ByCountry.filter(function(d) {
+			return (d.values.length > MinProducts)
+		})
+
 		// Add max / min / mean
 		ByCountry.forEach(function(country){
 			// Maximums calculation
