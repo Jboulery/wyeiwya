@@ -20,9 +20,13 @@
 }
 
 #ranking-table-wrapper{
-	height: 65%;
+	height: 50%;
 }
 
+
+#world-map-wrapper{
+	height: 50%;
+}
 #right-side-bar{
 	background: #F8F8F8;
 	border: #EEEEEE 1px solid;

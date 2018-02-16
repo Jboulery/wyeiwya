@@ -3,7 +3,7 @@ function GeoInit(ByCountry, CritInit, field,width){
 
 		var context = field.append("svg")
 				.attr("width","100%")
-				.attr("height","150%")
+				.attr("height","130%")
 
 
 		var criteria = CritInit;
@@ -14,8 +14,8 @@ function GeoInit(ByCountry, CritInit, field,width){
 		var ranks; 
 	    // define projection
 	    var projection = d3.geoMercator()
-	        .scale(150)
-	        .translate([width/3,width/6]);
+	        .scale(160)
+	        .translate([width/2.75,width/4.5]);
 
 	    // Create svg canvas
 	    // var svg = context.append("svg")
@@ -69,7 +69,7 @@ function GeoInit(ByCountry, CritInit, field,width){
 	          	});
 	          	return coloring;
 	          })
-	          .on("mousemove", showTooltip)
+	          .on("mouseenter", showTooltip)
 	          .on("mouseout",  function(d,i) {
 	              tooltip.classed("hidden", true);
 	           })
@@ -103,7 +103,7 @@ function GeoInit(ByCountry, CritInit, field,width){
 	      var mouse = d3.mouse(context.node())
 	        .map( function(d) { return parseInt(d); } );
 	      tooltip.classed("hidden", false)
-	        .attr("style", "left:"+(mouse[0]+20)+"px;top:"+(mouse[1]+20)+"px")
+	        .attr("style", "left:"+(mouse[0]+100)+"px;top:"+(mouse[1]+300)+"px")
 	        .html("<em>" + name + "</em> </br> Value :" + value + "</br> Rank : " + rank);
 	    }
 
