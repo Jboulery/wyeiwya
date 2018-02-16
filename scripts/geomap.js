@@ -7,14 +7,14 @@ function GeoInit(ByCountry, CritInit, field,width){
 
 
 		var criteria = CritInit;
-		var countries
+		var countries;
 	    // Define svg canvas dimensions
 
 	    // ranks is the country ordered by the criteria
 		var ranks; 
 	    // define projection
 	    var projection = d3.geoMercator()
-	        .scale(80)
+	        .scale(150)
 	        .translate([width/3,width/6]);
 
 	    // Create svg canvas
