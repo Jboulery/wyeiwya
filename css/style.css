@@ -1,0 +1,51 @@
+
+.row{
+	margin: 0;
+}
+
+.navbar{
+    border-radius: 0;
+}
+
+.navbar-light{
+    z-index: 1000;
+    background-color: #2196F3;
+}
+
+#page-content-wrapper{
+    width:100%;
+    height: 100%;
+    position: absolute;
+    background: #FDFDFD;
+}
+
+#ranking-table-wrapper{
+	height: 65%;
+}
+
+#world-map-wrapper{
+	height: 35%;
+	background: grey;
+}
+
+#right-side-bar{
+	background: #F8F8F8;
+	border: #EEEEEE 1px solid;
+}
+
+div.rect{
+	height: 250px;
+	width: 250px;
+	margin: 50px;
+	background: white;
+	border: black 1px solid;
+}
+
+#ex1Slider .slider-selection {
+	background: #BABABA;
+}
+
+#ex2Slider .slider-selection {
+	background: #BABABA;
+}
+
