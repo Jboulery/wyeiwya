@@ -142,8 +142,9 @@ function rankingInit(ByCountry, criteria, field,width,height,margin,hmax){
 	});// End of forEach
 */	
 	// Tooltip creation
-	var tooltip = field.append('div')
-			.attr('class', 'hidden tooltip');
+	    var tooltip = field
+	         .append("div")
+	         .attr("class", "tooltip hidden");
 	
 	// Rectangles effects (highlight + tootip)
 	bars
@@ -156,8 +157,7 @@ function rankingInit(ByCountry, criteria, field,width,height,margin,hmax){
 				return parseInt(d);
 			});
 			tooltip.classed('hidden', false)
-				.attr('style', 'left:' + (mouse[0] + 15) +
-						'px; top:' + (mouse[1] - 35) + 'px')
+				.attr('style', 'left:'+width+'; top:' + (mouse[1]) + 'px')
 				.html("<em>"+d.key+":</em>"
 				+"<p>- Products nb : "+d.values.length+"</p>"
 				+"<p>- Mean fat rate : "+d.means[0].toPrecision(3)+"</p>"
@@ -169,7 +169,6 @@ function rankingInit(ByCountry, criteria, field,width,height,margin,hmax){
 			var currentGroup = d3.select(this.parentNode);
 			currentGroup.select("rect").style("fill",function(d){return colorScale(d)})
 			currentGroup.select("text").style("font-weight", "normal");
-			
 			tooltip.classed('hidden', true);
 		})
 	
@@ -181,8 +180,6 @@ function rankingInit(ByCountry, criteria, field,width,height,margin,hmax){
 				});	
 			//	.style("fill",function(d){return colorScale(d)});
 			currentGroup.select("text").style("font-weight", "normal");
-			
-			tooltip.classed('hidden', true);
 		});
 	
 	//******************************//
