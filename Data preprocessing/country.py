@@ -10,11 +10,11 @@ TrueCountry += ["France"]
 GroupedCountry += [["france","saint-martin","franciaorszag","франция","nantes","reunion","monaco","frankreich","frankrijk","mayotte","corse","souscrivez-a-un-taboule","la-reunion","bourgogne-aube-nogent-sur-seine","bourcefranc-le-chapus","puyricard","marseille-5","83400-hyeres"]]
 
 # USA
-TrueCountry += ["United-States"]
+TrueCountry += ["United States"]
 GroupedCountry += [["united-states","estados-unidos","stati-uniti-d-america","vereinigte-staaten-von-amerika","virgin-islands-of-the-united-states"]]
 
 # UK
-TrueCountry += ["United-Kingdom"]
+TrueCountry += ["United Kingdom"]
 GroupedCountry += [["ecosse","united-kingdom","المملكة-المتحدة","scotland","grande-bretagne","angleterre","vereinigtes-konigreich","reino-unido","regno-unito","royaume-uni","britain"]]
 
 # CANADA
@@ -46,7 +46,7 @@ TrueCountry += ["Mexico"]
 GroupedCountry += [["mexico","messico"]]
 
 # SAUDI ARABIA
-TrueCountry += ["Saudi-Arabia"]
+TrueCountry += ["Saudi Arabia"]
 GroupedCountry += [["saudi-arabia","arabia-saudita"]]
 
 # IRAQ
@@ -58,7 +58,7 @@ TrueCountry += ["Australia"]
 GroupedCountry += [["australia","австралия"]]
 
 # FRENCH POLYNESIA 
-TrueCountry += ["French-Polynesia"]
+TrueCountry += ["Fr. Polynesia"]
 GroupedCountry += [["french-polynesia"]]
 
 # PANAMA
@@ -78,7 +78,7 @@ TrueCountry += ["Serbia"]
 GroupedCountry += [["serbia","србија"]]
 
 # HONG KONG
-TrueCountry += ["Hong-Kong"]
+TrueCountry += ["Hong Kong"]
 GroupedCountry += [["hong-kong","香港"]]
 
 # OMAN
@@ -86,7 +86,7 @@ TrueCountry += ["Oman"]
 GroupedCountry += [["oman","سلطنة-عمان"]]
 
 # UNITED-ARAB-EMIRATES
-TrueCountry += ["United-Arab-Emirates"]
+TrueCountry += ["United Arab Emirates"]
 GroupedCountry += [["united-arab-emirates"]]
 
 # CUBA 
@@ -110,7 +110,7 @@ TrueCountry += ["Saint-Pierre-Et-Miquelon"]
 GroupedCountry += [["saint-pierre-and-miquelon"]]
 
 # NEW ZEALAND
-TrueCountry += ["New-Zealand"]
+TrueCountry += ["New Zealand"]
 GroupedCountry += [["new-zealand"]]
 
 # BELGIUM
@@ -126,7 +126,7 @@ TrueCountry += ["China"]
 GroupedCountry += [["china","中华人民共和国","republique-de-chine"]]
 
 # NEW CALEDONIA
-TrueCountry += ["New-Caledonia"]
+TrueCountry += ["New Caledonia"]
 GroupedCountry += [["new-caledonia"]]
 
 # OTHERS
@@ -142,7 +142,7 @@ TrueCountry += ["Denmark"]
 GroupedCountry +=[["denmark","denemarken","dinamarca"]]
 
 # FRENCH GUIANA
-TrueCountry += ["French-Guiana"]
+TrueCountry += ["Guyana"]
 GroupedCountry += [["french-guiana","guyana"]]
 
 # PORTUGAL
@@ -162,11 +162,11 @@ TrueCountry += ["Brazil"]
 GroupedCountry += [["brazil"]]
 
 # PHILLIPINES
-TrueCountry += ["Phillipines"]
+TrueCountry += ["Philippines"]
 GroupedCountry += [["philippines"]]
 
 # SOUTH KOREA
-TrueCountry += ["South-Korea"]
+TrueCountry += ["Korea"]
 GroupedCountry += [["south-korea"]]
 
 # ARUBA
@@ -198,7 +198,7 @@ TrueCountry += ["Austria"]
 GroupedCountry += [["austria"]]
 
 # SOUTH AFRICA
-TrueCountry += ["South-Africa"]
+TrueCountry += ["South Africa"]
 GroupedCountry += [["south-africa","sudafrica"]]
 
 # FINLAND
@@ -234,7 +234,7 @@ TrueCountry += ["Madagascar"]
 GroupedCountry += [["madagascar"]]
 
 # CAMDOBGIA
-TrueCountry += ["Cambodgia"]
+TrueCountry += ["Cambodia"]
 GroupedCountry += [["ព្រះរាជាណាចក្រកម្ពុជា","cambodia"]]
 
 # HUNGARY
@@ -258,7 +258,7 @@ TrueCountry += ["Lithuania"]
 GroupedCountry += [["lithuania"]]
 
 # NIGERIA
-TrueCountry += ["Nigeria"]
+TrueCountry += ["Niger"]
 GroupedCountry += [["nigeria"]]
 
 # UKRAINE
@@ -274,7 +274,7 @@ TrueCountry += ["Malta"]
 GroupedCountry += [["malta"]]
 
 # COSTA RICA
-TrueCountry += ["Costa-Rica"]
+TrueCountry += ["Costa Rica"]
 GroupedCountry += [["costa-rica"]]
 
 # IRAN
@@ -282,7 +282,7 @@ TrueCountry += ["Iran"]
 GroupedCountry += [["iran"]]
 
 # CZECH REPUBLIC
-TrueCountry += ["Czech-Republic"]
+TrueCountry += ["Czech Rep."]
 GroupedCountry += [["czech-republic"]]
 
 # GUADELOUPE
@@ -298,7 +298,7 @@ TrueCountry += ["Gabon"]
 GroupedCountry+=[["gabon"]]
 
 # BURKINA-FASO
-TrueCountry += ["Burkina-Faso"]
+TrueCountry += ["Burkina Faso"]
 GroupedCountry+=[["burkina-faso"]]
 
 # MARTINIQUE
@@ -371,7 +371,7 @@ GroupedCountry += [["albania"]]
 
 
 # AZERBAIDJAN
-TrueCountry += ["Azerbaidjan"]
+TrueCountry += ["Azerbaijan"]
 GroupedCountry += [["azerbaidjan","azerbaijan"]]
 
 # MAURITIUS
@@ -387,11 +387,11 @@ TrueCountry += ["Algeria"]
 GroupedCountry += [["algeria","argelia"]]
 
 # CENTRAFRIQUE
-TrueCountry += ["Centrafrique"]
+TrueCountry += ["Central African Rep."]
 GroupedCountry += [["centrafrique"]]
 
 # COTE D'IVOIRE
-TrueCountry += ["Cote-d-Ivoire"]
+TrueCountry += ["Côte d'Ivoire"]
 GroupedCountry += [["cote-d-ivoire"]]
 
 # EGYPT
@@ -415,7 +415,7 @@ TrueCountry += ["Yemen"]
 GroupedCountry += [["yemen"]]
 
 # STATE-OF-PALESTINE
-TrueCountry += ["State-of-Palestine"]
+TrueCountry += ["Palestine"]
 GroupedCountry += [["state-of-palestine"]]
 
 # LYBIA
@@ -427,7 +427,7 @@ TrueCountry += ["Latvia"]
 GroupedCountry += [["latvia"]]
 
 # REPUBLIC OF THE CONGO
-TrueCountry += ["Republic-of-Congo"]
+TrueCountry += ["Dem. Rep. Congo"]
 GroupedCountry += [["republic-of-the-congo","democratic-republic-of-the-congo"]]
 
 # ARMENIA
@@ -443,11 +443,11 @@ TrueCountry += ["Djibouti"]
 GroupedCountry += [["djibouti"]]
 
 # BOSNIA AND HERGEZOVINA
-TrueCountry += ["Bosnia-And-Herzegovina"]
+TrueCountry += ["Bosnia and Herz"]
 GroupedCountry += [["bosnia-and-herzegovina"]]
 
 # MACEDONIA
-TrueCountry += ["Republic-Of-Macedonia"]
+TrueCountry += ["Macedonia"]
 GroupedCountry += [["republic-of-macedonia"]]
 
 # Irak
@@ -455,7 +455,7 @@ TrueCountry += ["Irak"]
 GroupedCountry += [["العراق"]]
 
 # EQUATORIAL GUINEA
-TrueCountry += ["Equatorial-Guinea"]
+TrueCountry += ["Eq. Guinea"]
 GroupedCountry += [["equatorial-guinea"]]
 
 # CHAD
@@ -483,7 +483,7 @@ TrueCountry += ["Chile"]
 GroupedCountry += [["chile"]]
 
 # CYPRUS
-TrueCountry += ["Cyprus"]
+TrueCountry += ["N. Cyprus"]
 GroupedCountry += [["cyprus"]]
 
 # MALDIVES
