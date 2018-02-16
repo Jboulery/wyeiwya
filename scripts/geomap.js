@@ -1,103 +1,59 @@
-<!doctype html>
-<html lang="en">
-
-<head>
-  <meta charset="utf-8">
-  <style>
-
-    body {
-      background-color: white;
-    }
-    svg {
-      border: 2px solid black;
-      background-color: white;
-    }
-
-    .boundary {
-      fill: #DEB887;
-      stroke: black;
-      stroke-width: 1px; 
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    div.tooltip {
-      color: #222; 
-      background: #fff; 
-      border-radius: 3px; 
-      box-shadow: 0px 0px 2px 0px #a6a6a6; 
-      padding: .2em; 
-      text-shadow: #f5f5f5 0 1px 0;
-      opacity: 0.9; 
-      position: absolute;
-    }
-  </style>
-
-</head>
-
-<body>
-<div id="map"></div>
-  <script src=d3/d3.min.js></script>
-  <script src="http://d3js.org/topojson.v1.min.js"></script>
-  <script src="scripts/dataProcessing.js"></script>
-  <script src="scripts/d3CheckBox.js"></script>
-  <script src="scripts/Ranking.js"></script>
-  <script>
-
-
-  	d3.csv("data/food_data.csv", function(error,data) {
-	// Test
-	if (error){console.log(error)}
-	
-	else{
-			// Save data
-
-		var dataset = data;
-		ByCountry = dataProcessing(data)
-
+function GeoInit(ByCountry, CritInit, context){
+		
+		var criteria = CritInit;
+		var countries
+	    // Define svg canvas dimensions
 	    var width = 962,
 	        height = 502;
 
-	    var criteria = 0;
-
-
+	    // ranks is the country ordered by the criteria
+		var ranks; 
+	    // define projection
 	    var projection = d3.geoMercator()
 	        .scale(153)
 	        .translate([width/2,height/1.5]);
 
-	    var svg = d3.select("body").append("svg")
-	    .attr("width", width)
-	    .attr("height", height);
+	    // Create svg canvas
+	    // var svg = context.append("svg")
+	    // .attr("width", width)
+	    // .attr("height", height);
 
+	    // define geoPath function 
 	    var path = d3.geoPath()
 	        .projection(projection);
 
+	    // define tooltip variable
 	    var tooltip = d3.select("#map")
 	         .append("div")
 	         .attr("class", "tooltip hidden");
 
-	    //need this for correct panning
-	    var g = svg.append("g");
 
+	    //need this for correct panning
+	    var g = context.append("g");
+
+
+	    // Define color scale for countries based on criteria
 	    var colorMin = d3.min(ByCountry, function(d) { return d.means[criteria]; } );
 	    var colorMax = d3.max(ByCountry, function(d) { return d.means[criteria]; } );
 
 	    var color = d3.scaleLinear()
 	    .domain([colorMin, colorMax])
-	    .range([d3.rgb(50,0,0),d3.rgb(200,0,0)])
+	    .range([d3.rgb(0,0,25),d3.rgb(0,0,240)])
 
-	    //det json data and draw it
+	    //Get json data and draw it
 	    d3.json("data/world.json", function(error, world) {
 	      if(error) return console.error(error);
 
-	      //countries
-	      g.append("g")
+	    // draw countries
+	      countries = g.append("g")
 	          .attr("class", "boundary")
-	        .selectAll("boundary")
+	          .selectAll("boundary")
 	          .data(topojson.feature(world, world.objects.countries).features)
-	          .enter().append("path")
+	          .enter()
+	          .append("path");
+
+
+	      countries
 	          .attr("name", function(d) {return d.properties.name;})
 	          .attr("id", function(d) { return d.id;})
 	          .style("fill",function(geomap){
@@ -117,18 +73,22 @@
 	    });
 
 
-	    	// Sort countries according to "criteria"
-		 var max=ByCountry
+	   // Sort countries according to criteria for tooltip ranking
+		ranks = ByCountry
 			.sort(function(a,b){return b.means[criteria]-a.means[criteria];})
 			.map(function(d){return d.key;});
 
+
+
+		// function to display tooltip, shows value of criteria, rank (defined by the table above), and country name
 	    function showTooltip(d) {
 	      name = d.properties.name;
 	      var value;
-	      var rank = max.indexOf(d.properties.name);
+	      var rank = ranks.indexOf(d.properties.name);
 	      var flag =0;
 	      ByCountry.forEach(function(country){
       		    if (country.key == d.properties.name){
+      		    	console.log(criteria);
           			value = country.means[criteria].toPrecision(3);
           			flag = 1;
           		}
@@ -137,14 +97,50 @@
 	      	value = "No Data";
 	      	rank = "No Data";
 	      }
-	      var mouse = d3.mouse(svg.node())
+	      var mouse = d3.mouse(context.node())
 	        .map( function(d) { return parseInt(d); } );
 	      tooltip.classed("hidden", false)
 	        .attr("style", "left:"+(mouse[0]+20)+"px;top:"+(mouse[1]+20)+"px")
 	        .html("<em>" + name + "</em> </br> Value :" + value + "</br> Rank : " + rank);
 	    }
-  // End of Data processing
-}});
-  </script>
-</body>
-</html>
+
+
+	    function GeoUpdate(NewCrit){
+
+	    	criteria = NewCrit;
+	    	console.log("Update with :" + criteria);
+
+		   	// Redefine color scale for countries based on criteria
+		    var colorMin = d3.min(ByCountry, function(d) { return d.means[criteria]; } );
+		    var colorMax = d3.max(ByCountry, function(d) { return d.means[criteria]; } );
+
+		    color.domain([colorMin, colorMax]);
+
+		   	ranks = ByCountry
+			.sort(function(a,b){return b.means[criteria]-a.means[criteria];})
+			.map(function(d){return d.key;});
+
+			var value;
+
+
+	        d3.json("data/world.json", function(error, world) {
+	        if(error) return console.error(error);
+
+		    // draw countries
+			countries
+			  .transition()
+			  .duration(1000)
+		      .style("fill",function(geomap){
+		      	var coloring;
+		      	ByCountry.forEach(function(country){
+			      	if (country.key == geomap.properties.name){
+			      			coloring = color(country.means[criteria]);
+			      		}
+			      	});
+			      	return coloring;
+		      })
+	    })
+	    }
+	    return {GeoUpdate : GeoUpdate}
+}
+
