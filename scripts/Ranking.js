@@ -7,7 +7,7 @@
 //		Ranking creation function		//
 //**************************************//
 
-function rankingInit(ByCountry, criteria, context,width,height,margin,hmax){
+function rankingInit(ByCountry, criteria, field,width,height,margin,hmax){
 	// Create the initial ranking, based on "criteria"
 	// 0 : fat_100g
 	// 1 : saturated-fat_100g
@@ -15,6 +15,10 @@ function rankingInit(ByCountry, criteria, context,width,height,margin,hmax){
 	//
 	// Variables definition
 	var text_padding, bar_padding;
+	var context = field
+			.append("svg")
+			.attr("width","100%")
+			.attr("height",1200);
 	var rec1 = context.append("rect");
 	var rec2 = context.append("rect");	
 	var rec3 = context.append("rect");	
@@ -138,8 +142,8 @@ function rankingInit(ByCountry, criteria, context,width,height,margin,hmax){
 	});// End of forEach
 */	
 	// Tooltip creation
-	var tooltip = d3.select("#ranking").append('div')
-					.attr('class', 'hidden tooltip');
+	var tooltip = field.append('div')
+			.attr('class', 'hidden tooltip');
 	
 	// Rectangles effects (highlight + tootip)
 	bars

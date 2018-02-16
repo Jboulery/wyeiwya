@@ -35,24 +35,7 @@
 	    </button>
 
 	    <div class="collapse navbar-collapse" id="topNavBar">
-	    	<ul id="tree-path" class="nav navbar-nav mr-auto">
-		        <li class="nav-item">
-		            <div class="row">
-		            </div>
-		            <div class="row">
-		            </div>
-		        </li>
-		    </ul>
-	        <ul class="nav navbar-nav mr-auto">
-	        	<li>
-	        		<div class="row sliders-row">
-	        			<input id="ex1" data-slider-id='ex1Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
-	        		</div>
-	        		<div class="row sliders-row">
-	        			<input id="ex2" data-slider-id='ex2Slider' type="text" data-slider-min="0" data-slider-max="20" data-slider-step="1" data-slider-value="14"/>
-	        		</div>
-	        	</li>
-	        </ul>
+
 	    </div>
 	</nav>
 
@@ -107,24 +90,22 @@
 			ByCountry = dataProcessing(data)
 			
 			//******************************//
-			//		Countries ranking		//
+			//		General parameters		//
 			//******************************//
-
+			//
 			// References :
 			// - http://bl.ocks.org/leondutoit/6436923
+			//
 			var window_w = window.innerWidth;
 			var margin = {top: 5, right: 0.05*window_w, bottom: 30, left: 0.05*window_w};
 			var width = window_w - margin.left - margin.right;	// Percentage
 			var height = 1500 - margin.top - margin.bottom;			// Percentage
 
 			var svgRanking = d3.select("#RankingDiv")
-				.append("svg")
-				.attr("width","100%")
-				.attr("height",1200);
-
 			var svgMap = d3.select("#world-map")
-				
-			// Initialize Ranking and Geomap
+			//**********************************//	
+			// 	Initialize Ranking and Geomap	//
+			//**********************************//
 			rankingChart = rankingInit(ByCountry,0, svgRanking,width,height,margin,1700);
 			map = GeoInit(ByCountry, 0, svgMap,width);
 
