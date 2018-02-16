@@ -89,6 +89,9 @@ function dataProcessing(data){
 			var meanScore	= d3.mean(country.values, function(d) { return +d["nutrition-score-fr_100g"]; });
 			country.means 	= [meanFat, meanSatFat, meanChol, meanCarb, meanFib, meanSug, meanProt,
 								meanSalt, meanSod, meanVitA, meanVitC, meanCal, meanIron, meanEner, meanScore];
+								
+			// Additional attributes
+			country.selected = false;
 		});
 	
 	return ByCountry

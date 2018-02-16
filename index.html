@@ -52,7 +52,7 @@
     	<div class="row" style="height: 100%">
     		<div class="col-sm-9" style="height: 100%">
       			<div class="row" id="ranking-table-wrapper">
-      				<div class="container-fluid" id="RankingDiv">
+      				<div class="container-fluid" id="RankingDiv" style="overflow : scroll">
       					<!-- <table class="table table-striped">
 						  <thead>
 						    <tr>
@@ -117,7 +117,60 @@
     </script>
 
 	<script type="text/javascript">
+		var rankingChart;
+	
+			d3.csv("data/food_data.csv", function(error,data) {
+		// Test
+		if (error){console.log(error)}
+		
+		else{
+			// Save data
+			var dataset = data;
+			ByCountry = dataProcessing(data)
+			
+			console.log(ByCountry);
+			
+			//******************************//
+			//		Countries ranking		//
+			//******************************//
 
+			// References :
+			// - http://bl.ocks.org/leondutoit/6436923
+			var window_w = window.innerWidth;
+			var margin = {top: 5, right: 0.05*window_w, bottom: 30, left: 0.05*window_w};
+			var width = window_w - margin.left - margin.right;	// Percentage
+			var height = 1500 - margin.top - margin.bottom;			// Percentage
+
+			var svg2 = d3.select("#RankingDiv")
+				.append("svg")
+				.attr("width","100%")
+				.attr("height",1500);
+				
+			// Create ranking
+			rankingChart = rankingInit(ByCountry,0, svg2,width,height,margin,1500);
+			
+			d3.selectAll("input")
+				.on("change", changed);
+			
+			// resize the chart on resizing window
+			window.addEventListener('resize', rankingChart.render);
+			
+			//**********************************//
+			//		Input listener function		//
+			//**********************************//	
+
+			function changed() {
+				try{
+					rankingChart.rankingUpdate(+this.value);
+					}
+
+				catch(error){
+					console.log(error)
+					rankingChart.rankingUpdate(0)}
+					}
+			
+	// End of Data processing
+	}});
 	</script>
 </body>
 </html>
