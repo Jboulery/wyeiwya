@@ -83,17 +83,18 @@
 			// References :
 			// - http://bl.ocks.org/leondutoit/6436923
 			//
-			var window_w = window.innerWidth;
+			var svgRanking = d3.select("#RankingDiv")
+			var svgMap = d3.select("#world-map")
+			//
+			var window_w = svgRanking.node().getBoundingClientRect().width;
 			var margin = {top: 5, right: 0.05*window_w, bottom: 30, left: 0.01*window_w};
 			var width = window_w - margin.left - margin.right;	// Percentage
 			var height = 1500 - margin.top - margin.bottom;			// Percentage
 
-			var svgRanking = d3.select("#RankingDiv")
-			var svgMap = d3.select("#world-map")
 			//**********************************//	
 			// 	Initialize Ranking and Geomap	//
 			//**********************************//
-			rankingChart = rankingInit(ByCountry,0, svgRanking,width,height,margin,1700);
+			rankingChart = rankingInit(ByCountry,0, svgRanking,height,margin,1700);
 			map = GeoInit(ByCountry, 0, svgMap,width);
 
 			d3.selectAll("input")

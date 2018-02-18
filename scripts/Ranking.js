@@ -7,7 +7,7 @@
 //		Ranking creation function		//
 //**************************************//
 
-function rankingInit(ByCountry, criteria, field,width,height,margin,hmax){
+function rankingInit(ByCountry, criteria, field,height,margin,hmax){
 	// Create the initial ranking, based on "criteria"
 	// 0 : fat_100g
 	// 1 : saturated-fat_100g
@@ -19,6 +19,7 @@ function rankingInit(ByCountry, criteria, field,width,height,margin,hmax){
 			.append("svg")
 			.attr("width","100%")
 			.attr("height",1200);
+	var width = context.node().getBoundingClientRect().width;
 	var rec1 = context.append("rect");
 	var rec2 = context.append("rect");	
 	var rec3 = context.append("rect");	
@@ -188,7 +189,7 @@ function rankingInit(ByCountry, criteria, field,width,height,margin,hmax){
 	
 	function render() {
 		//get dimensions based on window size
-		updateDimensions(window.innerWidth);
+		updateDimensions(context.node().getBoundingClientRect().width);
 		
 		//update x and y scales to new dimensions
 		xScale.range([margin.left+text_padding+bar_padding,width+margin.left]);
@@ -236,7 +237,7 @@ function rankingInit(ByCountry, criteria, field,width,height,margin,hmax){
 	function updateDimensions(winWidth) {
 		// width and margins
 		margin.right = 0.05*winWidth;
-		margin.left = 0.05*winWidth;
+		margin.left = 0.01*winWidth;
 		width = winWidth - margin.left - margin.right;
 		// Graphical parameters
 		bar_padding 	= 0.02*width;
