@@ -7,7 +7,7 @@
 //		Ranking creation function		//
 //**************************************//
 
-function rankingInit(ByCountry, criteria, field,height,margin,hmax){
+function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 	// Create the initial ranking, based on "criteria"
 	// 0 : fat_100g
 	// 1 : saturated-fat_100g
@@ -181,6 +181,8 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax){
 				});	
 			//	.style("fill",function(d){return colorScale(d)});
 			currentGroup.select("text").style("font-weight", "normal");
+			// Update radar chart
+			spiderChart.spiderUpdate();
 		});
 	
 	//******************************//

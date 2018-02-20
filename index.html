@@ -17,6 +17,8 @@
 	<script src="scripts/d3CheckBox.js"></script>
 	<script src="scripts/Ranking.js"></script>
 	<script src="scripts/geomap.js"></script>
+	<script src="scripts/radarChart.js"></script>
+	<script src="scripts/radarChartScript.js"></script>
 	<script src="https://d3js.org/topojson.v1.min.js"></script>
 	<title>Projet DataVis WYEIWYA</title>
 </head>
@@ -53,10 +55,10 @@
       			</div>
         	</div>
         	<div class="col-sm-3" id="right-side-bar">
-        		<div class="rect">
+        		<div id="SpiderDiv" style="width: 100%; height : 50%">
         			
         		</div>
-        		<div class="rect">
+        		<div class="rect" id="ScatterplotDiv">
         			
         		</div>
         	</div>
@@ -94,7 +96,8 @@
 			//**********************************//	
 			// 	Initialize Ranking and Geomap	//
 			//**********************************//
-			rankingChart = rankingInit(ByCountry,0, svgRanking,height,margin,1700);
+			spiderChart = radarChartInit(ByCountry,"#SpiderDiv");
+			rankingChart = rankingInit(ByCountry,0, svgRanking,height,margin,1700,spiderChart);
 			map = GeoInit(ByCountry, 0, svgMap,width);
 
 			d3.selectAll("input")
