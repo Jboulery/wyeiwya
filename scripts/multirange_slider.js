@@ -3,6 +3,7 @@ function sliderInit(){
 	var width = 900;
 	var height = 50;
 	var pad = 50, radius = 20, radius2 = 10;
+	var color = d3.scaleOrdinal(d3.schemeCategory10);
 	 
 	var holder = d3.select("#slider")
 	      .append("svg")
@@ -12,12 +13,13 @@ function sliderInit(){
 
 	var x = d3.scaleLinear()
 		.domain([0, 100])
-		.range([0, width - 20])
+		.range([0, width])
 		.clamp(true);
 
 	var slider = holder.append('g')
 		.attr('call', 'slider')
-		.attr('transform', 'translate(10, ' + height / 2 + ')');
+		.attr('transform', 'translate(0, ' + height / 2 + ')');
+
 
 	slider.append('line')
 			.attr('x1', x.range()[0])
@@ -38,49 +40,62 @@ function sliderInit(){
 					hue(d3.event.x); 
 				}));
 
-	slider.insert('g', '.track-overlay')
-			.attr('class', 'ticks')
-			.attr('transform', 'translate(0, ' + 18 + ')')
-		.selectAll('text')
-		.data(x.ticks(10))
-		.enter().append('text')
-			.attr('x', x)
-			.attr('text-anchor', 'middle')
-			.text(function(d){
-				return d;
-			});
-
-	for (var i = 0; i < 12; i++){
-		slider.insert('circle', '.track-overlay')
+	for (var i = 0; i < 13; i++){
+		slider.insert('rect', '.track-overlay')
 			.attr('class', 'handle')
-			.attr('cx', width * (i+1) / 13)
-			.attr('id', 'circle_' + i)
-			.attr('r', 9);
-	}
-
-	d3.select('#slider3').insert('h2', ':first-child').text(init);
+			.attr('id', 'rect_' + i)
+			.attr('x', width * i / 13)
+			.attr('width', x.range()[1] / 13 + 2)
+			.attr('height', height)
+			.attr('transform', 'translate(0, ' + (-height)/2 + ')')
+			.attr('fill', color(i));
+	};
 
 	function hue(h) {
 		var min_dist = width;
-		var circle_id = '';
+		var rect_id = '';
 		d3.selectAll('.handle')._groups[0].forEach(function(d){
-			if (Math.abs(parseFloat(d.attributes.cx.value) - h) < min_dist){
-				min_dist = Math.abs(parseFloat(d.attributes.cx.value) - h);
-				circle_id = d.attributes.id.value;
+			if (Math.abs(parseFloat(d.attributes.x.value) - h) < min_dist){
+				min_dist = Math.abs(parseFloat(d.attributes.x.value) - h);
+				rect_id = d.attributes.id.value;
+				var rect_id_nb = parseInt(rect_id.split('_')[1]);
+				prev_rect_id = 'rect_' + (rect_id_nb - 1);
+				next_rect_id = 'rect_' + (rect_id_nb + 1);
 			}
 		});
-		var handle = d3.select('#' + circle_id);
-		handle.attr("cx", x(x.invert(h)));
+		var handle = d3.select('#' + rect_id);
+		var prev_handle = d3.select('#' + prev_rect_id);
+		var next_handle = d3.select('#' + next_rect_id);
 
-		var cx_values = [];
-		d3.selectAll('.handle')._groups[0].forEach(function(d){
-			cx_values.push(parseFloat(d.attributes.cx.value));
-		});
-		var zones = [];
-		zones.push(cx_values[0])
-		for(var i = 0; i < 11; i++){
-			zones.push(cx_values[i+1] - cx_values[i]);
+		if(rect_id === 'rect_12'){
+			var new_handle_x_value = x(x.invert(h));
+			var prev_handle_x = parseFloat(prev_handle.attr('x'));
+
+			handle.attr("x", new_handle_x_value);
+			prev_handle.attr('width', Math.abs(new_handle_x_value - prev_handle_x));
+			handle.attr('width', Math.abs(width - new_handle_x_value));
 		}
-		zones.push(width - cx_values[11]);
+		else if (rect_id === 'rect_0') {
+			console.log('Les extremites sont fixes !');
+		}
+		else{
+			var new_handle_x_value = x(x.invert(h));
+			var prev_handle_x = parseFloat(prev_handle.attr('x'));
+			var next_handle_x = parseFloat(next_handle.attr('x'));
+
+			handle.attr("x", new_handle_x_value);
+			prev_handle.attr('width', Math.abs(new_handle_x_value - prev_handle_x));
+			handle.attr('width', Math.abs(next_handle_x - new_handle_x_value));
+		}
 	}
 };
+
+function get_sliders_distribution(){
+	var width_percentage_values = [];
+	var width = parseFloat(d3.select('#slider').select('svg').attr('width'));
+	d3.selectAll('.handle')._groups[0].forEach(function(d){
+		width_percentage_values.push(parseFloat(d.attributes.width.value) / width);
+	});
+	console.log(width_percentage_values);
+	return width_percentage_values;
+}

@@ -1,4 +1,3 @@
-
 .row{
 	margin: 0;
 }
@@ -40,12 +39,24 @@ div.rect{
 	border: black 1px solid;
 }
 
-#ex1Slider .slider-selection {
-	background: #BABABA;
+.ticks {
+  font: 10px sans-serif;
 }
 
-#ex2Slider .slider-selection {
-	background: #BABABA;
+.track-inset,
+.track-overlay {
+  stroke-linecap: round;
+}
+
+.track-inset {
+  stroke: #ddd;
+  stroke-width: 8px;
+}
+.track-overlay {
+  pointer-events: stroke;
+  stroke-width: 50px;
+  stroke: transparent;
+  cursor: crosshair;
 }
 
 div.tooltip {
