@@ -102,7 +102,7 @@ function GeoInit(ByCountry, field,width){
 	      var mouse = d3.mouse(context.node())
 	        .map( function(d) { return parseInt(d); } );
 	      tooltip.classed("hidden", false)
-	        .attr("style", "left:"+(mouse[0]+100)+"px;top:"+(mouse[1]+300)+"px")
+	        .attr("style", "left:"+(mouse[0])+"px;top:"+(mouse[1]+400)+"px")
 	        .html("<em>" + name + "</em> </br> Value : " + value + "</br> Rank : " + rank);
 	    }
 

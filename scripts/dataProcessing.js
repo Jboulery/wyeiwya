@@ -1,10 +1,9 @@
-function dataProcessing(data){
+function dataProcessing(data,MinProducts){
 			
 		//******************************//
 		//			Format data			//
 		//******************************//
 
-		var MinProducts = 3;
 		
 		data = data.filter(function(d) {
 			// Conversion to numbers
@@ -62,9 +61,12 @@ function dataProcessing(data){
 			.key(function(d) {return d.countries_tags})
 			.entries(data);
 		
+
+		console.log(ByCountry);
 		ByCountry = ByCountry.filter(function(d) {
 			return (d.values.length > MinProducts)
 		})
+		console.log(ByCountry);
 
 		// Add max / min / mean
 		ByCountry.forEach(function(country){
