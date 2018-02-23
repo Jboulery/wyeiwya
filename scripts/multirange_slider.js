@@ -96,6 +96,5 @@ function get_sliders_distribution(){
 	d3.selectAll('.handle')._groups[0].forEach(function(d){
 		width_percentage_values.push(parseFloat(d.attributes.width.value) / width);
 	});
-	console.log(width_percentage_values);
 	return width_percentage_values;
 }

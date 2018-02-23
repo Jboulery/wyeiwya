@@ -21,6 +21,7 @@
 	<script src="scripts/radarChartScript.js"></script>
 	<script src="https://d3js.org/topojson.v1.min.js"></script>
 	<script src="scripts/multirange_slider.js"></script>
+	<script src="scripts/CurrentArray.js"></script>
 	<title>Projet DataVis WYEIWYA</title>
 </head>
 <body>
@@ -75,6 +76,7 @@
 			// Save data
 			var dataset = data;
 			ByCountry = dataProcessing(data)
+
 			
 			//******************************//
 			//		General parameters		//
@@ -91,15 +93,21 @@
 			var width = window_w - margin.left - margin.right;	// Percentage
 			var height = 1500 - margin.top - margin.bottom;			// Percentage
 
+			// Get proportions and initialize array
+
+			prop = get_sliders_distribution();
+			UpdateByCountry(ByCountry,prop);
+
 			//**********************************//	
-			// 	Initialize Ranking and Geomap	//
+			// 	Initialize Ranking, Geomap and Spider	//
 			//**********************************//
 			spiderChart = radarChartInit(ByCountry,"#SpiderDiv");
-			rankingChart = rankingInit(ByCountry,0, svgRanking,height,margin,1700,spiderChart);
-			map = GeoInit(ByCountry, 0, svgMap,width);
+			rankingChart = rankingInit(ByCountry, svgRanking,height,margin,1700,spiderChart);
+			map = GeoInit(ByCountry, svgMap,width);
 
-			d3.selectAll("input")
-				.on("change", changed);
+			d3.selectAll("#modify_weights_btn")
+				.on("click", changed);
+
 			
 			// resize the chart on resizing window
 			window.addEventListener('resize', rankingChart.render);
@@ -110,18 +118,18 @@
 
 			function changed() {
 				try{
-					rankingChart.rankingUpdate(+this.value);
-					map.GeoUpdate(+this.value);
+					prop = get_sliders_distribution();
+					UpdateByCountry(ByCountry,prop);
+					rankingChart.rankingUpdate(ByCountry);
+					map.GeoUpdate(ByCountry);
 					}
 
 				catch(error){
 					console.log(error);
-					rankingChart.rankingUpdate(0);
-					map.GeoUpdate(0)}
 					}
 			
 	// End of Data processing
-	}});
+	}}});
 	</script>
 </body>
 </html>

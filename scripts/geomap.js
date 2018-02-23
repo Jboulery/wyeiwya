@@ -1,4 +1,4 @@
-function GeoInit(ByCountry, CritInit, field,width){
+function GeoInit(ByCountry, field,width){
 		
 
 		var context = field.append("svg")
@@ -6,7 +6,6 @@ function GeoInit(ByCountry, CritInit, field,width){
 				.attr("height","130%")
 
 
-		var criteria = CritInit;
 		var countries;
 	    // Define svg canvas dimensions
 
@@ -37,8 +36,8 @@ function GeoInit(ByCountry, CritInit, field,width){
 
 
 	    // Define color scale for countries based on criteria
-	    var colorMin = d3.min(ByCountry, function(d) { return d.means[criteria]; } );
-	    var colorMax = d3.max(ByCountry, function(d) { return d.means[criteria]; } );
+	    var colorMin = d3.min(ByCountry, function(d) { return d.criteria; } );
+	    var colorMax = d3.max(ByCountry, function(d) { return d.criteria; } );
 	    var pas = (colorMax-colorMin)/9
 
 	    var color = d3.scaleThreshold()
@@ -63,9 +62,9 @@ function GeoInit(ByCountry, CritInit, field,width){
 	          .attr("id", function(d) { return d.id;})
 	          .style("fill",function(geomap){
 	          	var coloring = '#fff7fb';
-	          	ByCountry.forEach(function(country){
+	          		ByCountry.forEach(function(country){
 	          		if (country.key == geomap.properties.name){
-	          			coloring = color(country.means[criteria]);
+	          			coloring = color(country.criteria);
 	          		}
 	          	});
 	          	return coloring;
@@ -77,10 +76,9 @@ function GeoInit(ByCountry, CritInit, field,width){
 	          .attr("d", path);
 	    });
 
-
 	   // Sort countries according to criteria for tooltip ranking
 		ranks = ByCountry
-			.sort(function(a,b){return b.means[criteria]-a.means[criteria];})
+			.sort(function(a,b){return b.criteria-a.criteria;})
 			.map(function(d){return d.key;});
 
 
@@ -93,7 +91,7 @@ function GeoInit(ByCountry, CritInit, field,width){
 	      var flag =0;
 	      ByCountry.forEach(function(country){
       		    if (country.key == d.properties.name){
-          			value = country.means[criteria].toPrecision(3);
+          			value = country.criteria.toPrecision(3);
           			flag = 1;
           		}
 	      })
@@ -109,24 +107,22 @@ function GeoInit(ByCountry, CritInit, field,width){
 	    }
 
 
-	    function GeoUpdate(NewCrit){
+	    function GeoUpdate(ByCountry){
 
-	    	criteria = NewCrit;
-	    	console.log("Update with " + criteria);
 
 		   	// Redefine color scale for countries based on criteria
-		    var colorMin = d3.min(ByCountry, function(d) { return d.means[criteria]; } );
-		    var colorMax = d3.max(ByCountry, function(d) { return d.means[criteria]; } );
+		    var colorMin = d3.min(ByCountry,function(d) { return d.criteria; } );
+		    var colorMax = d3.max(ByCountry, function(d) { return d.criteria; } );
 	    	var pas = (colorMax-colorMin)/9
 
 	    	color.domain([colorMin,colorMin+pas*1.5,colorMin+pas*2,colorMin+pas*3,colorMin+pas*4,colorMin+pas*4.5,colorMin+pas*5,colorMin+pas*5.5,colorMin+pas*9])
 
 		   	ranks = ByCountry
-			.sort(function(a,b){return b.means[criteria]-a.means[criteria];})
+			.sort(function(a,b){return b.criteria-a.criteria;})
 			.map(function(d){return d.key;});
 
 			var value;
-
+			console.log("Updated Map");
 
 	        d3.json("data/world.json", function(error, world) {
 	        if(error) return console.error(error);
@@ -134,12 +130,12 @@ function GeoInit(ByCountry, CritInit, field,width){
 		    // draw countries
 			countries
 			  .transition()
-			  .duration(4000)
+			  .duration(2000)
 		      .style("fill",function(geomap){
 		      	var coloring='#fff7fb';
 		      	ByCountry.forEach(function(country){
 			      	if (country.key == geomap.properties.name){
-			      			coloring = color(country.means[criteria]);
+			      			coloring = color(country.criteria);
 			      		}
 			      	});
 			      	return coloring;

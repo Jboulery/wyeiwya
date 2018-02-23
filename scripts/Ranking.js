@@ -7,7 +7,7 @@
 //		Ranking creation function		//
 //**************************************//
 
-function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
+function rankingInit(ByCountry, field,height,margin,hmax,spiderChart){
 	// Create the initial ranking, based on "criteria"
 	// 0 : fat_100g
 	// 1 : saturated-fat_100g
@@ -34,7 +34,7 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 	
 	// Sort countries according to "criteria"
 	 var max=ByCountry
-		.sort(function(a,b){return b.means[criteria]-a.means[criteria];})
+		.sort(function(a,b){return b.criteria-a.criteria;})
 		.map(function(d){return d.key;});
 
 	ByCountry.sort(function(a,b){return max.indexOf(a.key)-max.indexOf(b.key);});
@@ -43,7 +43,7 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 	var bar_h = height/nb_countries;
 	
 	// Scale creation
-	var xMax = d3.max(ByCountry, function(d) { return d.means[criteria]; } );
+	var xMax = d3.max(ByCountry, function(d) { return d.criteria; } );
 	var xScale = d3.scaleLinear()
 				.domain([0, xMax]);	
 		
@@ -92,7 +92,7 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 	// Values at the bars end
 	var numText = groups
 		.append("text")
-		.text(function(d) { return d.means[criteria].toPrecision(3); })
+		.text(function(d) { return d.criteria.toPrecision(3); })
 		.attr("text-anchor", "end")
 		.attr("id", "precise-value");
 		
@@ -107,49 +107,7 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 		
 	// Render everything
 	render()
-/*	
-	// Add checkboxes
-	var box_size = 0.6*height/nb_countries;
-	var padding = 0.2*height/nb_countries;
-	var boxesList = [];
-	
-	// Add checkBoxes
-	ByCountry.forEach(function(country_i){
-		// Parameters
-		var box_y_pos = padding+yScale(country_i.key);
-		var box_x_pos = margin.left+text_padding+padding;
-		
-		// Checkboxes
-		var checkBox = new d3CheckBox();
-		var gBox_i = context.append("g").attr("class","checkBox")
-		
-		// Text displayed when checked
-		var txt = context.append("text").attr("x", box_x_pos+1.1*box_size).attr("y", box_y_pos+2*padding);
-	
-		// Update function
-		var	update = function () {
-			var checked = checkBox.checked();
-			if(checked){txt.text(country_i.key);}
-			else{txt.text("");}
-		};
-		// Setting up each check box
 
-		var box_i = checkBox
-			.size(box_size)
-			.x(box_x_pos)
-			.y(box_y_pos)
-			.markStrokeWidth(boxStrokeWidth)
-			.boxStrokeWidth(1)
-			.checked(false)
-			.clickEvent(update);
-		
-		// Display checkbox
-		gBox_i.call(checkBox);	
-		
-		// Save box
-		boxesList.push([box_i,country_i.key,gBox_i]);
-	});// End of forEach
-*/	
 	// Tooltip creation
 	    var tooltip = field
 	         .append("div")
@@ -171,9 +129,7 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 				+"<p>- Current rank : "+d.currentRank+"</p>"
 				+"<p>- Former rank : "+d.formerRank+"</p>"
 				+"<p>- Products nb : "+d.values.length+"</p>"
-				+"<p>- Mean fat rate : "+d.means[0].toPrecision(3)+"</p>"
-				+"<p>- Mean cholesterol : "+d.means[2].toPrecision(3)+"</p>"
-				+"<p>- Mean sugars rate : "+d.means[5].toPrecision(3)+"</p>");
+				+"<p>- Energy : " + d.means[13].toPrecision(2) + "kJ </p>");
 		})
 		
 		.on("mouseout", function() {
@@ -224,7 +180,7 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 			
 		// Update rectangles
 		bars
-			.attr("width", function(d) {return xScale(d.means[criteria])-xScale(0); })
+			.attr("width", function(d) {return xScale(d.criteria)-xScale(0); })
 			.attr("height", bar_h)
 			.attr("x", xScale(0))
 			.attr("y", function(d) { return yScale(d.key); });
@@ -239,7 +195,7 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 		
 		// Update numbers position
 		numText
-			.attr("x", function(d) { return xScale(d.means[criteria]); })
+			.attr("x", function(d) { return xScale(d.criteria); })
 			.attr("dx", "-.5em")
 			.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+4; })
 		
@@ -268,8 +224,8 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 	//		Ranking update function		//
 	//**********************************//			
 	
-	function rankingUpdate(criteria){
-		console.log("Update with "+criteria)
+	function rankingUpdate(ByCountry){
+		console.log("Updated bars")
 
 		// Geometrical parameters
 		var nb_countries = ByCountry.length;
@@ -277,8 +233,9 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 		var box_size = 0.6*height/nb_countries;
 		var padding = 0.2*height/nb_countries;
 
+
 		var max=ByCountry
-			.sort(function(a,b){return b.means[criteria]-a.means[criteria];})
+			.sort(function(a,b){return b.criteria-a.criteria;})
 			.map(function(d){return d.key;});
 
 		ByCountry.sort(function(a,b){return max.indexOf(a.key)-max.indexOf(b.key);});
@@ -291,7 +248,7 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 		
 		// Scale update
 
-		var xMax = d3.max(ByCountry, function(d) { return d.means[criteria]; } );
+		var xMax = d3.max(ByCountry, function(d) { return d.criteria; } );
 
 		xScale.domain([0, xMax]);
 		yScale.domain(ByCountry.map(function(d) {return d.key; }));
@@ -314,8 +271,8 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 		numText
 		.transition()
 		.duration(1000)
-		.attr("x", function(d) { return xScale(d.means[criteria]); })
-		.text(function(d) { return d.means[criteria].toPrecision(3); })
+		.attr("x", function(d) { return xScale(d.criteria); })
+		.text(function(d) { return d.criteria.toPrecision(3); })
 		.transition()
 		.duration(1000)
 		.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+4; })
@@ -324,7 +281,7 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 		bars
 		.transition()
 		.duration(1000)
-		.attr("width", function(d) {return xScale(d.means[criteria])-xScale(0); })
+		.attr("width", function(d) {return xScale(d.criteria)-xScale(0); })
 		.attr("x", xScale(0))
 		.transition()
 		.duration(1000)
@@ -348,31 +305,6 @@ function rankingInit(ByCountry, criteria, field,height,margin,hmax,spiderChart){
 		.transition()
 		.duration(1000)
 		.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+5; });
-	/*	
-		boxesList.forEach(function(d){
-			// Get parameters
-			box_i = d[0];
-			country_i = d[1];
-			gBox_i = d[2];
-			
-			// New Update fct
-			var txt = context.append("text").attr("x", box_x_pos+1.1*box_size).attr("y", box_y_pos+2*padding);
-			var	update = function (){
-				var checked = checkBox.checked();
-				if(checked){txt.text(country_i);}
-				else{txt.text("");}
-			}
-			// Update checkbox
-			var box_y_pos = padding+yScale(country_i);
-			var box_x_pos = margin.left+text_padding+padding;
-			box_i.y(box_y_pos)
-			//.clickEvent(update);
-			
-			gBox_i//.transition()
-			//.duration(2000)
-			.call(box_i)
-		})
-*/
 	}
 
 	function scaleVisualization(){
