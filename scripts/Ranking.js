@@ -117,7 +117,7 @@ function rankingInit(ByCountry, field,height,margin,hmax,spiderChart){
 	bars
 		.on("mouseover", function(d) {
 			var currentGroup = d3.select(this.parentNode);
-			currentGroup.select("rect").style("fill", "brown");
+			currentGroup.select(".bars").style("fill", "brown");
 			currentGroup.select("text").style("font-weight", "bold");
 			
 			var mouse = d3.mouse(context.node()).map(function(d) {
@@ -134,14 +134,14 @@ function rankingInit(ByCountry, field,height,margin,hmax,spiderChart){
 		
 		.on("mouseout", function() {
 			var currentGroup = d3.select(this.parentNode);
-			currentGroup.select("rect").style("fill",function(d){return colorScale(d)})
+			currentGroup.select(".bars").style("fill",function(d){return colorScale(d)})
 			currentGroup.select("text").style("font-weight", "normal");
 			tooltip.classed('hidden', true);
 		})
 	
 		.on("click", function() {
 			var currentGroup = d3.select(this.parentNode);
-			var toFind = currentGroup.select("rect").attr("id");
+			var toFind = currentGroup.select(".bars").attr("id");
 			ByCountry.forEach(function(d){
 				if(d.key == toFind){d.selected = !d.selected}
 				});	
