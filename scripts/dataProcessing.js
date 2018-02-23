@@ -97,7 +97,10 @@ function dataProcessing(data){
 								meanSalt, meanSod, meanVitA, meanVitC, meanCal, meanIron, meanEner, meanScore];
 								
 			// Additional attributes
-			country.selected = false;
+			country.selected = false;	// Set to True if country is selected in ranking div
+			country.currentRank = 0; 	// Used to save current position in ranking
+			country.formerRank = 0; 	// Used to get former position in ranking
+			country.criteria = 0;
 		});
 	
 	return ByCountry
