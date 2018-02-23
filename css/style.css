@@ -54,7 +54,7 @@ div.rect{
 }
 .track-overlay {
   pointer-events: stroke;
-  stroke-width: 50px;
+  stroke-width: 25px;
   stroke: transparent;
   cursor: crosshair;
 }
