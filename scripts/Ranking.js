@@ -7,7 +7,7 @@
 //		Ranking creation function		//
 //**************************************//
 
-function rankingInit(ByCountry, field,height,margin,hmax,spiderChart){
+function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 	// Create the initial ranking, based on "criteria"
 	// 0 : fat_100g
 	// 1 : saturated-fat_100g
@@ -36,8 +36,14 @@ function rankingInit(ByCountry, field,height,margin,hmax,spiderChart){
 	 var max=ByCountry
 		.sort(function(a,b){return b.criteria-a.criteria;})
 		.map(function(d){return d.key;});
-
+	
 	ByCountry.sort(function(a,b){return max.indexOf(a.key)-max.indexOf(b.key);});
+	
+	// Get initial rank
+	ByCountry.forEach(function(country,i){
+		country.currentRank = i+1
+		country.formerRank = "Undefined"
+	});
 	
 	var nb_countries = ByCountry.length;
 	var bar_h = height/nb_countries;
@@ -87,6 +93,7 @@ function rankingInit(ByCountry, field,height,margin,hmax,spiderChart){
 	var bars = groups
 		.append("rect")
 		.attr("class", "bars")
+		.attr("fill",function(d,i){return colorScale(d);})
 		.attr("id", function(d,i) { return d.key; });
 		
 	// Values at the bars end
@@ -191,7 +198,7 @@ function rankingInit(ByCountry, field,height,margin,hmax,spiderChart){
 			.attr("width",0.9*bar_padding)
 			.attr("x",text_padding+margin.left+0.05*bar_padding)
 			.attr("y",function(d) { return yScale(d.key)+0.1*bar_h; })
-			.attr("fill","red")
+			.attr("fill",function(d,i){return jaugeColor(d);})
 		
 		// Update numbers position
 		numText
@@ -216,7 +223,7 @@ function rankingInit(ByCountry, field,height,margin,hmax,spiderChart){
 		margin.left = 0.01*winWidth;
 		width = winWidth - margin.left - margin.right;
 		// Graphical parameters
-		bar_padding 	= 0.02*width;
+		bar_padding 	= 0.05*width;
 		text_padding 	= 0.15*width;
 	  }
 	
@@ -291,7 +298,8 @@ function rankingInit(ByCountry, field,height,margin,hmax,spiderChart){
 		gauge
 			.transition()
 			.duration(500)
-			.attr("width",0.9*bar_padding)
+			.attr("width",function(d,i){return jaugeSize(d,bar_padding);})
+			.attr("fill",function(d,i){return jaugeColor(d);})
 			.transition()
 			.duration(500)
 			.transition()
@@ -351,4 +359,20 @@ function colorScale(country){
 	// Return a color depending on the country status (selected or not)
 	if (country.selected == false){return "steelblue"}
 	else{return "green"}
+}
+
+function jaugeColor(country){
+	// Return a color depending on the country's current and former ranks
+	if (country.currentRank < country.formerRank){return "green"}
+	else if (country.currentRank > country.formerRank){return "red"}
+	else{return "grey"}
+}
+	
+function jaugeSize(country,bar_padding){
+	// Return a size depending on the country's current and former ranks
+	DeltaRank = Math.abs(country.currentRank-country.formerRank);
+	max = 0.9*bar_padding;
+	if (DeltaRank == 0){return max;}
+	else if (DeltaRank > 10){return max;}
+	else {return DeltaRank/10*max;}
 }
