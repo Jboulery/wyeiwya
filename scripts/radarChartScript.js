@@ -94,7 +94,10 @@ function radarChartInit(ByCountry,context){
 		  .attr("fill", "#737373")
 		  .text(function(d) { return d; })
 		  ;	
-		  
+	
+	var labels = ["Fat", "S. Fat", "Cholesterol", "Carbohydrates", "Fibers", "Sugars", "Proteins",
+				"Salt", "Sodium", "Vit. A", "Vit. C", "Calcium", "Iron", "Energy", "Nutrition Score"];
+	
 	function spiderUpdate(toDiplay){
 		/* Update radar chart with new countries */
 		// Define new spiderVar
@@ -106,7 +109,7 @@ function radarChartInit(ByCountry,context){
 				// Add country on spiderGraph
 				var c = []
 				country.means.forEach(function(crit,i){
-					c.push({axis:i,value:100*crit/max[i]});
+					c.push({axis:labels[i],value:100*crit/max[i]});
 				});
 				spiderVar.push(c);}
 			});

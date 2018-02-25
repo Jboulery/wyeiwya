@@ -20,25 +20,31 @@
 	<script src="scripts/radarChart.js"></script>
 	<script src="scripts/radarChartScript.js"></script>
 	<script src="https://d3js.org/topojson.v1.min.js"></script>
+	<script src="scripts/multirange_slider.js"></script>
+	<script src="scripts/CurrentArray.js"></script>
 	<title>Projet DataVis WYEIWYA</title>
 </head>
 <body>
 	<nav class="navbar navbar-expand-md navbar-light">
-	<form>
-	  <label><input type="radio" name="mode" value="0" checked>Fat</label>
-	  <label><input type="radio" name="mode" value="1">Saturated fat</label>
-	  <label><input type="radio" name="mode" value="2">Cholesterol</label>
-	  <label><input type="radio" name="mode" value="3">Carbohydrates</label>
-	  <label><input type="radio" name="mode" value="4">Fibers</label>
-	  <label><input type="radio" name="mode" value="5">Sugars</label>
-	</form>
-	    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavBar" aria-controls="topNavBar" aria-expanded="false" aria-label="Toggle navigation">
-	        <span class="navbar-toggler-icon"></span>
-	    </button>
-
-	    <div class="collapse navbar-collapse" id="topNavBar">
-
-	    </div>
+		<ul class="navbar-nav ml-auto">
+			<li class="nav-item" id="slider">
+				<script>sliderInit()</script>
+			</li>
+	    </ul>
+	    <ul class="navbar-nav mr-auto">
+		    <li class="nav-item offset-sm-2">
+				<button class="btn btn-success" id="modify_weights_btn" onclick="get_sliders_distribution()">
+					Apply
+				</button>
+			</li>
+	    </ul>
+	    <ul class="navbar-nav ml-auto">
+	    	<li class="nav-item">
+				<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#helpModal">
+					Help
+				</button>
+			</li>	
+	    </ul>
 	</nav>
 
     <!-- Page Content -->
@@ -66,6 +72,41 @@
 
     </div>
 
+    <div class="modal fade" id="helpModal" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+    	<div class="modal-dialog" role="document">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<h5 class="modal-title" id="helpModalLabel">Need some help ?</h5>
+    				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    					<span aria-hidden="true">&times;</span>
+    				</button>
+    			</div>
+    			<div class="modal-body">
+    				Welcome to our DataViz WYEIWYA Project ! </br>
+    				*version provisoire avec des idées* </br> 
+    				Authors :  </br>
+    				<a href="https://github.com/RaphAllier"> Raphael Allier </a></br>
+    				<a href="https://github.com/Jboulery"> Jeremy Boulery </a></br>
+    				<a href="https://github.com/ValentinCrr"> Valentin Carra </a> </br>
+
+    			Ever wonder which country eats the healthiest food ? You're going on a trip to Phillipines and you worry that you won't be able to keep on with your diet ? This data visualization project will give you all the answers. </br>
+
+    			Based on a database provided by <a href="https://world.openfoodfacts.org/"> OpenFoodFacts </a>, we created a visualization that allows you to see which country in the world eats the fattest food or the sweetest one.  </br>
+
+    			The main part of the visualization tool is the ranking section, which shows you the countries extracted from the database ranked according to a criteria based on user input. We extract nutritional values from the database, and the slider in the top part of the page allows you to give more or less weight to those neutritionnal values in the ranking. </br>
+
+    			On the bottom part of the page, a world map allows you to see the countries ranked above colored according to their rank. </br>
+
+    			On the right side, a radar chart allows you to visualize and compare the raw nutritional values of a given country with another one. To do so, just click on the rectangle beside the desired country in the ranking, and its radar chart will appear on the right. </br>
+
+    			</div>
+    			<div class="modal-footer">
+    				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    			</div>
+    		</div>
+    	</div>
+	</div>
+
 	<script type="text/javascript">
 		var rankingChart;
 		var map;
@@ -76,7 +117,10 @@
 		else{
 			// Save data
 			var dataset = data;
-			ByCountry = dataProcessing(data)
+			var MinProducts = 10;
+			ByCountry = dataProcessing(data,MinProducts)
+
+
 			
 			//******************************//
 			//		General parameters		//
@@ -93,15 +137,21 @@
 			var width = window_w - margin.left - margin.right;	// Percentage
 			var height = 1500 - margin.top - margin.bottom;			// Percentage
 
+			// Get proportions and initialize array
+
+			prop = get_sliders_distribution();
+			UpdateByCountry(ByCountry,prop);
+
 			//**********************************//	
-			// 	Initialize Ranking and Geomap	//
+			// 	Initialize Ranking, Geomap and Spider	//
 			//**********************************//
 			spiderChart = radarChartInit(ByCountry,"#SpiderDiv");
-			rankingChart = rankingInit(ByCountry,0, svgRanking,height,margin,1700,spiderChart);
-			map = GeoInit(ByCountry, 0, svgMap,width);
+			rankingChart = rankingInit(ByCountry, svgRanking,height,margin,1700,spiderChart);
+			map = GeoInit(ByCountry, svgMap,width);
 
-			d3.selectAll("input")
-				.on("change", changed);
+			d3.selectAll("#modify_weights_btn")
+				.on("click", changed);
+
 			
 			// resize the chart on resizing window
 			window.addEventListener('resize', rankingChart.render);
@@ -112,18 +162,18 @@
 
 			function changed() {
 				try{
-					rankingChart.rankingUpdate(+this.value);
-					map.GeoUpdate(+this.value);
+					prop = get_sliders_distribution();
+					UpdateByCountry(ByCountry,prop);
+					rankingChart.rankingUpdate(ByCountry);
+					map.GeoUpdate(ByCountry);
 					}
 
 				catch(error){
 					console.log(error);
-					rankingChart.rankingUpdate(0);
-					map.GeoUpdate(0)}
 					}
 			
 	// End of Data processing
-	}});
+	}}});
 	</script>
 </body>
 </html>

@@ -58,12 +58,14 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 	
 	// Axis creation
 	var xAxis = d3.axisBottom()
-		.ticks(numTicks);
+		.ticks(numTicks)
+		.tickSize(-3);
 	
 	// Initialize axis drawing
 	var gX = context.append("g")
 		.attr("class","axis")
-		.attr("transform", "translate(0,10)")
+        .attr("dy", ".15em")
+		.attr("transform", "translate(0,15)")
 	
 	// Create place for drawing
 	var barSvg = context
@@ -106,7 +108,8 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 	// Create grid
 	var grid = xScale.ticks(numTicks);
 	
-	var grid_on = barSvg.append("g").attr("class", "grid")
+	var grid_on = barSvg.append("g")
+		.attr("class", "grid")
 		.selectAll("line")
 		.data(grid, function(d) { return d; })
 		.enter().append("line")
@@ -172,7 +175,10 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 		
 		//update the axis
 		xAxis.scale(xScale);
-		gX.call(xAxis);
+		gX.call(xAxis)
+			.selectAll("text")
+			//.attr("dy", ".5em")		
+			.attr("transform", "translate(0,-15)");
 		
 		//update svg elements to new dimensions
 		context
@@ -205,16 +211,13 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 			.attr("x", function(d) { return xScale(d.criteria); })
 			.attr("dx", "-.5em")
 			.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+4; })
-		
+
 		// Update grid
 		grid_on
-		.attr("y1", 0)
+		.attr("y1", 16)
 		.attr("y2", height+margin.bottom)
 		.attr("x1", function(d) { return xScale(d); })
 		.attr("x2", function(d) { return xScale(d); })
-		
-		// Update scale visu
-		scaleVisualization()
 	  }
 
 	function updateDimensions(winWidth) {
@@ -313,43 +316,6 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 		.transition()
 		.duration(1000)
 		.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+5; });
-	}
-
-	function scaleVisualization(){
-		rec1
-			.attr("width", margin.left)
-			.attr("height", 2)
-			.attr("x", 0)
-			.attr("y", 2)
-			.attr("fill", "red");
-			
-		rec2
-			.attr("width", text_padding)
-			.attr("height", 2)
-			.attr("x", margin.left)
-			.attr("y", 2)
-			.attr("fill", "blue");
-		
-		rec3
-			.attr("width", bar_padding)
-			.attr("height", 2)
-			.attr("x", text_padding+margin.left)
-			.attr("y", 2)
-			.attr("fill", "red");
-		
-		rec4
-			.attr("width", xScale(xMax)-xScale(0))
-			.attr("height", 2)
-			.attr("x", xScale(0))
-			.attr("y", 2)
-			.attr("fill", "blue");
-		
-		rec5
-			.attr("width", margin.right)
-			.attr("height", 2)
-			.attr("x", xScale(xMax))
-			.attr("y", 2)
-			.attr("fill", "red");
 	}
 	
 	return {render : render,rankingUpdate}
