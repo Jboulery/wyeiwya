@@ -19,12 +19,12 @@
 }
 
 #ranking-table-wrapper{
-	height: 50%;
+	height: 45%;
 }
 
 
 #world-map-wrapper{
-	height: 50%;
+	height: 55%;
 }
 #right-side-bar{
 	background: #F8F8F8;
@@ -112,3 +112,19 @@ svg {
   display: none;
 }
 
+
+/* HELP SECTION */
+
+.modal-body p {
+  text-align: justify;
+}
+
+.modal-body h2 {
+  text-align: center;
+}
+
+.modal-body h3 {
+  text-align: left;
+  font-size: 18px;
+  font-style: italic;
+}

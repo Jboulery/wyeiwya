@@ -41,7 +41,7 @@
 	    <ul class="navbar-nav ml-auto">
 	    	<li class="nav-item">
 				<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#helpModal">
-					Help
+					About the project
 				</button>
 			</li>	
 	    </ul>
@@ -51,16 +51,16 @@
     <div id="page-content-wrapper">
 
     	<div class="row" style="height: 100%">
-    		<div class="col-sm-9" style="height: 100%">
+    		<div class="col-sm-8" style="height: 100%">
       			<div class="row" id="ranking-table-wrapper">
       				<div class="container-fluid" id="RankingDiv" style="overflow : scroll">
       				</div>
       			</div>
       			<div class="row" id="world-map-wrapper">
-      				<div class="container-fluid" id="world-map" style="overflow : scroll"></div>
+      				<div class="container-fluid" id="world-map"></div>
       			</div>
         	</div>
-        	<div class="col-sm-3" id="right-side-bar">
+        	<div class="col-sm-4" id="right-side-bar">
         		<div id="SpiderDiv" style="width: 100%; height : 50%">
         			
         		</div>
@@ -76,28 +76,38 @@
     	<div class="modal-dialog" role="document">
     		<div class="modal-content">
     			<div class="modal-header">
-    				<h5 class="modal-title" id="helpModalLabel">Need some help ?</h5>
+    				<h5 class="modal-title" id="helpModalLabel">Welcome to our WYEIWYA project</h5>
     				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
     					<span aria-hidden="true">&times;</span>
     				</button>
     			</div>
     			<div class="modal-body">
-    				Welcome to our DataViz WYEIWYA Project ! </br>
-    				*version provisoire avec des idées* </br> 
-    				Authors :  </br>
-    				<a href="https://github.com/RaphAllier"> Raphael Allier </a></br>
-    				<a href="https://github.com/Jboulery"> Jeremy Boulery </a></br>
+    				<h2> About our project </h2> </br>
+
+    				Authors : 
+    				<a href="https://github.com/RaphAllier"> Raphael Allier </a> | 
+    				<a href="https://github.com/Jboulery"> Jeremy Boulery </a> | 
     				<a href="https://github.com/ValentinCrr"> Valentin Carra </a> </br>
 
-    			Ever wonder which country eats the healthiest food ? You're going on a trip to Phillipines and you worry that you won't be able to keep on with your diet ? This data visualization project will give you all the answers. </br>
+    				<p> What you eat is who you are ! Ever wonder which country eats the healthiest food ? You're going on a trip to Phillipines and you worry that you won't be able to keep on with your diet ? This data visualization project will give you all the answers. </p>
 
-    			Based on a database provided by <a href="https://world.openfoodfacts.org/"> OpenFoodFacts </a>, we created a visualization that allows you to see which country in the world eats the fattest food or the sweetest one.  </br>
+    				<p> Based on a database provided by <a href="https://world.openfoodfacts.org/"> OpenFoodFacts </a> and on this <a href="https://www.kaggle.com/openfoodfacts/world-food-facts"> Kaggle topic</a>, we created a D3 visualization that allows you to see which country in the world eats the fattest food or the sweetest one. </p>
 
-    			The main part of the visualization tool is the ranking section, which shows you the countries extracted from the database ranked according to a criteria based on user input. We extract nutritional values from the database, and the slider in the top part of the page allows you to give more or less weight to those neutritionnal values in the ranking. </br>
+    				<p> The source code of the project is available <a href="https://github.com/Jboulery/wyeiwya"> here</a>. </p>
 
-    			On the bottom part of the page, a world map allows you to see the countries ranked above colored according to their rank. </br>
+    				<h2> Help section </h2> </br>
 
-    			On the right side, a radar chart allows you to visualize and compare the raw nutritional values of a given country with another one. To do so, just click on the rectangle beside the desired country in the ranking, and its radar chart will appear on the right. </br>
+    				<h3> Ranking chart </h3>
+
+    				<p> The main part of the visualization tool is the ranking section, which shows you the countries extracted from the database ranked according to a criteria based on user input. We extract nutritional values from the database, and the slider in the top part of the page allows you to give more or less weight to those neutritionnal values in the ranking. The values used for the ranking are mean extracted from all the products registered under one country </p>
+
+    				<h3> World Map </h3>
+
+    				<p> On the bottom part of the page, a world map allows you to see the countries ranked above colored according to their rank. </p>
+
+    				<h3> Radar chart </h3>
+
+    				<p> On the right side, a radar chart allows you to visualize and compare the raw nutritional values of a given country with anoter. To do so, just click on the rectangle beside the desired country in the ranking, and its radar chart will appear on the right. </p>
 
     			</div>
     			<div class="modal-footer">
