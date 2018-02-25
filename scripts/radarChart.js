@@ -31,6 +31,10 @@ function radarChart(){
 	var radius;
 	var Format;
 	
+	// Labels
+	var labels = ["Fat", "Saturated Fats", "Cholesterol", "Carbohydrates", "Fibers", "Sugars", "Proteins",
+				"Salt", "Sodium", "Vitamin A", "Vitamin C", "Calcium", "Iron", "Energy"];
+	
 	// Initialization function
 	function init(id, d, options){
 		// Update configuration	
@@ -51,10 +55,16 @@ function radarChart(){
 		g = d3.select(id)
 				.append("svg")
 				.attr("width", cfg.w+cfg.ExtraWidthX)
-				.attr("height", cfg.h+cfg.ExtraWidthY)
-				.style("transform", "translateY(22%)") 	// Adjust here for vertical centering
+				.attr("height", "90%")
+				.style("transform", "translateY(5%)") 	// Adjust here for vertical centering
 				.append("g")
 				.attr("transform", "translate(" + cfg.TranslateX + "," + cfg.TranslateY + ")")
+		
+		// Create tooltip
+		tooltip = d3.select(id)
+				.append("div")
+				.attr("id","axis_tooltip")
+				.attr("class", "tooltip hidden");
 		
 		//Circular segments
 		for(var j=0; j<cfg.levels-1; j++){
@@ -116,8 +126,20 @@ function radarChart(){
 			.attr("text-anchor", "middle")
 			.attr("dy", "1.5em")
 			.attr("transform", function(d, i){return "translate(0, -10)"})
-			.attr("x", function(d, i){return cfg.w/2*(1-cfg.factorLegend*Math.sin(i*cfg.radians/total))-60*Math.sin(i*cfg.radians/total);})
-			.attr("y", function(d, i){return cfg.h/2*(1-Math.cos(i*cfg.radians/total))-20*Math.cos(i*cfg.radians/total);});
+			.attr("x", function(d, i){return 0.5*cfg.w*(1-cfg.factorLegend*Math.sin(i*cfg.radians/total))-60*Math.sin(i*cfg.radians/total);})
+			.attr("y", function(d, i){return 0.5*cfg.h*(1-Math.cos(i*cfg.radians/total))-20*Math.cos(i*cfg.radians/total);})
+			.on("mouseover",function(d,i){
+				// Get mouse position
+				var mouse = d3.mouse(g.node()).map(function(d) {return parseInt(d);});
+				// Display tooltip
+				tooltip
+					.classed('hidden', false)
+					.attr('style', 'left:'+(mouse[0]+50)+'px; top:' + (mouse[1]) + 'px')
+					.text(labels[i]);	
+			})
+			.on('mouseout', function(){
+				tooltip
+					.classed('hidden', true);});
 	}
 	
 	function draw(id, d, options){
