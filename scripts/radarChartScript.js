@@ -13,7 +13,6 @@ function radarChartInit(ByCountry,context){
 
 	//Data
 	var spiderVar = [];
-	var max = [3410, 1200, 2, 6930, 410, 4200, 1400, 630, 250, 0.55, 2.7, 19, 0.3641, 307000, 2000]
 	
 	//Options for the Radar chart, other than default
 	var mycfg = {
@@ -39,8 +38,9 @@ function radarChartInit(ByCountry,context){
 	////////////////////////////////////////////
 	var temp_c = [];
 	var labels = ["Fat", "S. Fat", "Cholesterol", "Carbohydrates", "Fibers", "Sugars", "Proteins",
-				"Salt", "Sodium", "Vit. A", "Vit. C", "Calcium", "Iron", "Energy", "Nutrition Score"];
-	for (var i=0;i<15;i++){temp_c.push({axis:labels[i],value:1});};
+				"Salt", "Sodium", "Vit. A", "Vit. C", "Calcium", "Iron", "Energy"];
+	var max = [100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 4000,1];
+	for (var i=0;i<14;i++){temp_c.push({axis:labels[i],value:1});};
 	spiderVar.push(temp_c);
 	var RadarChart = radarChart();
 	RadarChart.init(context, spiderVar, mycfg);
@@ -108,7 +108,9 @@ function radarChartInit(ByCountry,context){
 				// Add country on spiderGraph
 				var c = []
 				country.means.forEach(function(crit,i){
-					c.push({axis:labels[i],value:100*crit/max[i]});
+					console.log(i)
+					console.log(crit)
+					c.push({axis:labels[i],value:crit/max[i]});
 				});
 				spiderVar.push(c);}
 			});

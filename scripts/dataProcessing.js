@@ -21,7 +21,6 @@ function dataProcessing(data,MinProducts){
 			d.calcium_100g 			= +d.calcium_100g;
 			d.iron_100g 			= +d.iron_100g;
 			d.energy_100g			= +d.energy_100g;
-			d["nutrition-score-fr_100g"] = +d["nutrition-score-fr_100g"]
 			d.additives_n 			= +d.additives_n;
 			
 			// delete any absurd line
@@ -77,6 +76,7 @@ function dataProcessing(data,MinProducts){
 			var maxCarb 	= d3.max(country.values, function(d) { return +d.carbohydrates_100g; });
 			var maxFib 		= d3.max(country.values, function(d) { return +d.fiber_100g; });
 			var maxSug 		= d3.max(country.values, function(d) { return +d.sugars_100g; });
+			var maxEner		= d3.max(country.values, function(d) { return +d.enery_100g; });
 			country.max 	= [maxFat, maxSatFat, maxChol, maxCarb, maxFib, maxSug];
 			
 			// Means calculation
@@ -94,9 +94,8 @@ function dataProcessing(data,MinProducts){
 			var meanCal 	= d3.mean(country.values, function(d) { return +d.calcium_100g; });
 			var meanIron	= d3.mean(country.values, function(d) { return +d.iron_100g; });
 			var meanEner	= d3.mean(country.values, function(d) { return +d.energy_100g; });
-			var meanScore	= d3.mean(country.values, function(d) { return +d["nutrition-score-fr_100g"]; });
 			country.means 	= [meanFat, meanSatFat, meanChol, meanCarb, meanFib, meanSug, meanProt,
-								meanSalt, meanSod, meanVitA, meanVitC, meanCal, meanIron, meanEner, meanScore];
+								meanSalt, meanSod, meanVitA, meanVitC, meanCal, meanIron, meanEner];
 								
 			// Additional attributes
 			country.selected = false;	// Set to True if country is selected in ranking div

@@ -44,7 +44,7 @@ function sliderInit(){
 	    .attr("class", "ticks")
 	    .attr("transform", "translate(0," + 25 + ")")
 
-	var ticks_labels = ['Energy', 'Fat', 'S. Fat', 'Cholesterol', 'Carbohydrates', 'Sugars', 'Fiber', 'Proteins', 'Salt', 'Vitamin A', 'Vitamin D', 'Calcium', 'Iron'];
+	var ticks_labels = ['Fat', 'S. Fat', 'Cholesterol', 'Carbohydrates', 'Fibers', 'Sugars', 'Proteins', 'Salt', 'Sodium', 'Vitamin A', 'Vitamin C', 'Calcium', 'Iron','Energy'];
 
 	for (var i = 0; i < 13; i++){
 		slider.insert('rect', '.track-overlay')
