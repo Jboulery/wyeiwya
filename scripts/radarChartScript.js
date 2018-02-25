@@ -38,7 +38,9 @@ function radarChartInit(ByCountry,context){
 	//////// Initiate drawing area /////////////
 	////////////////////////////////////////////
 	var temp_c = [];
-	for (var i=0;i<15;i++){temp_c.push({axis:i,value:1});};
+	var labels = ["Fat", "S. Fat", "Cholesterol", "Carbohydrates", "Fibers", "Sugars", "Proteins",
+				"Salt", "Sodium", "Vit. A", "Vit. C", "Calcium", "Iron", "Energy", "Nutrition Score"];
+	for (var i=0;i<15;i++){temp_c.push({axis:labels[i],value:1});};
 	spiderVar.push(temp_c);
 	var RadarChart = radarChart();
 	RadarChart.init(context, spiderVar, mycfg);
@@ -94,9 +96,6 @@ function radarChartInit(ByCountry,context){
 		  .attr("fill", "#737373")
 		  .text(function(d) { return d; })
 		  ;	
-	
-	var labels = ["Fat", "S. Fat", "Cholesterol", "Carbohydrates", "Fibers", "Sugars", "Proteins",
-				"Salt", "Sodium", "Vit. A", "Vit. C", "Calcium", "Iron", "Energy", "Nutrition Score"];
 	
 	function spiderUpdate(toDiplay){
 		/* Update radar chart with new countries */

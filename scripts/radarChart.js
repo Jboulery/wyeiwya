@@ -45,7 +45,7 @@ function radarChart(){
 		allAxis = (d[0].map(function(i, j){return i.axis}));
 		total = allAxis.length;
 		radius = cfg.factor*Math.min(cfg.w/2, cfg.h/2);
-		Format = d3.format('%');
+		Format = d3.format('.0%');
 		d3.select(id).select("svg").remove();
 		
 		g = d3.select(id)
