@@ -124,10 +124,6 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 	         .append("div")
 	         .attr("class", "tooltip hidden");
 
-
-	console.log(context.node().getBoundingClientRect().width);
-	console.log(context.node().getBoundingClientRect().height);
-	
 	
 	// Rectangles effects (highlight + tootip)
 	bars
