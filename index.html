@@ -19,6 +19,7 @@
 	<script src="scripts/geomap.js"></script>
 	<script src="scripts/radarChart.js"></script>
 	<script src="scripts/radarChartScript.js"></script>
+	<script src="scripts/scatterplot.js"></script>
 	<script src="https://d3js.org/topojson.v1.min.js"></script>
 	<script src="scripts/multirange_slider.js"></script>
 	<script src="scripts/CurrentArray.js"></script>
@@ -156,6 +157,7 @@
 			// 	Initialize Ranking, Geomap and Spider	//
 			//**********************************//
 			spiderChart = radarChartInit(ByCountry,"#SpiderDiv");
+			scatterplotChart = scatterplotInit(ByCountry, '#ScatterplotDiv');
 			rankingChart = rankingInit(ByCountry, svgRanking,height,margin,1700,spiderChart);
 			map = GeoInit(ByCountry, svgMap,width);
 
