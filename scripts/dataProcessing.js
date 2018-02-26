@@ -70,20 +70,20 @@ function dataProcessing(data,MinProducts){
 
 			
 			// Means calculation
-			var meanFat 	= d3.mean(country.values, function(d) { return +d.fat_100g; }).toPrecision(4);
-			var meanSatFat 	= d3.mean(country.values, function(d) { return +d['saturated-fat_100g']; }).toPrecision(4);
-			var meanChol 	= d3.mean(country.values, function(d) { return +d.cholesterol_100g; }).toPrecision(4);
-			var meanCarb 	= d3.mean(country.values, function(d) { return +d.carbohydrates_100g; }).toPrecision(4);
-			var meanFib 	= d3.mean(country.values, function(d) { return +d.fiber_100g; }).toPrecision(4);
-			var meanSug 	= d3.mean(country.values, function(d) { return +d.sugars_100g; }).toPrecision(4);
-			var meanProt	= d3.mean(country.values, function(d) { return +d.proteins_100g; }).toPrecision(4);
-			var meanSalt	= d3.mean(country.values, function(d) { return +d.salt_100g; }).toPrecision(4);
-			var meanSod 	= d3.mean(country.values, function(d) { return +d.sodium_100g; }).toPrecision(4);
-			var meanVitA	= d3.mean(country.values, function(d) { return +d['vitamin-a_100g']; }).toPrecision(4);
-			var meanVitC	= d3.mean(country.values, function(d) { return +d['vitamin-c_100g']; }).toPrecision(4);
-			var meanCal 	= d3.mean(country.values, function(d) { return +d.calcium_100g; }).toPrecision(4);
-			var meanIron	= d3.mean(country.values, function(d) { return +d.iron_100g; }).toPrecision(4);
-			var meanEner	= d3.mean(country.values, function(d) { return +d.energy_100g; }).toPrecision(4);
+			var meanFat 	= d3.mean(country.values, function(d) { return +d.fat_100g; });
+			var meanSatFat 	= d3.mean(country.values, function(d) { return +d['saturated-fat_100g']; });
+			var meanChol 	= d3.mean(country.values, function(d) { return +d.cholesterol_100g; });
+			var meanCarb 	= d3.mean(country.values, function(d) { return +d.carbohydrates_100g; });
+			var meanFib 	= d3.mean(country.values, function(d) { return +d.fiber_100g; });
+			var meanSug 	= d3.mean(country.values, function(d) { return +d.sugars_100g; });
+			var meanProt	= d3.mean(country.values, function(d) { return +d.proteins_100g; });
+			var meanSalt	= d3.mean(country.values, function(d) { return +d.salt_100g; });
+			var meanSod 	= d3.mean(country.values, function(d) { return +d.sodium_100g; });
+			var meanVitA	= d3.mean(country.values, function(d) { return +d['vitamin-a_100g']; });
+			var meanVitC	= d3.mean(country.values, function(d) { return +d['vitamin-c_100g']; });
+			var meanCal 	= d3.mean(country.values, function(d) { return +d.calcium_100g; });
+			var meanIron	= d3.mean(country.values, function(d) { return +d.iron_100g; });
+			var meanEner	= d3.mean(country.values, function(d) { return +d.energy_100g; });
 			country.means 	= [meanFat, meanSatFat, meanChol, meanCarb, meanFib, meanSug, meanProt,
 								meanSalt, meanSod, meanVitA, meanVitC, meanCal, meanIron, meanEner];
 
@@ -115,11 +115,12 @@ function dataProcessing(data,MinProducts){
 
 
 		ByCountry.forEach(function(country){
+			var normalized = []
 			for (var i=0;i<country.means.length;i++){
-				country.means[i] = (country.means[i]/ValMax[i]*100).toPrecision(4);
+				normalized.push((country.means[i]/ValMax[i]*100).toPrecision(4));
 			}
+			country.normalized = normalized;
 		})
-
 
 	return ByCountry
 }
