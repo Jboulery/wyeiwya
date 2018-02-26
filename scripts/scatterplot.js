@@ -3,8 +3,11 @@
 
 function scatterplotInit(ByCountry,context){
 	// Geometrical params
-	var w = 0.95*d3.select(context).node().getBoundingClientRect().width, // Get parent width
-		h = w;
+	var parentwidth = d3.select(context).node().getBoundingClientRect().width;
+	var parentheight = d3.select(context).node().getBoundingClientRect().height;
+	var w = 0.90 * parentwidth;
+		h = 0.90 * parentheight;
+	var margin = {right: 0.05*parentwidth, left: 0.05*parentwidth, top: 0.03*parentheight, bottom: 0.07*parentheight}
 
 	var colorscale = d3.scaleOrdinal(d3.schemeCategory10);
 
@@ -45,48 +48,33 @@ function scatterplotInit(ByCountry,context){
 
 	var gX = svg.append("g")
 		.attr("class","axis")
-		.attr("transform", "translate(0, " + h + ")")
+		.attr("transform", "translate(" + margin.left + ", " + (h + margin.top) + ")")
 		.call(xAxis);
 		
 	var gY = svg.append("g")
 		.attr("class", "axis")
+		.attr("transform", "translate(" + margin.left + ", " + margin.top + ")")
 		.call(yAxis);
+
+	//**********************//
+	//		Data plots		//
+	//**********************//
+
+	// Create and display dots
+	var dots = g.selectAll(".country")	
+		.data(ByCountry)
+		.enter()
+		.filter(function(d){ return d.selected; })
+		.append("g")
+		.attr("fill", function(d){return colorscale(d.key);})
+		.attr("class","country")
+
+		// Change color
+		.selectAll("path")
+		.data(function(d){return d.values;})
+		.enter()
+		.append("path")
+		.attr("class", "symbol")
+		.attr("d", d3.symbol().type(d3.symbolCircle).size(20)())
+		.attr("transform",function(d) { return "translate(" + (margin.left + x(+d[x_coord])) +","+ (margin.top + y(+d[y_coord])) +")" ;});
 }
-
-
-// // Graphical parameters
-// var margin = {top: 20, right: 20, bottom: 30, left: 10};
-// var width = 960 - margin.left - margin.right;
-// var height = 4000 - margin.top - margin.bottom;
-
-
-// 				//**************************//
-// 				//			Data plot		//
-// 				//**************************//
-					
-												
-// 				//**********************//
-// 				//		Data plots		//
-// 				//**********************//
-			
-// 				// Create and display dots
-// 				var dots = g.selectAll(".country")	
-// 					.data(ByCountry)
-// 					.enter()
-// 					.append("g")	// added new group
-// 					.attr("class","country")
-					
-// 					// Change color
-// 					//.attr("d", function(d){return colorScale(d.key);})
-// 					.selectAll("path")
-// 					.data(function(d){return d.values;})
-// 					.enter()
-// 					.append("path")
-// 					.attr("class", "symbol")
-					
-// 					// Change symbol
-// 					.attr("d", d3.symbol().type(d3.symbolCircle).size(20)())
-// 					.attr('fill',"rgb(31,119,180)")
-					
-// 					// (x,y) coordinates
-// 					.attr("transform",function(d) {return "translate(" + x(+d[x_coord]) +","+ y(+d[y_coord]) +")" ;})

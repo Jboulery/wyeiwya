@@ -112,6 +112,17 @@ svg {
 }
 
 
+/* Scatterplot style */
+#ScatterplotDiv {
+  margin: 0;
+  width: 100%;
+  height: 35%;
+}
+
+#ScatterplotDiv > svg{
+  overflow: visible;
+}
+
 /* HELP SECTION */
 
 .modal-body p {
