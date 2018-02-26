@@ -32,6 +32,7 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 	
 	updateDimensions(context.node().getBoundingClientRect().width);
 	
+
 	// Sort countries according to "criteria"
 	 var max=ByCountry
 		.sort(function(a,b){return b.criteria-a.criteria;})
@@ -122,6 +123,11 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 	    var tooltip = field
 	         .append("div")
 	         .attr("class", "tooltip hidden");
+
+
+	console.log(context.node().getBoundingClientRect().width);
+	console.log(context.node().getBoundingClientRect().height);
+	
 	
 	// Rectangles effects (highlight + tootip)
 	bars
@@ -134,7 +140,7 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 				return parseInt(d);
 			});
 			tooltip.classed('hidden', false)
-				.attr('style', 'left:'+(mouse[0]+100)+'px; top:' + (mouse[1]) + 'px')
+				.attr('style', 'left:'+(context.node().getBoundingClientRect().width/1.2)+'px; top:' + (context.node().getBoundingClientRect().height)/7.5 + 'px') // .attr('style', 'left:'+(mouse[0]+100)+'px; top:' + (mouse[1]) + 'px')
 				.html("<em>"+d.key+":</em>"
 				+"<p>- Current rank : "+d.currentRank+"</p>"
 				+"<p>- Former rank : "+d.formerRank+"</p>"
