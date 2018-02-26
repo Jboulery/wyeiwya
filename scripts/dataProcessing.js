@@ -55,6 +55,24 @@ function dataProcessing(data,MinProducts){
 			}
 		});
 
+
+		var globalmaxFat 		= 100 //d3.max(data, function(d) { return +d.fat_100g;  });
+		var globalmaxSatFat 	= 100 //d3.max(data, function(d) { return +d['saturated-fat_100g'];  });
+		var globalmaxChol 		= d3.max(data, function(d) { return +d.cholesterol_100g; });
+		var globalmaxCarb 		= 100 //d3.max(data, function(d) { return +d.carbohydrates_100g; });
+		var globalmaxFib 		= 100 //d3.max(data, function(d) { return +d.fiber_100g; });
+		var globalmaxSug 		= 100 //d3.max(data, function(d) { return +d.sugars_100g;  });
+		var globalmaxProt	    = 100 //d3.max(data, function(d) { return +d.proteins_100g;  });
+		var globalmaxSalt	    = 100 //d3.max(data, function(d) { return +d.salt_100g; });
+		var globalmaxSod 	    = d3.max(data, function(d) { return +d.sodium_100g;});
+		var globalmaxVitA	    = d3.max(data, function(d) { return +d['vitamin-a_100g'];  });
+		var globalmaxVitC	    = d3.max(data, function(d) { return +d['vitamin-c_100g']; });
+		var globalmaxCal    	= d3.max(data, function(d) { return +d.calcium_100g;});
+		var globalmaxIron	    = d3.max(data, function(d) { return +d.iron_100g; });
+		var globalmaxEner       = 2500 //d3.max(data, function(d) { return +d.energy_100g; });
+
+		var ValMax = [globalmaxFat, globalmaxSatFat, globalmaxChol, globalmaxCarb, globalmaxFib, globalmaxSug, globalmaxProt, globalmaxSalt, globalmaxSod, globalmaxVitA, globalmaxVitC, globalmaxCal, globalmaxIron, globalmaxEner];
+
 		// Nest data
 		var ByCountry = d3.nest()
 			.key(function(d) {return d.countries_tags})
@@ -111,16 +129,41 @@ function dataProcessing(data,MinProducts){
 		var maxCal    	= d3.max(ByCountry, function(d) { return +d.means[11]; });
 		var maxIron	    = d3.max(ByCountry, function(d) { return +d.means[12]; });
 		var maxEner     = d3.max(ByCountry, function(d) { return +d.means[13]; });
-		var ValMax 	= [maxFat, maxSatFat, maxChol, maxCarb, maxFib, maxSug, maxProt, maxSalt, maxSod, maxVitA, maxVitC, maxCal, maxIron, maxEner];
-
+		var ValMaxMoy 	= [maxFat, maxSatFat, maxChol, maxCarb, maxFib, maxSug, maxProt, maxSalt, maxSod, maxVitA, maxVitC, maxCal, maxIron, maxEner];
 
 		ByCountry.forEach(function(country){
+			// normalized means
 			var normalized = []
 			for (var i=0;i<country.means.length;i++){
-				normalized.push((country.means[i]/ValMax[i]*100).toPrecision(4));
+				normalized.push((country.means[i]/ValMaxMoy[i]*100).toPrecision(4));
 			}
 			country.normalized = normalized;
-		})
+			// normalized products
+			var normvalues = []
+			for (var j=0;j<country.values.length;j++){
+				var newval = {};
+				newval.fat_100g = (country.values[j].fat_100g/globalmaxFat)*100;
+				newval['saturated-fat_100g'] = (country.values[j]['saturated-fat_100g']/globalmaxSatFat)*100;
+				newval.cholesterol_100g = (country.values[j].cholesterol_100g/globalmaxChol)*100;
+				newval.carbohydrates_100g = (country.values[j].carbohydrates_100g/globalmaxCarb)*100;
+				newval.fiber_100g = (country.values[j].fiber_100g/globalmaxFib)*100;
+				newval.sugars_100g = (country.values[j].sugars_100g/globalmaxSug)*100;
+				newval.proteins_100g = (country.values[j].proteins_100g/globalmaxProt)*100;
+				newval.salt_100g = (country.values[j].salt_100g/globalmaxSalt)*100;
+				newval.sodium_100g = (country.values[j].sodium_100g/globalmaxSod)*100;
+				newval['vitamin-a_100g'] = (country.values[j]['vitamin-a_100g']/globalmaxVitA)*100;
+				newval['vitamin-c_100g'] = (country.values[j]['vitamin-c_100g']/globalmaxVitC)*100;
+				newval.calcium_100g = (country.values[j].calcium_100g/globalmaxCal)*100;
+				newval.iron_100g = (country.values[j].iron_100g/globalmaxIron)*100;
+				newval.energy_100g = (country.values[j].energy_100g/globalmaxEner)*100;
+				
+				if (Math.max(...Object.values(newval)) <= 100) {
+					normvalues.push(newval);
+				}
+				
+			}
+			country.normalizedvalues = normvalues;
+			})
 
 	return ByCountry
 }
