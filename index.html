@@ -222,13 +222,21 @@
 			// 	Initialize Ranking, Geomap and Spider	//
 			//**********************************//
 			spiderChart = radarChartInit(ByCountry,"#SpiderDiv");
-			scatterplotChart = scatterplotInit(ByCountry, '#ScatterplotDiv');
 			rankingChart = rankingInit(ByCountry, svgRanking,height,margin,1700,spiderChart);
+			scatterplotChart = scatterplotInit(ByCountry,'#ScatterplotDiv'); 
 			map = GeoInit(ByCountry, svgMap,width);
 
 			d3.selectAll("#modify_weights_btn")
 				.on("click", changed);
 
+			$('#x_axis_selection').on('change', function(){
+				$('#ScatterplotSVG').remove();
+				scatterplotInit(ByCountry, '#ScatterplotDiv');
+			});
+			$('#y_axis_selection').on('change', function(){
+				$('#ScatterplotSVG').remove();
+				scatterplotInit(ByCountry, '#ScatterplotDiv');
+			});
 			
 			// resize the chart on resizing window
 			window.addEventListener('resize', rankingChart.render);
