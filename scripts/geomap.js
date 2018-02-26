@@ -98,6 +98,7 @@ function GeoInit(ByCountry,field,width){
 	      name = d.properties.name;
 	      var value;
 	      var rank = ranks.indexOf(d.properties.name);
+	      rank = rank + 1;
 	      var flag =0;
 	      ByCountry.forEach(function(country){
       		    if (country.key == d.properties.name){
@@ -113,7 +114,7 @@ function GeoInit(ByCountry,field,width){
 	        .map( function(d) { return parseInt(d); } );
 	      tooltip.classed("hidden", false)
 	        .attr("style", "left:"+(mouse[0]+100)+"px;top:"+(mouse[1]+400)+"px")
-	        .html("<em>" + name + "</em> </br> Value : " + value + "</br> Rank : " + (rank+1));
+	        .html("<em>" + name + "</em> </br> Value : " + value + "</br> Rank : " + (rank));
 	    }
 
 
