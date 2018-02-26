@@ -61,11 +61,9 @@ function dataProcessing(data,MinProducts){
 			.entries(data);
 		
 
-		console.log(ByCountry);
 		ByCountry = ByCountry.filter(function(d) {
 			return (d.values.length > MinProducts)
-		})
-		console.log(ByCountry);
+		});
 
 		// Add max / min / mean
 		ByCountry.forEach(function(country){

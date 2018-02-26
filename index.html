@@ -42,6 +42,13 @@
 	    <ul class="navbar-nav ml-auto">
 	    	<li class="nav-item">
 				<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#helpModal">
+					Help
+				</button>
+			</li>	
+	    </ul>
+	    <ul class="navbar-nav ml-auto">
+	    	<li class="nav-item">
+				<button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#project">
 					About the project
 				</button>
 			</li>	
@@ -117,26 +124,13 @@
     	<div class="modal-dialog" role="document">
     		<div class="modal-content">
     			<div class="modal-header">
-    				<h5 class="modal-title" id="helpModalLabel">Welcome to our WYEIWYA project</h5>
+    				<h5 class="modal-title" id="helpModalLabel">Help section</h5>
     				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
     					<span aria-hidden="true">&times;</span>
     				</button>
     			</div>
     			<div class="modal-body">
-    				<h2> About our project </h2> </br>
-
-    				Authors : 
-    				<a href="https://github.com/RaphAllier"> Raphael Allier </a> | 
-    				<a href="https://github.com/Jboulery"> Jeremy Boulery </a> | 
-    				<a href="https://github.com/ValentinCrr"> Valentin Carra </a> </br>
-
-    				<p> What you eat is who you are ! Ever wonder which country eats the healthiest food ? You're going on a trip to Phillipines and you worry that you won't be able to keep on with your diet ? This data visualization project will give you all the answers. </p>
-
-    				<p> Based on a database provided by <a href="https://world.openfoodfacts.org/"> OpenFoodFacts </a> and on this <a href="https://www.kaggle.com/openfoodfacts/world-food-facts"> Kaggle topic</a>, we created a D3 visualization that allows you to see which country in the world eats the fattest food or the sweetest one. </p>
-
-    				<p> The source code of the project is available <a href="https://github.com/Jboulery/wyeiwya"> here</a>. </p>
-
-    				<h2> Help section </h2> </br>
+    				<h2> Need some help ? </h2> </br>
 
     				<h3> Ranking chart </h3>
 
@@ -149,6 +143,37 @@
     				<h3> Radar chart </h3>
 
     				<p> On the right side, a radar chart allows you to visualize and compare the raw nutritional values of a given country with anoter. To do so, just click on the rectangle beside the desired country in the ranking, and its radar chart will appear on the right. </p>
+
+    			</div>
+    			<div class="modal-footer">
+    				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+    			</div>
+    		</div>
+    	</div>
+	</div>
+
+    <div class="modal fade" id="project" tabindex="-1" role="dialog" aria-labelledby="helpModalLabel" aria-hidden="true">
+    	<div class="modal-dialog" role="document">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<h5 class="modal-title" id="helpModalLabel">About the project</h5>
+    				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    					<span aria-hidden="true">&times;</span>
+    				</button>
+    			</div>
+    			<div class="modal-body">
+    				<h2> What You Eat Is Who You Are </h2> </br>
+
+    				Authors : 
+    				<a href="https://github.com/RaphAllier"> Raphael Allier </a> | 
+    				<a href="https://github.com/Jboulery"> Jeremy Boulery </a> | 
+    				<a href="https://github.com/ValentinCrr"> Valentin Carra </a> </br>
+
+    				<p> What you eat is who you are ! Ever wonder which country eats the healthiest food ? You're going on a trip to Phillipines and you worry that you won't be able to keep on with your diet ? This data visualization project will give you all the answers. </p>
+
+    				<p> Based on a database provided by <a href="https://world.openfoodfacts.org/"> OpenFoodFacts </a> and on this <a href="https://www.kaggle.com/openfoodfacts/world-food-facts"> Kaggle topic</a>, we created a D3 visualization that allows you to see which country in the world eats the fattest food or the sweetest one. </p>
+
+    				<p> The source code of the project is available <a href="https://github.com/Jboulery/wyeiwya"> here</a>. </p>
 
     			</div>
     			<div class="modal-footer">
