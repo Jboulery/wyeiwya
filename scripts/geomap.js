@@ -1,33 +1,22 @@
 function GeoInit(ByCountry,field,width){
 		
+		// necessary to get he right proportions
 		var w = 960;
 		var h = 500;
 
 		var height = width * h/w;
 		var context = field.append("svg")
-				.attr("width",width)
-				.attr("height",height)
+				.attr("width",field.node().getBoundingClientRect().width)
+				.attr("height",field.node().getBoundingClientRect().height)
+				.attr("class","map-context")
 
 
 		var countries;
 	    // Define svg canvas dimensions
 
 	    // ranks is the country ordered by the criteria
-		var ranks; 
-	    // define projection
-	    var projection = d3.geoMercator()
-	        .scale(150)
-	        .translate([width/2,height/1.5]);
-
-	    // Create svg canvas
-	    // var svg = context.append("svg")
-	    // .attr("width", width)
-	    // .attr("height", height);
-
-	    // define geoPath function 
-	    var path = d3.geoPath()
-	        .projection(projection);
-
+		var ranks;
+		var projection;
 	    // define tooltip variable
 	    var tooltip = field
 	         .append("div")
@@ -51,13 +40,31 @@ function GeoInit(ByCountry,field,width){
 	    d3.json("data/world.json", function(error, world) {
 	      if(error) return console.error(error);
 
+
+	    var worlddata = topojson.feature(world, world.objects.countries);
 	    // draw countries
 	      countries = g.append("g")
 	          .attr("class", "boundary")
 	          .selectAll("boundary")
-	          .data(topojson.feature(world, world.objects.countries).features)
+	          .data(worlddata.features)
 	          .enter()
 	          .append("path");
+
+
+	    // define projection
+	    projection = d3.geoMercator()
+	    .scale(1)
+	    .fitSize([context.node().getBoundingClientRect().width,context.node().getBoundingClientRect().height],worlddata)
+
+	    /*
+	        .scale(150)
+	        .translate([width/2,height/1.5]);*/
+
+	    // define geoPath function 
+	    	var path = d3.geoPath()
+	        .projection(projection);
+
+
 
 
 	      countries
@@ -145,6 +152,8 @@ function GeoInit(ByCountry,field,width){
 		      })
 	    })
 	    }
+
+
 	    return {GeoUpdate : GeoUpdate}
 }
 
