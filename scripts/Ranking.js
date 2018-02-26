@@ -161,6 +161,9 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 			currentGroup.select("text").style("font-weight", "normal");
 			// Update radar chart
 			spiderChart.spiderUpdate();
+			var scatterplotSVG = document.getElementById('ScatterplotSVG');
+			scatterplotSVG.remove();
+			scatterplotInit(ByCountry, '#ScatterplotDiv');
 		});
 	
 	//******************************//

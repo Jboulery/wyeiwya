@@ -12,17 +12,20 @@ function scatterplotInit(ByCountry,context){
 	var colorscale = d3.scaleOrdinal(d3.schemeCategory10);
 
 	// // Data parameters :
-	x_coord = "sugars_100g";
-	y_coord = "fat_100g";
+	x_coord_list = document.getElementById("x_axis_selection");
+	x_coord = x_coord_list.options[x_coord_list.selectedIndex].value;
+	y_coord_list = document.getElementById("y_axis_selection");
+	y_coord = y_coord_list.options[y_coord_list.selectedIndex].value;
 
 	// Create svg canvas
 
 	var svg = d3.select(context)
 		.append("svg")
+			.attr('id', 'ScatterplotSVG')
 			.attr("width", w)
-			.attr("height", h)
+			.attr("height", h);
 
-	var g = svg.append("g")
+	var g = svg.append("g");
 		// .attr("transform", "translate(,)")
 
 	// Extremums
