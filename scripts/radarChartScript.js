@@ -3,7 +3,7 @@
 
 function radarChartInit(ByCountry,context){
 	// Geometrical params
-	var w = 0.95*d3.select(context).node().getBoundingClientRect().width, // Get parent width
+	var w = 0.65*d3.select(context).node().getBoundingClientRect().width, // Get parent width
 		h = w;
 
 	var colorscale = d3.scaleOrdinal(d3.schemeCategory10);
@@ -24,8 +24,8 @@ function radarChartInit(ByCountry,context){
 	//radians: 2 * Math.PI,
 	//opacityArea: 0.5,
 	//ToRight: 5,
-	  TranslateX: 0.20*w,
-	  TranslateY: 0.22*h,
+	  TranslateX: 0.40*w,
+	  TranslateY: 0.05*h,
 	  ExtraWidthX: 100,	
 	  ExtraWidthY: 100,
 	//color: d3.scaleOrdinal(d3.schemeCategory10)
@@ -57,15 +57,15 @@ function radarChartInit(ByCountry,context){
 		.attr("height", "100%")
 
 	//Create the title for the legend
-	var text = svg.append("text")
-		.attr("class", "title")
-		.attr('transform', 'translate(90,0)') 
-		.attr("x", 25)
-		.attr("y", 15)
-		.attr("text-anchor","middle")
-		.attr("font-size", "12px")
-		.attr("fill", "#404040")
-		.text("Mean values comparison");
+	// var text = svg.append("text")
+	// 	.attr("class", "title")
+	// 	.attr('transform', 'translate(90,0)') 
+	// 	.attr("x", 25)
+	// 	.attr("y", 15)
+	// 	.attr("text-anchor","middle")
+	// 	.attr("font-size", "12px")
+	// 	.attr("fill", "#404040")
+	// 	.text("Mean values comparison");
 			
 	//Initiate Legend	
 	var legend = svg.append("g")
