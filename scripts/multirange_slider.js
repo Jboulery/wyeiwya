@@ -18,7 +18,7 @@ function sliderInit(){
 
 	var slider = holder.append('g')
 		.attr('call', 'slider')
-		.attr('transform', 'translate(0, ' + height / 2 + ')');
+		.attr('transform', 'translate(0, ' + (height / 2 + 10)+ ')');
 
 
 	slider.append('line')

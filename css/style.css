@@ -13,11 +13,12 @@
     -moz-box-shadow: 0 8px 6px -6px #999;
     box-shadow: 0 8px 6px -6px #999;
     padding: 0;
+    height: 80px;
 }
 
 #page-content-wrapper{
     width:100%;
-    height: calc(100% - 77px);
+    height: calc(100% - 80px);
     position: absolute;
     background: #FDFDFD;
 }
