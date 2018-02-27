@@ -90,8 +90,6 @@ function radarChartInit(ByCountry,context){
 				// Add country on spiderGraph
 				var c = []
 				country.means.forEach(function(crit,i){
-					console.log(i)
-					console.log(crit)
 					c.push({axis:labels[i],value:crit/max[i]});
 				});
 				spiderLegendVar.push(country.key);

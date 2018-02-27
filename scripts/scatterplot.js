@@ -16,8 +16,6 @@ function scatterplotInit(ByCountry,context){
 	x_coord = x_coord_list.options[x_coord_list.selectedIndex].value;
 	y_coord_list = document.getElementById("y_axis_selection");
 	y_coord = y_coord_list.options[y_coord_list.selectedIndex].value;
-	console.log(x_coord);
-	console.log(y_coord);
 
 	// Create svg canvas
 
@@ -76,7 +74,7 @@ function scatterplotInit(ByCountry,context){
 
 		// Change color
 		.selectAll("path")
-		.data(function(d){return d.values;})
+		.data(function(d){return d.normalizedvalues;})
 		.enter()
 		.append("path")
 		.attr("class", "symbol")
