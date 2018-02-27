@@ -37,7 +37,8 @@ function radarChartInit(ByCountry,context){
 	var temp_c = [];
 	var labels = ["Fat", "S. Fats", "Chol.", "Carb.", "Fibers", "Sugars", "Proteins",
 				"Salt", "Sod.", "Vit. A", "Vit. C", "Calc.", "Iron", "Energy"];
-	var max = [100, 100, 0.01, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 4000,1];
+	// var max = [100, 100, 0.01, 100, 100, 100, 100, 100, 100, 100, 100, 100, 100, 4000,1]; Use the max extracted from data preprocessing
+	var max = [34.072500000000005, 11.5275, 0.019411164821286984, 69.3, 4.1, 41.64, 13.242, 6.2700000000000005, 2.468503937007872, 0.005416666666666667, 0.026729411764705883, 0.1888, 0.00364, 3069.7153846153847]; 
 	for (var i=0;i<14;i++){temp_c.push({axis:labels[i],value:1});};
 	spiderVar.push(temp_c);
 	var RadarChart = radarChart();

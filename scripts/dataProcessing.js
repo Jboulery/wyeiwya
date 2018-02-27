@@ -58,7 +58,7 @@ function dataProcessing(data,MinProducts){
 
 		var globalmaxFat 		= 100 //d3.max(data, function(d) { return +d.fat_100g;  });
 		var globalmaxSatFat 	= 100 //d3.max(data, function(d) { return +d['saturated-fat_100g'];  });
-		var globalmaxChol 		= d3.max(data, function(d) { return +d.cholesterol_100g; });
+		var globalmaxChol 		=  0.04//d3.max(data, function(d) { return +d.cholesterol_100g; });
 		var globalmaxCarb 		= 100 //d3.max(data, function(d) { return +d.carbohydrates_100g; });
 		var globalmaxFib 		= 100 //d3.max(data, function(d) { return +d.fiber_100g; });
 		var globalmaxSug 		= 100 //d3.max(data, function(d) { return +d.sugars_100g;  });
@@ -115,6 +115,8 @@ function dataProcessing(data,MinProducts){
 		});
 
 
+		var ValMaxMoy;
+
 		var maxFat 		= d3.max(ByCountry, function(d) { return +d.means[0]; });
 		var maxSatFat 	= d3.max(ByCountry, function(d) { return +d.means[1]; });
 		var maxChol 	= d3.max(ByCountry, function(d) { return +d.means[2]; });
@@ -129,7 +131,8 @@ function dataProcessing(data,MinProducts){
 		var maxCal    	= d3.max(ByCountry, function(d) { return +d.means[11]; });
 		var maxIron	    = d3.max(ByCountry, function(d) { return +d.means[12]; });
 		var maxEner     = d3.max(ByCountry, function(d) { return +d.means[13]; });
-		var ValMaxMoy 	= [maxFat, maxSatFat, maxChol, maxCarb, maxFib, maxSug, maxProt, maxSalt, maxSod, maxVitA, maxVitC, maxCal, maxIron, maxEner];
+		ValMaxMoy 	= [maxFat, maxSatFat, maxChol, maxCarb, maxFib, maxSug, maxProt, maxSalt, maxSod, maxVitA, maxVitC, maxCal, maxIron, maxEner];
+		console.log(ValMaxMoy);
 
 		ByCountry.forEach(function(country){
 			// normalized means
