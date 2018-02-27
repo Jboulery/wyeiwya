@@ -6,8 +6,8 @@ function GeoInit(ByCountry,field,width){
 
 		var height = width * h/w;
 		var context = field.append("svg")
-				.attr("width", 0.9*field.node().getBoundingClientRect().width)
-				.attr("height",0.9*field.node().getBoundingClientRect().height)
+				.attr("width", field.node().getBoundingClientRect().width)
+				.attr("height",field.node().getBoundingClientRect().height)
 				.attr("class","map-context")
 
 
@@ -31,6 +31,14 @@ function GeoInit(ByCountry,field,width){
 	    var colorMin = d3.min(ByCountry, function(d) { return d.criteria; } );
 	    var colorMax = d3.max(ByCountry, function(d) { return d.criteria; } );
 	    var pas = (colorMax-colorMin)/9
+
+
+	    var zoom = d3.zoom()
+		.on("zoom",function(){
+			g.attr("transform",d3.event.transform);
+		})
+
+		context.call(zoom);
 
 	    var color = d3.scaleThreshold()
 	    .domain([colorMin,colorMin+pas*1.5,colorMin+pas*2,colorMin+pas*3,colorMin+pas*4,colorMin+pas*4.5,colorMin+pas*5,colorMin+pas*5.5,colorMin+pas*9])
