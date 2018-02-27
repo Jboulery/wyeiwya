@@ -6,8 +6,8 @@ function GeoInit(ByCountry,field,width){
 
 		var height = width * h/w;
 		var context = field.append("svg")
-				.attr("width",field.node().getBoundingClientRect().width)
-				.attr("height",field.node().getBoundingClientRect().height)
+				.attr("width", 0.9*field.node().getBoundingClientRect().width)
+				.attr("height",0.9*field.node().getBoundingClientRect().height)
 				.attr("class","map-context")
 
 
