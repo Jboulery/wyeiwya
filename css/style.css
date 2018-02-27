@@ -114,7 +114,7 @@ div.tooltip {
 .boundary {
   fill: #DEB887;
   stroke: black;
-  stroke-width: 1px; 
+  stroke-width: 0.01%; 
 }
 
 .hidden {
@@ -140,6 +140,11 @@ div.tooltip {
 
 #ScatterplotDiv > svg{
   overflow: visible;
+}
+
+.form-group {
+	padding-left: 10px;
+	padding-right: 10px;
 }
 
 /* HELP SECTION */
