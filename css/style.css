@@ -162,3 +162,9 @@ div.tooltip {
   font-size: 18px;
   font-style: italic;
 }
+
+#logo-OFF {
+	display:flex;
+	justify-content: center;
+	align-items: center;
+}
