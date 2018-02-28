@@ -35,15 +35,10 @@ with open('products.csv','r',encoding="utf-8") as tsvin:
             # Select all the desired elements and treat the country name, except for the first line
                 countries = row[32].split(",")
                 for e in countries:
-                    data = [row[i] for i in [ 32, 42, 53, 159, 63, 65, 66, 100, 101, 102, 111, 112, 116, 117, 119, 124, 138, 140]]
+                    data = [row[i] for i in [ 32, 63, 65, 66, 100, 101, 102, 111, 112, 116, 117, 119, 124, 138, 140]]
                     CP = country.CountryProcessing(e)
                     data[0] = CP.correct()
-                    #data[3] = e.split(":")[-1]
-
-
-    
-                    #data = [row[i] for i in [0, 7, 15, 32, 42, 53, 159, 63, 65, 66, 100, 101, 102, 111, 112, 116, 117, 119, 124, 138, 140]]
-                   
+                      
                     # Relation table
                     # Row_nb : Attribute - % filled
                     ##########################
@@ -61,14 +56,14 @@ with open('products.csv','r',encoding="utf-8") as tsvin:
                     # 63  : Energy / 100g - 88.30%
                     # Unit g ?
                     # 65  : Fat / 100g - 85.13%
-                    ### 66  : Saturated Fat / 100g - 80.12% (Part of Fat)
+                    # 66  : Saturated Fat / 100g - 80.12% (Part of Fat)
                     # 100 : Cholesterol / 100g - 40.42%
                     # 101 : Carbohydrates / 100g - 85.07%
-                    ### 102 : Sugars / 100g - 84.37% (Part of Carbohydrates)
+                    # 102 : Sugars / 100g - 84.37% (Part of Carbohydrates)
                     # 111 : Fiber / 100g - 62.83%
                     # 112 : Proteins / 100g - 88%
                     # 116 : Salt / 100g - 87.35%
-                    ### 117 : Sodium / 100g - 87.35% (Part of Salt)
+                    # 117 : Sodium / 100g - 87.35% (Part of Salt)
                     # 119 : Vitamin A / 100g - 38.59%
                     # 124 : Vitamin D / 100g - 39.48%
                     # 138 : Calcium / 100g - 39.52%
@@ -80,8 +75,8 @@ with open('products.csv','r',encoding="utf-8") as tsvin:
     
                     attributes_100g_sum = 0
                     for attr in data[5:]:
-                        if data.index(attr) in [6, 9, 13]:
-                            continue
+                        #if data.index(attr) in [6, 9, 13]:
+                        #    continue
                         try:
                             attr = float(attr)
                             attributes_100g_sum += attr
