@@ -136,9 +136,14 @@
     			<div class="modal-body">
     				<h2> Need some help ? </h2> </br>
 
+                    <h3> Slider </h3>
+
+                    <p> The slider on the top of the page allows you to give more impact to a nutritional category in the ranking. To do so, click on the category and drag it to the left or the right so its rectangle is as big as you want the category to be impactful. Once you're done, click on the green button "Apply" to apply the changes to the ranking and the world map. </p>
+
+
     				<h3> Ranking chart </h3>
 
-    				<p> The main part of the visualization tool is the ranking section, which shows you the countries extracted from the database ranked according to a criteria based on user input. We extract nutritional values from the database, and the slider in the top part of the page allows you to give more or less weight to those neutritionnal values in the ranking. The values used for the ranking are mean extracted from all the products registered under one country </p>
+    				<p> The main part of the visualization tool is the ranking section, which shows you the countries extracted from the database ranked according to a criteria based on user input. We extract nutritional values from the database, and the slider in the top part of the page allows you to give more or less weight to those neutritionnal values in the ranking. The values used for the ranking are mean values ,normalized for each nutritional category based on the highest mean, and extracted from all the products registered under one country </p>
 
     				<h3> World Map </h3>
 
@@ -146,8 +151,11 @@
 
     				<h3> Radar chart </h3>
 
-    				<p> On the right side, a radar chart allows you to visualize and compare the raw nutritional values of a given country with anoter. To do so, just click on the rectangle beside the desired country in the ranking, and its radar chart will appear on the right. </p>
+    				<p> On the right side, a radar chart allows you to visualize and compare the nutritional values of a given country with another. To do so, just click on the rectangle beside the desired country in the ranking, and its radar chart will appear on the right. </p>
 
+                    <h3> Scatterplot chart </h3>
+
+                    <p> Just like for the Radar chart, selecting a country in the ranking will plot the normalized nutritional values of each product sold in the country in the database. To chose the x axis and y axis nutritional values, just chose among those accessible underneath the scatterplot. </p>
     			</div>
     			<div class="modal-footer">
     				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -205,7 +213,6 @@
 			var dataset = data;
 			var MinProducts = 3;
 			ByCountry = dataProcessing(data,MinProducts);
-            console.log(ByCountry);
 
 
 			

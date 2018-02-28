@@ -132,7 +132,6 @@ function dataProcessing(data,MinProducts){
 		var maxIron	    = d3.max(ByCountry, function(d) { return +d.means[12]; });
 		var maxEner     = d3.max(ByCountry, function(d) { return +d.means[13]; });
 		ValMaxMoy 	= [maxFat, maxSatFat, maxChol, maxCarb, maxFib, maxSug, maxProt, maxSalt, maxSod, maxVitA, maxVitC, maxCal, maxIron, maxEner];
-		console.log(ValMaxMoy);
 
 		ByCountry.forEach(function(country){
 			// normalized means
