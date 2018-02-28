@@ -48,28 +48,17 @@ function radarChartInit(ByCountry,context){
 	////////////////////////////////////////////////////
 	/////////// Initiate country legend ////////////////
 	////////////////////////////////////////////////////
-
+/*
 	var svg = d3.select(context)
 		.selectAll('svg')
 		.append('svg')
 		.attr("id","Legend svg")
 		.attr("width", w)
 		.attr("height", "100%")
-
-	//Initiate Legend	
-	var legend = svg.append("g")
-		.attr("class", "legend")
-		.attr("height", 100)
-		.attr("width", 200)
-		.attr('transform', 'translate('+(-0.65*w)+','+h*1+')') 
-		;
-
+*/
 	function spiderUpdate(){
 		/* Update radar chart with new countries */
 		console.log("Update for spider chart")
-		// Remove legend
-		legend.selectAll('rect').remove();
-		legend.selectAll('text').remove();
 		// Define new spiderVar
 		spiderVar = [];
 		spiderLegendVar = [];
@@ -88,40 +77,6 @@ function radarChartInit(ByCountry,context){
 		// Draw new graph
 		//Will expect that data is in %'s
 		RadarChart.draw(context, spiderVar, mycfg,ByCountry);
-		
-		//Create colour squares
-		legend.selectAll('rect')
-		  .data(spiderLegendVar)
-		  .enter()
-		  .append("rect")
-		  .attr("x", function(d, i){ 
-				if (i<5){return w - 65;}
-				else 	{return 1.5*w - 65;}})
-		  .attr("y", function(d, i){ 
-				if(i<5)	{return i * 20;}
-				else	{return (i-5)*20}})
-		  .attr("width", 10)
-		  .attr("height", 10)
-		  .style("fill", function(d, i){ return colorscale(i);})
-		  .attr("id","Legend squares")
-		  ;
-		//Create text next to squares
-		legend.selectAll('text')
-		  .data(spiderLegendVar)
-		  .enter()
-		  .append("text")
-		  .attr("x", function(d, i){ 
-				if (i<5){return w - 52}
-				else {return 1.5*w - 52}})
-		  .attr("y", function(d, i){ 
-				if(i<5)	{return i * 20+9;}
-				else	{return (i-5)*20+9}})
-		  .attr("font-size", "11px")
-		  .attr("fill", "#737373")
-		  .text(function(d) { return d; })
-		  .attr("id","legend text")
-		  ;	
-	
 		}
 	
 	return {spiderUpdate : spiderUpdate}

@@ -80,4 +80,47 @@ function scatterplotInit(ByCountry,context){
 		.attr("class", "symbol")
 		.attr("d", d3.symbol().type(d3.symbolCircle).size(20)())
 		.attr("transform",function(d) { return "translate(" + (margin.left + x(+d[x_coord])) +","+ (margin.top + y(+d[y_coord])) +")" ;});
+
+	//**************************//
+	//			Legend			//
+	//**************************//
+	
+	//Initiate Legend	
+	var legend = svg.append("g")
+		.attr("class", "legend")
+		.attr("height", 100)
+		.attr("width", 200)
+		;
+		
+	/*
+		// Remove legend
+		legend.selectAll('rect').remove();
+		legend.selectAll('text').remove();
+		*/
+	legend.selectAll("rect")
+		.data(ByCountry)
+		.enter()
+		.filter(function(d){ return d.selected; })
+		.append("rect")
+		.attr("x", function(d, i){return margin.left + w - 120;})
+		.attr("y", function(d, i){return margin.top + i * 20;})
+		.attr("width", 10)
+		.attr("height", 10)
+		.style("fill", function(d, i){ return colorscale(d.key);})
+		.attr("id","Legend squares")
+		  ;
+		  
+		//Create text next to squares
+	legend.selectAll('text')
+		  .data(ByCountry)
+		  .enter()
+		  .filter(function(d){ return d.selected; })
+		  .append("text")
+		  .attr("x", function(d, i){return margin.left + w - 100;})
+		  .attr("y", function(d, i){return  margin.top + i * 20+9;})
+		  .attr("font-size", "11px")
+		  .attr("fill", "#737373")
+		  .text(function(d) { return d.key; })
+		  .attr("id","legend text")
+		  ;	
 }

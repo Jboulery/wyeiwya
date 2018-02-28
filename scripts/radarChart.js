@@ -74,8 +74,8 @@ function radarChart(){
 		   .attr("y2", function(d, i){return levelFactor*(1-cfg.factor*Math.cos((i+1)*cfg.radians/total));})
 		   .attr("class", "line")
 		   .style("stroke", "grey")
-		   .style("stroke-opacity", "0.75")
-		   .style("stroke-width", "0.3px")
+		   .style("stroke-opacity", "0.85")
+		   .style("stroke-width", "0.35px")
 		   .attr("transform", "translate(" + (cfg.w/2-levelFactor) + ", " + (cfg.h/2-levelFactor) + ")");
 		}
 
@@ -143,7 +143,6 @@ function radarChart(){
 		var polygons = toDisplay
 			.selectAll("polygon")
 			.data(function(d,i_1){
-				console.log("i_1 : "+i_1)
 				var dataValues = [];
 				d.means.forEach(function(j, i){
 					dataValues.push([
@@ -187,7 +186,6 @@ function radarChart(){
 		var edges = toDisplay
 			.selectAll("g")
 			.data(function(d,i_1){
-				console.log("i_1 : "+i_1)
 				var dataValues = [];
 				d.means.forEach(function(j, i){
 					dataValues.push([
