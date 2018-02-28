@@ -14,7 +14,7 @@ function radarChartInit(ByCountry,context){
 	
 	//Options for the Radar chart, other than default
 	var mycfg = {
-	  radius: 4,
+	  radius: 2,
 	  w: w-100,
 	  h: h-100,
 	  factor: 1,
@@ -56,17 +56,6 @@ function radarChartInit(ByCountry,context){
 		.attr("width", w)
 		.attr("height", "100%")
 
-	//Create the title for the legend
-	// var text = svg.append("text")
-	// 	.attr("class", "title")
-	// 	.attr('transform', 'translate(90,0)') 
-	// 	.attr("x", 25)
-	// 	.attr("y", 15)
-	// 	.attr("text-anchor","middle")
-	// 	.attr("font-size", "12px")
-	// 	.attr("fill", "#404040")
-	// 	.text("Mean values comparison");
-			
 	//Initiate Legend	
 	var legend = svg.append("g")
 		.attr("class", "legend")
@@ -75,7 +64,7 @@ function radarChartInit(ByCountry,context){
 		.attr('transform', 'translate('+(-0.65*w)+','+h*1+')') 
 		;
 
-	function spiderUpdate(toDiplay){
+	function spiderUpdate(){
 		/* Update radar chart with new countries */
 		console.log("Update for spider chart")
 		// Remove legend
@@ -85,20 +74,20 @@ function radarChartInit(ByCountry,context){
 		spiderVar = [];
 		spiderLegendVar = [];
 		// Fill them
-		ByCountry.forEach(function(country){
+		ByCountry.forEach(function(country, country_i){
 			if(country.selected == 1){
 				// ~ if country is selected
 				// Add country on spiderGraph
 				var c = []
 				country.means.forEach(function(crit,i){
-					c.push({axis:labels[i],value:crit/max[i]});
+					c.push({axis:labels[i],value:crit/max[i], color:colorscale(country_i)});
 				});
 				spiderLegendVar.push(country.key);
 				spiderVar.push(c);}
 			});
 		// Draw new graph
 		//Will expect that data is in %'s
-		RadarChart.draw(context, spiderVar, mycfg);
+		RadarChart.draw(context, spiderVar, mycfg,ByCountry);
 		
 		//Create colour squares
 		legend.selectAll('rect')
