@@ -131,7 +131,6 @@ div.tooltip {
 #SpiderDiv > svg{
   overflow: visible;
   display : block;
-  margin : auto;
 }
 
 /* Scatterplot style */
