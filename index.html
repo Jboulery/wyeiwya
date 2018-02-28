@@ -27,6 +27,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-md navbar-light">
+        &nbsp;
         <a class="navbar-brand" href="#">
             <img src="img/logo.png" width="80" height="57" alt="Logo">
         </a>
@@ -35,13 +36,16 @@
 				<script>sliderInit();</script>
 			</li>
 	    </ul>
+        &nbsp;
+        &nbsp;
 	    <ul class="navbar-nav">
-		    <li class="nav-item offset-sm-6">
+		    <li class="nav-item"> <!--offset-sm-6-->
 				<button class="btn btn-success" id="modify_weights_btn" onclick="get_sliders_distribution()">
 					Apply
 				</button>
 			</li>
 	    </ul>
+        &nbsp;
 	    <ul class="navbar-nav ml-auto">
             <li class="nav-item">
                 <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#project">
@@ -55,6 +59,7 @@
 				</button>
 			</li>
 			&nbsp;
+            &nbsp;
 	    </ul>
 	</nav>
 
@@ -138,24 +143,24 @@
 
                     <h3> Slider </h3>
 
-                    <p> The slider on the top of the page allows you to give more impact to a nutritional category in the ranking. To do so, click on the category and drag it to the left or the right so its rectangle is as big as you want the category to be impactful. Once you're done, click on the green button "Apply" to apply the changes to the ranking and the world map. </p>
+                    <p> The Slider on top of the page allows you to give more impact to a nutritional category in the ranking. To do so, click on the category and drag it to the left or the right so its rectangle is as big as you want the category to be impactful. Once you're done, click on the green button "Apply" to apply the changes to the Ranking and the World Map. </p>
 
 
     				<h3> Ranking chart </h3>
 
-    				<p> The main part of the visualization tool is the ranking section, which shows you the countries extracted from the database ranked according to a criteria based on user input. We extract nutritional values from the database, and the slider in the top part of the page allows you to give more or less weight to those neutritionnal values in the ranking. The values used for the ranking are mean values ,normalized for each nutritional category based on the highest mean, and extracted from all the products registered under one country </p>
+    				<p> The main part of the visualization tool is the Ranking section, which shows you the countries extracted from the database ranked according to a criteria based on user input. We extract nutritional values from the database, and the slider in the top part of the page allows you to give more or less weight to those nutritionnal values in the ranking. The values used for the Ranking are mean values ,normalized for each nutritional category based on the highest mean, and extracted from all the products registered under one country. </p>
 
     				<h3> World Map </h3>
 
-    				<p> On the bottom part of the page, a world map allows you to see the countries ranked above colored according to their rank. </p>
+    				<p> On the bottom part of the page, a World Map allows you to see the countries ranked above, colored accordingly. </p>
 
     				<h3> Radar chart </h3>
 
-    				<p> On the right side, a radar chart allows you to visualize and compare the nutritional values of a given country with another. To do so, just click on the rectangle beside the desired country in the ranking, and its radar chart will appear on the right. </p>
+    				<p> On the right side, a Radar chart allows you to visualize and compare the nutritional values of a given country with another. To do so, just click on the rectangle beside the desired country in the ranking, and its radar chart will appear on the right. </p>
 
                     <h3> Scatterplot chart </h3>
 
-                    <p> Just like for the Radar chart, selecting a country in the ranking will plot the normalized nutritional values of each product sold in the country in the database. To chose the x axis and y axis nutritional values, just chose among those accessible underneath the scatterplot. </p>
+                    <p> Just like the Radar chart, selecting a country in the ranking will plot the normalized nutritional values of each product sold in the country in the database. To chose the x axis and y axis nutritional values, just chose among those accessible underneath the scatterplot. </p>
     			</div>
     			<div class="modal-footer">
     				<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

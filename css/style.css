@@ -4,6 +4,7 @@
 
 .navbar{
     border-radius: 0;
+    overflow:auto;
 }
 
 .navbar-light{
@@ -170,3 +171,7 @@ div.tooltip {
 	justify-content: center;
 	align-items: center;
 }
+
+
+/* buttons */ 
+

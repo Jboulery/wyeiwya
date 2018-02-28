@@ -27,9 +27,7 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 	var rec5 = context.append("rect");
 	
 	// Graphical parameters
-	var boxStrokeWidth 	= 2;	
-	var numTicks = 5;	// Nb of ticks on xaxis
-	
+	var boxStrokeWidth 	= 2;		
 	updateDimensions(context.node().getBoundingClientRect().width);
 
 	// color scale 
@@ -68,16 +66,6 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 	var yScale = d3.scaleBand()
 				.domain(ByCountry.map(function(d) {return d.key; }));
 	
-	// Axis creation
-	var xAxis = d3.axisBottom()
-		.ticks(numTicks)
-		.tickSize(-3);
-	
-	// Initialize axis drawing
-	var gX = context.append("g")
-		.attr("class","axis")
-        .attr("dy", ".15em")
-		.attr("transform", "translate(0,15)")
 	
 	// Create place for drawing
 	var barSvg = context
@@ -107,7 +95,7 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 	var bars = groups
 		.append("rect")
 		.attr("class", "bars")
-		.attr("fill",function(d){
+		.style("fill",function(d){
 			if (d.selected == false) {return color(d.criteria);}
 			else {return "green"}})
 		.attr("id", function(d,i) { return d.key; });
@@ -118,16 +106,6 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 		.text(function(d) { return d.criteria.toPrecision(3); })
 		.attr("text-anchor", "end")
 		.attr("id", "precise-value");
-		
-	// Create grid
-	var grid = xScale.ticks(numTicks);
-	
-	var grid_on = barSvg.append("g")
-		.attr("class", "grid")
-		.selectAll("line")
-		.data(grid, function(d) { return d; })
-		.enter().append("line")
-		.attr("stroke", "white");
 		
 	// Render everything
 	render()
@@ -193,12 +171,6 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 		xScale.range([margin.left+text_padding+bar_padding,width+margin.left]);
 		yScale.rangeRound([0, height]);
 		
-		//update the axis
-		xAxis.scale(xScale);
-		gX.call(xAxis)
-			.selectAll("text")
-			//.attr("dy", ".5em")		
-			.attr("transform", "translate(0,-15)");
 		
 		//update svg elements to new dimensions
 		context
@@ -217,7 +189,9 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 			.attr("height", bar_h)
 			.attr("x", xScale(0))
 			.attr("y", function(d) { return yScale(d.key); })
-			.attr("fill", function(d){return color(d.criteria);});
+			.style("fill", function(d){
+			if (d.selected == false) {return color(d.criteria);}
+			else {return "green"}});
 
 		
 		// Update progress bar
@@ -233,13 +207,6 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 			.attr("x", function(d) { return xScale(d.criteria); })
 			.attr("dx", "-.5em")
 			.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+4; })
-
-		// Update grid
-		grid_on
-		.attr("y1", 16)
-		.attr("y2", height+margin.bottom)
-		.attr("x1", function(d) { return xScale(d); })
-		.attr("x2", function(d) { return xScale(d); })
 	  }
 
 	function updateDimensions(winWidth) {
@@ -294,19 +261,6 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 		xScale.domain([0, xMax]);
 		yScale.domain(ByCountry.map(function(d) {return d.key; }));
 		
-		// Update axis
-		xAxis.scale(xScale)
-		
-		gX.transition()
-		.duration(1000)
-		.call(xAxis)
-		
-		// Update grid
-		grid_on
-			.transition()
-			.duration(1000)
-			.attr("x1", function(d) { return xScale(d); })
-			.attr("x2", function(d) { return xScale(d); })
 		
 		// Update numbers
 		numText
@@ -320,16 +274,17 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 		
 		// Update bars
 		bars
+		.style("fill",function(d){
+			if (d.selected == false) {return color(d.criteria);}
+			else {return "green"}})
 		.transition()
 		.duration(1000)
 		.attr("width", function(d) {return xScale(d.criteria)-xScale(0); })
 		.attr("x", xScale(0))
 		.transition()
 		.duration(1000)
-		.attr("y", function(d) { return yScale(d.key); })
-		.attr("fill",function(d){
-			if (d.selected == false) {return color(d.criteria);}
-			else {return "green"}})
+		.attr("y", function(d) { return yScale(d.key); });
+
 		// Update progress bars
 		gauge
 			.transition()
