@@ -1,8 +1,3 @@
-// Inspirated by : 
-// http://bl.ocks.org/mbostock/3943967
-// https://bl.ocks.org/mbostock/1256572
-
-
 //**************************************//
 //		Ranking creation function		//
 //**************************************//
