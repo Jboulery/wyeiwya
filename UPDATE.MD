@@ -2,8 +2,12 @@
 
 ## To fix
 
-- Loding issue : Initial loading time can take up to 10 seconds. To solve this, a loss of information (only mean values thus no more scatterplot) is necessary
+Bouton reset du slider 
 
-- Fill the README.MD file with a detailed description of the project (4-5 pages, screenshots, ...), and the tutorial video link.
+Surligner le pays hover dans le ranking (déjà fait) et sur la map en même temps 
+
+Pouvoir sélectionner un pays sur la map et le ranking (ranking only atm)
+
+
 
 ## Fixed
