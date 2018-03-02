@@ -35,20 +35,6 @@ After cleaning and selection of the columns, the file created is only 48.2Mo. We
 		<td> 99.95% </td>
 	</tr>
 	<tr>
-		<td> additives_n </td>
-		<td> Number of additives in the product </td> 
-		<td> 3 </td> 
-		<td> Int value </td> 
-		<td> 86.57% </td>
-	</tr>
-	<tr>
-		<td> nutrition_grade_fr </td>
-		<td> French nutrition grade </td> 
-		<td> A </td> 
-		<td> <a href="http://www.mangerbouger.fr/Manger-Mieux/Comment-manger-mieux/Comprendre-les-infos-nutritionnelles2/Le-Nutri-Score-l-information-nutritionnelle-en-un-coup-d-oeil?gclid=CjwKCAiA-9rTBRBNEiwAt0Znw02malCE6XrmGf9dVM2h_spKWEyjQz3esiazsEdEzScoT4mhIR2t9hoC6iQQAvD_BwE#xtor=SEC-34-GOO-[Nutriscore]--S-[%2Bscores%20%2Bnutrition]"> Information </a> </td> 
-		<td> 86.57% </td>
-	</tr>
-	<tr>
 		<td> energy_100g </td>
 		<td> Energy value for 100g </td> 
 		<td> 2243 </td> 
@@ -145,13 +131,6 @@ After cleaning and selection of the columns, the file created is only 48.2Mo. We
 		<td> 0.00935 </td> 
 		<td> Value in grams </td> 
 		<td> 39.39% </td>
-	</tr>
-	<tr>
-		<td> nutrition_score_uk_100g </td>
-		<td> UK Nutrition Score for 100g </td> 
-		<td> 10 </td> 
-		<td> <a href="https://www.food.gov.uk/northern-ireland/nutritionni/niyoungpeople/nutlab/nutprofmod"> Information </a> </td> 
-		<td> 77.75% </td>
 	</tr>
 </table>
 
