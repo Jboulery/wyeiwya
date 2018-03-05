@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+﻿# -*- coding: utf-8 -*-
 
 # Prepare the arrays for name correction 
 
@@ -47,7 +47,7 @@ GroupedCountry += [["mexico","messico"]]
 
 # SAUDI ARABIA
 TrueCountry += ["Saudi Arabia"]
-GroupedCountry += [["saudi-arabia","arabia-saudita"]]
+GroupedCountry += [["saudi-arabia","arabia-saudita","السعودية","saudi-arabia"]]
 
 # IRAQ
 TrueCountry += ["Iraq"]
@@ -224,10 +224,6 @@ GroupedCountry += [["tunisia"]]
 # ICELAND
 TrueCountry += ["Iceland"]
 GroupedCountry += [["iceland"]]
-
-# SAUDIA ARABIA
-TrueCountry += ["Saudia-Arabia"]
-GroupedCountry += [["السعودية","saudi-arabia"]]
 
 # MADAGASCAR 
 TrueCountry += ["Madagascar"]

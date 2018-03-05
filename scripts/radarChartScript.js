@@ -58,7 +58,6 @@ function radarChartInit(ByCountry,context){
 */
 	function spiderUpdate(){
 		/* Update radar chart with new countries */
-		console.log("Update for spider chart")
 		// Define new spiderVar
 		spiderVar = [];
 		spiderLegendVar = [];

@@ -1,4 +1,4 @@
-function GeoInit(ByCountry,field,width){
+function GeoInit(ByCountry,field,width,spiderChart){
 		
 		// necessary to get he right proportions
 		var w = 960;
@@ -73,8 +73,6 @@ function GeoInit(ByCountry,field,width){
 	        .projection(projection);
 
 
-
-
 	      countries
 	          .attr("name", function(d) {return d.properties.name;})
 	          .attr("id", function(d) { return d.id;})
@@ -87,10 +85,59 @@ function GeoInit(ByCountry,field,width){
 	          	});
 	          	return coloring;
 	          })
+	          .on("mouseover",function(d,i) {
+					var CurrentCountry = this;
+				d3.select(this).style("fill","brown");
+			  })
 	          .on("mouseenter", showTooltip)
 	          .on("mouseout",  function(d,i) {
-	              tooltip.classed("hidden", true);
-	           })
+	          		var CurrentCountry = this;
+					d3.select(CurrentCountry)
+					.style("fill",function(geomap){
+						var coloring = '#fff7fb';
+	          			ByCountry.forEach(function(country){
+	          			if (country.key == geomap.properties.name){
+	          				if (country.selected == false) {coloring = color(country.criteria);}
+							else {coloring = "green"};
+						}
+						});
+	              	tooltip.classed("hidden", true);
+	                return coloring;
+	           		})
+				})
+	          .on("click",function(d,i){
+	          		var CurrentCountry = this;
+	          		var countryname;
+					d3.select(CurrentCountry)
+					.style("fill",function(geomap){
+						var coloring = '#fff7fb';
+	          			ByCountry.forEach(function(country){
+	          			if (country.key == geomap.properties.name){
+	          				countryname = '#' + geomap.properties.name.replace(" ","-").replace(" ","-");
+	          				if (country.selected == false) {
+	          					country.selected = !country.selected;
+	          					coloring = "green";
+	          				}
+							else {
+								coloring = color(country.criteria);
+								country.selected = !country.selected;
+							};
+						}
+					});
+	          		return coloring
+	          })
+			     	spiderChart.spiderUpdate();
+					var scatterplotSVG = document.getElementById('ScatterplotSVG');
+					scatterplotSVG.remove();
+					scatterplotInit(ByCountry, '#ScatterplotDiv');
+					console.log(countryname);
+					var updatedbar = d3.select(countryname);
+					updatedbar.style("fill",function(country){
+						var barcolor = '#fff7fb';
+						if (country.selected == false){barcolor = color(country.criteria)}
+						else {barcolor = "green"}
+						return barcolor ;});
+			})
 	          .attr("d", path);
 	    });
 
@@ -141,24 +188,23 @@ function GeoInit(ByCountry,field,width){
 			.map(function(d){return d.key;});
 
 			var value;
-			console.log("Updated Map");
 
 	        d3.json("data/world.json", function(error, world) {
 	        if(error) return console.error(error);
 
 		    // draw countries
 			countries
-			  .transition()
-			  .duration(2000)
-		      .style("fill",function(geomap){
-		      	var coloring='#fff7fb';
-		      	ByCountry.forEach(function(country){
-			      	if (country.key == geomap.properties.name){
-			      			coloring = color(country.criteria);
-			      		}
-			      	});
-			      	return coloring;
-		      })
+			  .style("fill",function(geomap){
+					var coloring = '#fff7fb';
+	      			ByCountry.forEach(function(country){
+	      			if (country.key == geomap.properties.name){
+	      				if (country.selected == false) {coloring = color(country.criteria);}
+						else {coloring = "green"};
+					}
+					});
+	          	tooltip.classed("hidden", true);
+	            return coloring;
+	       	})
 	    })
 	    }
 

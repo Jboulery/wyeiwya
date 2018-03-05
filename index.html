@@ -220,8 +220,6 @@
 			var dataset = data;
 			var MinProducts = 3;
 			ByCountry = dataProcessing(data,MinProducts);
-
-
 			
 			//******************************//
 			//		General parameters		//
@@ -247,9 +245,9 @@
 			// 	Initialize Ranking, Geomap and Spider	//
 			//**********************************//
 			spiderChart = radarChartInit(ByCountry,"#SpiderDiv");
-			rankingChart = rankingInit(ByCountry, svgRanking,height,margin,1700,spiderChart);
 			scatterplotChart = scatterplotInit(ByCountry,'#ScatterplotDiv'); 
-			map = GeoInit(ByCountry, svgMap,width);
+			map = GeoInit(ByCountry, svgMap,width,spiderChart);
+            rankingChart = rankingInit(ByCountry, svgRanking,height,margin,1700,spiderChart,map);
 
 			d3.selectAll("#modify_weights_btn")
 				.on("click", changed);
