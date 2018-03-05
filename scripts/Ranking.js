@@ -2,7 +2,7 @@
 //		Ranking creation function		//
 //**************************************//
 
-function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
+function rankingInit(ByCountry,field,height,margin,hmax,spiderChart,map){
 	// Create the initial ranking, based on "criteria"
 	// 0 : fat_100g
 	// 1 : saturated-fat_100g
@@ -93,7 +93,7 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 		.style("fill",function(d){
 			if (d.selected == false) {return color(d.criteria);}
 			else {return "green"}})
-		.attr("id", function(d,i) { return d.key; });
+		.attr("id", function(d,i) { return d.key.replace(" ","-").replace(" ","-"); });
 		
 	// Values at the bars end
 	var numText = groups
@@ -143,7 +143,7 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 			var currentGroup = d3.select(this.parentNode);
 			var toFind = currentGroup.select(".bars").attr("id");
 			ByCountry.forEach(function(d){
-				if(d.key == toFind){d.selected = !d.selected}
+				if(d.key == toFind.replace("-"," ") ){d.selected = !d.selected}
 				});	
 			//	.style("fill",function(d){return colorScale(d)});
 			currentGroup.select("text").style("font-weight", "normal");
@@ -152,6 +152,7 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart){
 			var scatterplotSVG = document.getElementById('ScatterplotSVG');
 			scatterplotSVG.remove();
 			scatterplotInit(ByCountry, '#ScatterplotDiv');
+			map.GeoUpdate(ByCountry);
 		});
 	
 	//******************************//
