@@ -78,18 +78,31 @@ function GeoInit(ByCountry,field,width,spiderChart){
 	          .attr("id", function(d) { return d.id;})
 	          .style("fill",function(geomap){
 	          	var coloring = '#fff7fb';
-	          		ByCountry.forEach(function(country){
-	          		if (country.key == geomap.properties.name){
-	          			coloring = color(country.criteria);
-	          		}
-	          	});
+	          		ByCountry.forEach(function(country){	
+						if (country.key == geomap.properties.name){
+							// Test if hovereded
+							if (country.hovered == 1){coloring = "brown";}
+							// Else : use criteria
+							else{coloring = color(country.criteria);}
+						}
+					});
 	          	return coloring;
 	          })
 	          .on("mouseover",function(d,i) {
+					console.log(d)
 					var CurrentCountry = this;
-				d3.select(this).style("fill","brown");
+					d3.select(this).style("fill","brown");
+					// Update ByCountry
+					ByCountry.forEach(function(country,j){
+						if(d.properties.name == country.key){
+							country.hovered = !country.hovered;
+							}							
+					});
+					console.log(ByCountry);
+					
+					showTooltip(d);
 			  })
-	          .on("mouseenter", showTooltip)
+	          //.on("mouseenter", )
 	          .on("mouseout",  function(d,i) {
 	          		var CurrentCountry = this;
 					d3.select(CurrentCountry)
@@ -99,6 +112,7 @@ function GeoInit(ByCountry,field,width,spiderChart){
 	          			if (country.key == geomap.properties.name){
 	          				if (country.selected == false) {coloring = color(country.criteria);}
 							else {coloring = "green"};
+							country.hovered = false;
 						}
 						});
 	              	tooltip.classed("hidden", true);
@@ -116,6 +130,7 @@ function GeoInit(ByCountry,field,width,spiderChart){
 	          				countryname = '#' + geomap.properties.name.replace(" ","-").replace(" ","-");
 	          				if (country.selected == false) {
 	          					country.selected = !country.selected;
+								country.hovered=true;
 	          					coloring = "green";
 	          				}
 							else {
@@ -197,16 +212,18 @@ function GeoInit(ByCountry,field,width,spiderChart){
 			  .style("fill",function(geomap){
 					var coloring = '#fff7fb';
 	      			ByCountry.forEach(function(country){
-	      			if (country.key == geomap.properties.name){
-	      				if (country.selected == false) {coloring = color(country.criteria);}
-						else {coloring = "green"};
-					}
-					});
-	          	tooltip.classed("hidden", true);
-	            return coloring;
-	       	})
-	    })
-	    }
+						if (country.key == geomap.properties.name){
+							if (country.selected == false) {coloring = color(country.criteria);}
+							else {coloring = "green"}
+							if (country.hovered == 1){coloring = "brown";}
+						};
+					})
+					tooltip.classed("hidden", true);
+					return coloring;
+				})
+;
+			})
+		}
 
 
 	    return {GeoUpdate : GeoUpdate}

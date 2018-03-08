@@ -112,6 +112,7 @@ function dataProcessing(data,MinProducts){
 			country.currentRank = 0; 	// Used to save current position in ranking
 			country.formerRank = 0; 	// Used to get former position in ranking
 			country.criteria = 0;
+			country.hovered = false;			// Set to true if mouse is on country bar or country on map
 		});
 
 

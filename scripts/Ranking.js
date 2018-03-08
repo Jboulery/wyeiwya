@@ -90,9 +90,7 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart,map){
 	var bars = groups
 		.append("rect")
 		.attr("class", "bars")
-		.style("fill",function(d){
-			if (d.selected == false) {return color(d.criteria);}
-			else {return "green"}})
+		.style("fill",function(d){return barColor(d)})
 		.attr("id", function(d,i) { return d.key.replace(" ","-").replace(" ","-"); });
 		
 	// Values at the bars end
@@ -114,8 +112,9 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart,map){
 	// Rectangles effects (highlight + tootip)
 	bars
 		.on("mouseover", function(d) {
+			d.hovered = true;
 			var currentGroup = d3.select(this.parentNode);
-			currentGroup.select(".bars").style("fill", "brown");
+			currentGroup.select(".bars").style("fill", function(d){return barColor(d)});
 			currentGroup.select("text").style("font-weight", "bold");
 			
 			var mouse = d3.mouse(context.node()).map(function(d) {
@@ -128,15 +127,16 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart,map){
 				+"<p>- Former rank : "+d.formerRank+"</p>"
 				+"<p>- Products nb : "+d.values.length+"</p>"
 				+"<p>- Energy : " + d.means[13].toPrecision(2) + "kJ </p>");
+			map.GeoUpdate(ByCountry);
 		})
 		
-		.on("mouseout", function() {
+		.on("mouseout", function(d) {
+			d.hovered = false;
 			var currentGroup = d3.select(this.parentNode);
-			currentGroup.select(".bars").style("fill",function(d){
-			if (d.selected == false) {return color(d.criteria);}
-			else {return "green"}});
+			currentGroup.select(".bars").style("fill",function(d){return barColor(d)});
 			currentGroup.select("text").style("font-weight", "normal");
 			tooltip.classed('hidden', true);
+			map.GeoUpdate(ByCountry);
 		})
 	
 		.on("click", function() {
@@ -145,7 +145,6 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart,map){
 			ByCountry.forEach(function(d){
 				if(d.key == toFind.replace("-"," ") ){d.selected = !d.selected}
 				});	
-			//	.style("fill",function(d){return colorScale(d)});
 			currentGroup.select("text").style("font-weight", "normal");
 			// Update radar chart
 			spiderChart.spiderUpdate();
@@ -185,10 +184,7 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart,map){
 			.attr("height", bar_h)
 			.attr("x", xScale(0))
 			.attr("y", function(d) { return yScale(d.key); })
-			.style("fill", function(d){
-			if (d.selected == false) {return color(d.criteria);}
-			else {return "green"}});
-
+			.style("fill", function(d){return barColor(d);});
 		
 		// Update progress bar
 		gauge	
@@ -270,9 +266,7 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart,map){
 		
 		// Update bars
 		bars
-		.style("fill",function(d){
-			if (d.selected == false) {return color(d.criteria);}
-			else {return "green"}})
+		.style("fill",function(d){return barColor(d)})
 		.transition()
 		.duration(1000)
 		.attr("width", function(d) {return xScale(d.criteria)-xScale(0); })
@@ -302,6 +296,18 @@ function rankingInit(ByCountry,field,height,margin,hmax,spiderChart,map){
 		.attr("y", function(d) { return yScale(d.key)+0.5*bar_h+5; });
 	}
 	
+	function barColor(country){
+		if (country.selected == true){
+			console.log("Country is selected")
+			return "green";}
+		else{
+			if (country.hovered == true){
+				console.log("Country is highlighted")
+				return "brown"}
+			else {return color(country.criteria)}
+		}
+	}
+
 	return {render : render,rankingUpdate}
 }
 
