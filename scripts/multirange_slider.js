@@ -121,4 +121,22 @@ function get_sliders_distribution(){
 		width_percentage_values.push(parseFloat(d.attributes.width.value) / width);
 	});
 	return width_percentage_values;
-}
+};
+
+function sliderReset(){
+	var width = 900;
+	var x = d3.scaleLinear()
+		.domain([0, 100])
+		.range([0, width])
+		.clamp(true);
+		
+	for (var i = 0; i < 13; i++){
+		var rect = d3.select('#rect_' + i);
+		var tick = d3.select('#tick_' + i);
+
+		rect.attr('x', width * i / 13)
+			.attr('width', x.range()[1] / 13 + 2);
+
+		tick.attr("x", width * i / 13 + width / 13 / 2);
+	};
+};
