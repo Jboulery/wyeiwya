@@ -129,7 +129,7 @@ function sliderReset(){
 		.domain([0, 100])
 		.range([0, width])
 		.clamp(true);
-		
+
 	for (var i = 0; i < 13; i++){
 		var rect = d3.select('#rect_' + i);
 		var tick = d3.select('#tick_' + i);
@@ -140,3 +140,38 @@ function sliderReset(){
 		tick.attr("x", width * i / 13 + width / 13 / 2);
 	};
 };
+
+function sliderSetParameter(i){
+	var width = 900;
+	var x = d3.scaleLinear()
+		.domain([0, 100])
+		.range([0, width])
+		.clamp(true);
+	if (i == 100){
+		return false;
+	}
+
+	for (var j = 0; j < 13; j++){
+		var rect = d3.select('#rect_' + j);
+		var tick = d3.select('#tick_' + j);
+		var t = d3.transition()
+			    .duration(100)
+			    .ease(d3.easeLinear);
+
+		if(j==i){
+
+			rect.transition(t)
+			.attr('x', 0)
+			.attr('width', x.range()[1] + 26);
+
+			tick.attr("x", width / 2);
+		}
+		else{
+			rect.transition(t)
+				.attr('x', 0)
+				.attr('width', 0);
+
+			tick.attr("x", -100);
+		}
+	};
+}

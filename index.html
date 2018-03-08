@@ -39,11 +39,33 @@
         &nbsp;
         &nbsp;
 	    <ul class="navbar-nav">
+            <li class="nav-item">
+                <form>
+                    <select class="form-control" id="presets_selection">
+                        <option selected="selected" value="100">Presets</option>
+                        <option value="0">Fat</option>
+                        <option value="1">Saturated Fat</option>
+                        <option value="2">Cholesterol</option>
+                        <option value="3">Carbohydrates</option>
+                        <option value="4">Fibers</option>
+                        <option value="5">Sugars</option>
+                        <option value="6">Proteins</option>
+                        <option value="7">Salt</option>
+                        <option value="8">Sodium</option>
+                        <option value="9">Vitamin A</option>
+                        <option value="10">Vitamin C</option>
+                        <option value="11">Calcium</option>
+                        <option value="12">Iron</option>
+                    </select>
+                </form>
+            </li>
+            &nbsp;
 		    <li class="nav-item"> <!--offset-sm-6-->
 				<button class="btn btn-success" id="modify_weights_btn" onclick="get_sliders_distribution()">
 					Apply
 				</button>
-			</li>&nbsp;
+			</li>
+            &nbsp;
             <li class="nav-item"> <!--offset-sm-6-->
                 <button class="btn btn-info" id="reset_weights_btn" onclick="sliderReset()">
                     Reset
@@ -265,6 +287,11 @@
 				$('#ScatterplotSVG').remove();
 				scatterplotInit(ByCountry, '#ScatterplotDiv');
 			});
+
+            $('#presets_selection').on('change', function(){
+                i = parseInt($(this).val());
+                sliderSetParameter(i);
+            });
 			
 			// resize the chart on resizing window
 			window.addEventListener('resize', rankingChart.render);
